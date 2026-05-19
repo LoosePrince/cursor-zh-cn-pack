@@ -136,13 +136,18 @@
   },
   {
     "id": "settings.reset-dont-ask-again.label",
-    "source": "label:\"Reset \\\"Don't Ask Again\\\" Dialogs\"",
-    "target": "label:\"重置“不再询问”对话框\""
+    "source": "label:'Reset \\\"Don\\u2019t Ask Again\\\" Dialogs'",
+    "target": "label:'重置“不再询问”对话框'"
   },
   {
-    "id": "settings.reset-dont-ask-again.title",
-    "source": "title:\"Reset \\\"Don't Ask Again\\\" Dialogs\"",
-    "target": "title:\"重置“不再询问”对话框\""
+    "id": "settings.reset-dont-ask-again.description",
+    "source": "description:\"See warnings and tips that you\\u2019ve hidden\"",
+    "target": "description:\"查看你已隐藏的警告和提示\""
+  },
+  {
+    "id": "settings.reset-dont-ask-again.toggle-title",
+    "source": "get title(){return r()?\"Hide\":\"Show\"}",
+    "target": "get title(){return r()?\"隐藏\":\"显示\"}"
   },
   {
     "id": "settings.subagents.header",
@@ -178,5 +183,435 @@
     "id": "settings.cloud-agent.disabled-notification",
     "source": "this.notificationService.info(\"Cloud Agent is not enabled. Please enable it in the settings.\")",
     "target": "this.notificationService.info(\"云端智能体未启用。请在设置中启用。\")"
+  },
+  {
+    "id": "settings.layout.window.html-label",
+    "source": "<p class=cursor-settings-cell-label>Window Layout</p>",
+    "target": "<p class=cursor-settings-cell-label>窗口布局</p>"
+  },
+  {
+    "id": "settings.layout.window.html-description",
+    "source": "<div class=cursor-settings-cell-description>Switch between Agent and Editor default layouts</div>",
+    "target": "<div class=cursor-settings-cell-description>在智能体和编辑器默认布局之间切换</div>"
+  },
+  {
+    "id": "settings.layout.window.aria-label",
+    "source": "aria-label=\"Window Layout\"",
+    "target": "aria-label=\"窗口布局\""
+  },
+  {
+    "id": "settings.layout.agent.segmented-label",
+    "source": "<span class=layout-picker-segmented__label>Agent</span>",
+    "target": "<span class=layout-picker-segmented__label>智能体</span>"
+  },
+  {
+    "id": "settings.layout.editor.segmented-label",
+    "source": "<span class=layout-picker-segmented__label>Editor</span>",
+    "target": "<span class=layout-picker-segmented__label>编辑器</span>"
+  },
+  {
+    "id": "settings.layout.section-title",
+    "source": "title:\"Layout\"",
+    "target": "title:\"布局\""
+  },
+  {
+    "id": "settings.layout.title-bar.label",
+    "source": "label:\"Title Bar\"",
+    "target": "label:\"标题栏\""
+  },
+  {
+    "id": "settings.layout.title-bar.description",
+    "source": "description:\"Show title bar in agent layout\"",
+    "target": "description:\"在智能体布局中显示标题栏\""
+  },
+  {
+    "id": "settings.layout.status-bar.label",
+    "source": "label:\"Status Bar\"",
+    "target": "label:\"状态栏\""
+  },
+  {
+    "id": "settings.layout.status-bar.description",
+    "source": "description:\"Show status bar at the bottom of the window\"",
+    "target": "description:\"在窗口底部显示状态栏\""
+  },
+  {
+    "id": "settings.layout.review-control-location.label",
+    "source": "label:\"Review Control Location\"",
+    "target": "label:\"审阅控件位置\""
+  },
+  {
+    "id": "settings.layout.review-control-location.description",
+    "source": "description:\"Show inline diff review controls in top level breadcrumbs or floating island\"",
+    "target": "description:\"在顶层面包屑或浮动岛中显示内联差异审阅控件\""
+  },
+  {
+    "id": "settings.layout.review-control-location.breadcrumb",
+    "source": "label:\"Breadcrumb\"",
+    "target": "label:\"面包屑\""
+  },
+  {
+    "id": "settings.layout.review-control-location.island",
+    "source": "label:\"Island\"",
+    "target": "label:\"浮动岛\""
+  },
+  {
+    "id": "settings.layout.auto-hide-editor.label",
+    "source": "label:\"Auto-hide editor when empty\"",
+    "target": "label:\"空编辑器时自动隐藏\""
+  },
+  {
+    "id": "settings.layout.auto-hide-editor.description",
+    "source": "description:\"When all editors are closed, hide the editor area and maximize chat\"",
+    "target": "description:\"关闭所有编辑器后隐藏编辑器区域并最大化聊天\""
+  },
+  {
+    "id": "settings.layout.open-chat-tabs.label",
+    "source": "label:\"Open chat as editor tabs\"",
+    "target": "label:\"将聊天作为编辑器标签页打开\""
+  },
+  {
+    "id": "settings.layout.open-chat-tabs.description",
+    "source": "description:\"Show chats as editor tabs inside the chat area instead of the legacy stacked view\"",
+    "target": "description:\"在聊天区域内以编辑器标签页显示聊天，而不是旧版堆叠视图\""
+  },
+  {
+    "id": "settings.notifications.section-title",
+    "source": "title:\"Notifications\"",
+    "target": "title:\"通知\""
+  },
+  {
+    "id": "settings.notifications.system.label",
+    "source": "label:\"System Notifications\"",
+    "target": "label:\"系统通知\""
+  },
+  {
+    "id": "settings.notifications.system.description",
+    "source": "description:\"Show system notifications when Agent completes or needs attention\"",
+    "target": "description:\"当智能体完成或需要注意时显示系统通知\""
+  },
+  {
+    "id": "settings.notifications.warning.label",
+    "source": "label:\"Warning Notifications\"",
+    "target": "label:\"警告通知\""
+  },
+  {
+    "id": "settings.notifications.warning.description",
+    "source": "description:\"Show warning-level in-app toasts\"",
+    "target": "description:\"显示警告级别的应用内提示\""
+  },
+  {
+    "id": "settings.notifications.tray-menu.label",
+    "source": "label:Jo?\"Menu Bar Icon\":\"System Tray Icon\"",
+    "target": "label:Jo?\"菜单栏图标\":\"系统托盘图标\""
+  },
+  {
+    "id": "settings.notifications.tray-menu.description",
+    "source": "description:Jo?\"Show Cursor in menu bar\":\"Show Cursor in system tray\"",
+    "target": "description:Jo?\"在菜单栏中显示 Cursor\":\"在系统托盘中显示 Cursor\""
+  },
+  {
+    "id": "settings.notifications.completion-sound.label",
+    "source": "label:\"Completion Sound\"",
+    "target": "label:\"完成提示音\""
+  },
+  {
+    "id": "settings.notifications.completion-sound.description",
+    "source": "description:\"Play a sound when Agent finishes responding\"",
+    "target": "description:\"智能体完成响应时播放声音\""
+  },
+  {
+    "id": "settings.privacy.section-title",
+    "source": "title:\"Privacy\"",
+    "target": "title:\"隐私\""
+  },
+  {
+    "id": "settings.privacy.mode.html-block",
+    "source": "AZC=st(\"<div><div>Privacy Mode (Legacy)</div><div>No training and no storage. Background Agent and other features that require code storage will be disabled.\")",
+    "target": "AZC=st(\"<div><div>隐私模式（旧版）</div><div>不训练且不存储。后台智能体和其它需要代码存储的功能将被禁用。\")"
+  },
+  {
+    "id": "settings.privacy.switch-to-privacy-mode.html",
+    "source": "xZC=st(\"<div><span>Switch to Privacy Mode\")",
+    "target": "xZC=st(\"<div><span>切换到隐私模式\")"
+  },
+  {
+    "id": "settings.privacy.no-training-description.text",
+    "source": "get fallback(){return\"Your code data will not be trained on or used to improve the product. We will not store your code.\"}",
+    "target": "get fallback(){return\"你的代码数据不会用于训练或改进产品。我们不会存储你的代码。\"}"
+  },
+  {
+    "id": "settings.privacy.legacy-enabled-description.text",
+    "source": "get description(){return[\"Privacy Mode (Legacy) is enabled. Background Agent and some features not available.\",",
+    "target": "get description(){return[\"隐私模式（旧版）已启用。后台智能体和部分功能不可用。\","
+  },
+  {
+    "id": "settings.account.logout.title",
+    "source": "title:\"Log Out\"",
+    "target": "title:\"退出登录\""
+  },
+  {
+    "id": "settings.tab.cursor-tab.label",
+    "source": "label:\"Cursor Tab\"",
+    "target": "label:\"Cursor Tab 补全\""
+  },
+  {
+    "id": "settings.tab.cursor-tab.description",
+    "source": "description:\"Context-aware, multi-line suggestions around your cursor based on recent edits\"",
+    "target": "description:\"基于最近编辑，在光标附近提供上下文感知的多行建议\""
+  },
+  {
+    "id": "settings.tab.partial-accepts.label",
+    "source": "label:\"Partial Accepts\"",
+    "target": "label:\"部分接受\""
+  },
+  {
+    "id": "settings.tab.partial-accepts.description",
+    "source": "get description(){return`Accept the next word of a suggestion via ${n.keybindingService.lookupKeybinding(\"editor.action.inlineSuggest.acceptNextWord\")?.getLabel()??\"Alt+]\"}`}",
+    "target": "get description(){return`通过 ${n.keybindingService.lookupKeybinding(\"editor.action.inlineSuggest.acceptNextWord\")?.getLabel()??\"Alt+]\"} 接受建议的下一个词`}"
+  },
+  {
+    "id": "settings.tab.suggestions-while-commenting.label",
+    "source": "label:\"Suggestions While Commenting\"",
+    "target": "label:\"注释中启用建议\""
+  },
+  {
+    "id": "settings.tab.suggestions-while-commenting.description",
+    "source": "description:\"Allow Tab to trigger while in a comment region\"",
+    "target": "description:\"允许在注释区域触发 Tab 补全\""
+  },
+  {
+    "id": "settings.tab.whitespace-only.label",
+    "source": "label:\"Whitespace-Only Suggestions\"",
+    "target": "label:\"仅空白字符建议\""
+  },
+  {
+    "id": "settings.tab.whitespace-only.description",
+    "source": "description:\"Suggest edits like new lines and indentation that modify whitespace only\"",
+    "target": "description:\"建议只修改空白字符的编辑，例如换行和缩进\""
+  },
+  {
+    "id": "settings.tab.imports.label",
+    "source": "label:\"Imports\"",
+    "target": "label:\"导入\""
+  },
+  {
+    "id": "settings.tab.imports.description",
+    "source": "description:\"Automatically import necessary modules for TypeScript\"",
+    "target": "description:\"自动为 TypeScript 导入必要模块\""
+  },
+  {
+    "id": "settings.tab.auto-import-python.label-prefix",
+    "source": "get label(){return[\"Auto Import for Python\",\" ",
+    "target": "get label(){return[\"Python 自动导入\",\" "
+  },
+  {
+    "id": "settings.tab.auto-import-python.description",
+    "source": "description:\"Enable auto import for Python. This is a beta feature.\"",
+    "target": "description:\"启用 Python 自动导入。这是 Beta 功能。\""
+  },
+  {
+    "id": "settings.tab.ignored-files.label",
+    "source": "label:\"Ignored Files\"",
+    "target": "label:\"忽略的文件\""
+  },
+  {
+    "id": "settings.tab.ignored-files.description",
+    "source": "description:\"Glob patterns for files where Cursor Tab will not suggest\"",
+    "target": "description:\"Cursor Tab 不提供建议的文件 glob 模式\""
+  },
+  {
+    "id": "settings.agents.text-size.label",
+    "source": "label:\"Text Size\"",
+    "target": "label:\"文本大小\""
+  },
+  {
+    "id": "settings.agents.text-size.description",
+    "source": "description:\"Adjust the conversation text size\"",
+    "target": "description:\"调整对话文本大小\""
+  },
+  {
+    "id": "settings.agents.max-tab-count.label",
+    "source": "label:\"Max Tab Count\"",
+    "target": "label:\"最大标签页数量\""
+  },
+  {
+    "id": "settings.agents.max-tab-count.description",
+    "source": "description:\"Limit how many chat tabs can be open at once\"",
+    "target": "description:\"限制可同时打开的聊天标签页数量\""
+  },
+  {
+    "id": "settings.agents.queue-messages.label",
+    "source": "label:\"Queue Messages\"",
+    "target": "label:\"消息排队\""
+  },
+  {
+    "id": "settings.agents.queue-messages.description",
+    "source": "description:\"Adjust the default behavior of sending a message while Agent is running\"",
+    "target": "description:\"调整智能体运行时发送消息的默认行为\""
+  },
+  {
+    "id": "settings.agents.queue-messages.send-after-current",
+    "source": "label:\"Send after current message\"",
+    "target": "label:\"当前消息后发送\""
+  },
+  {
+    "id": "settings.agents.queue-messages.stop-and-send",
+    "source": "label:\"Stop & send right away\"",
+    "target": "label:\"停止并立即发送\""
+  },
+  {
+    "id": "settings.agents.usage-summary.label",
+    "source": "label:\"Usage Summary\"",
+    "target": "label:\"用量摘要\""
+  },
+  {
+    "id": "settings.agents.usage-summary.description",
+    "source": "description:\"When to show the usage summary at the bottom of the chat pane\"",
+    "target": "description:\"何时在聊天窗格底部显示用量摘要\""
+  },
+  {
+    "id": "settings.agents.usage-summary.items",
+    "source": "items:[{id:\"auto\",label:\"Auto\"},{id:\"always\",label:\"Always\"},{id:\"never\",label:\"Never\"}]",
+    "target": "items:[{id:\"auto\",label:\"自动\"},{id:\"always\",label:\"始终\"},{id:\"never\",label:\"从不\"}]"
+  },
+  {
+    "id": "settings.agents.autocomplete.label",
+    "source": "label:\"Agent Autocomplete\"",
+    "target": "label:\"智能体自动补全\""
+  },
+  {
+    "id": "settings.agents.autocomplete.description",
+    "source": "description:\"Contextual suggestions while prompting Agent\"",
+    "target": "description:\"向智能体输入提示时提供上下文建议\""
+  },
+  {
+    "id": "settings.agents.follow-up-suggestions.label",
+    "source": "label:\"Follow-Up Prompt Suggestions\"",
+    "target": "label:\"后续提示建议\""
+  },
+  {
+    "id": "settings.agents.follow-up-suggestions.description",
+    "source": "description:\"Suggest a follow-up for the Agent\"",
+    "target": "description:\"为智能体建议后续提示\""
+  },
+  {
+    "id": "settings.agents.compact-terminal-tool-calls.label",
+    "source": "label:\"Compact Terminal Tool Calls\"",
+    "target": "label:\"紧凑显示终端工具调用\""
+  },
+  {
+    "id": "settings.agents.compact-terminal-tool-calls.description",
+    "source": "description:\"Show terminal commands in compact view by default\"",
+    "target": "description:\"默认以紧凑视图显示终端命令\""
+  },
+  {
+    "id": "settings.agents.web-search-tool.description",
+    "source": "description:\"Allow Agent to search the web for relevant information\"",
+    "target": "description:\"允许智能体搜索网页以获取相关信息\""
+  },
+  {
+    "id": "settings.agents.auto-accept-web-search.label",
+    "source": "label:\"Auto-Accept Web Search\"",
+    "target": "label:\"自动接受网页搜索\""
+  },
+  {
+    "id": "settings.agents.auto-accept-web-search.description",
+    "source": "get description(){return Er(()=>!!s())()?\"Disabled by your team admin.\":r()?\"Enabled by Run Everything Auto-Run Mode: Agent bypasses approval prompts for tools including Web Search.\":\"Skip approval dialog; Agent may run web searches automatically\"}",
+    "target": "get description(){return Er(()=>!!s())()?\"已被你的团队管理员禁用。\":r()?\"已由 Run Everything 自动运行模式启用：智能体会绕过包括网页搜索在内的工具批准提示。\":\"跳过批准对话框；智能体可以自动运行网页搜索\"}"
+  },
+  {
+    "id": "settings.agents.mcp-tools-protection.label",
+    "source": "label:\"MCP Tools Protection\"",
+    "target": "label:\"MCP 工具保护\""
+  },
+  {
+    "id": "settings.agents.mcp-tools-protection.description",
+    "source": "get description(){return`Prevent Agent from automatically running MCP tools${l().isAdminControlled?\" (controlled by admin)\":\"\"}`}",
+    "target": "get description(){return`防止智能体自动运行 MCP 工具${l().isAdminControlled?\"（由管理员控制）\":\"\"}`}"
+  },
+  {
+    "id": "settings.agents.auto-run-mode.title",
+    "source": "se=He(()=>{const Le=l();return Le.isDisabledByAdmin?\"Auto-Run Mode Disabled by Team Admin\":Le.isAdminControlled?Le.sandboxingControls?.sandboxing===\"enabled\"&&y()?\"Auto-Run Mode Controlled by Team Admin (Sandbox Enabled)\":\"Auto-Run Mode Controlled by Team Admin\":!Le.isAdminControlled&&e.composerEffectiveAllowlistService.shouldPermissionsFileConstrainUnrestrictedMode()?`Auto-Run Mode (enforced by ~/${e.productService.dataFolderName??\".cursor\"}/permissions.json)`:\"Auto-Run Mode\"})",
+    "target": "se=He(()=>{const Le=l();return Le.isDisabledByAdmin?\"自动运行模式已被团队管理员禁用\":Le.isAdminControlled?Le.sandboxingControls?.sandboxing===\"enabled\"&&y()?\"自动运行模式由团队管理员控制（沙箱已启用）\":\"自动运行模式由团队管理员控制\":!Le.isAdminControlled&&e.composerEffectiveAllowlistService.shouldPermissionsFileConstrainUnrestrictedMode()?`自动运行模式（由 ~/${e.productService.dataFolderName??\".cursor\"}/permissions.json 强制执行）`:\"自动运行模式\"})"
+  },
+  {
+    "id": "settings.applying-changes.auto-format-on-agent-finish.label",
+    "source": "label:\"Auto Format on Agent Finish\"",
+    "target": "label:\"智能体完成后自动格式化\""
+  },
+  {
+    "id": "settings.applying-changes.auto-format-on-agent-finish.description",
+    "source": "description:\"Automatically format files when the agent finishes\"",
+    "target": "description:\"智能体完成后自动格式化文件\""
+  },
+  {
+    "id": "settings.inline-terminal.section-title",
+    "source": "title:\"Inline Editing & Terminal\"",
+    "target": "title:\"内联编辑与终端\""
+  },
+  {
+    "id": "settings.inline-terminal.legacy-terminal-tool.label",
+    "source": "label:\"Legacy Terminal Tool\"",
+    "target": "label:\"旧版终端工具\""
+  },
+  {
+    "id": "settings.inline-terminal.legacy-terminal-tool.description",
+    "source": "description:\"Use the legacy terminal tool in agent mode, for use on systems with unsupported shell configurations\"",
+    "target": "description:\"在智能体模式中使用旧版终端工具，适用于不支持的 shell 配置系统\""
+  },
+  {
+    "id": "settings.inline-terminal.themed-diff-backgrounds.label",
+    "source": "label:\"Themed Diff Backgrounds\"",
+    "target": "label:\"主题化差异背景\""
+  },
+  {
+    "id": "settings.inline-terminal.themed-diff-backgrounds.description",
+    "source": "description:\"Use themed background colors for inline code diffs\"",
+    "target": "description:\"为内联代码差异使用主题背景色\""
+  },
+  {
+    "id": "settings.inline-terminal.terminal-hint.label",
+    "source": "label:\"Terminal Hint\"",
+    "target": "label:\"终端提示\""
+  },
+  {
+    "id": "settings.inline-terminal.terminal-hint.description",
+    "source": "description:`Show a hint for ${Jo?\"\\u2318\":\"Ctrl+\"}K in the Terminal`",
+    "target": "description:`显示 ${Jo?\"\\u2318\":\"Ctrl+\"}K 的终端提示`"
+  },
+  {
+    "id": "settings.attribution.section-title",
+    "source": "title:\"Attribution\"",
+    "target": "title:\"归因\""
+  },
+  {
+    "id": "settings.attribution.commit.label",
+    "source": "label:\"Commit Attribution\"",
+    "target": "label:\"提交归因\""
+  },
+  {
+    "id": "settings.attribution.commit.description",
+    "source": "get description(){return`Mark Agent commits as 'Made with Cursor'${t()?\" (controlled by admin)\":\"\"}`}",
+    "target": "get description(){return`将智能体提交标记为“Made with Cursor”${t()?\"（由管理员控制）\":\"\"}`}"
+  },
+  {
+    "id": "settings.attribution.pr.label",
+    "source": "label:\"PR Attribution\"",
+    "target": "label:\"PR 归因\""
+  },
+  {
+    "id": "settings.attribution.pr.description",
+    "source": "get description(){return`Mark pull requests as made with Cursor${t()?\" (controlled by admin)\":\"\"}`}",
+    "target": "get description(){return`将拉取请求标记为由 Cursor 创建${t()?\"（由管理员控制）\":\"\"}`}"
+  },
+  {
+    "id": "settings.git.branch-prefix.label",
+    "source": "label:\"Branch Prefix\"",
+    "target": "label:\"分支前缀\""
+  },
+  {
+    "id": "settings.git.branch-prefix.description",
+    "source": "description:\"Prefix for new branches created by Agent (e.g., cursor/, username/)\"",
+    "target": "description:\"智能体创建新分支时使用的前缀（例如 cursor/、username/）\""
   }
 ]

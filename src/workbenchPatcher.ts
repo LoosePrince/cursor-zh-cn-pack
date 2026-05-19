@@ -6,8 +6,10 @@ import { CursorInstall, validateCursorRoot } from './cursorLocator';
 import { workbenchPatchRules, workbenchPatchRuntimePolicy } from './patchMap';
 
 const metadataKey = 'cursorZhCn.workbenchPatchMetadata';
+const backupFilePrefix = 'workbench.desktop.main.js.cursor-zh-cn-pack.';
 
 export type PatchState = 'not-applied' | 'applied' | 'partial' | 'unknown';
+export type PatchBackupKind = 'original' | 'before-restore' | 'unknown';
 
 export interface PatchRuleStatus {
   readonly id: string;
@@ -28,6 +30,25 @@ export interface PatchMetadata {
   readonly restoreSafetyBackupPath?: string;
 }
 
+export interface PatchBackupStatus {
+  readonly state: PatchState;
+  readonly sourceHits: number;
+  readonly targetHits: number;
+  readonly matchedRules: number;
+}
+
+export interface PatchBackupInfo {
+  readonly path: string;
+  readonly name: string;
+  readonly kind: PatchBackupKind;
+  readonly isOriginal: boolean;
+  readonly currentMetadataBackup: boolean;
+  readonly hash: string;
+  readonly size: number;
+  readonly modifiedAt: string;
+  readonly status: PatchBackupStatus;
+}
+
 export interface PatchScanResult {
   readonly state: PatchState;
   readonly filePath: string;
@@ -35,6 +56,7 @@ export interface PatchScanResult {
   readonly cursorVersion?: string;
   readonly currentHash: string;
   readonly backupPath?: string;
+  readonly backups: readonly PatchBackupInfo[];
   readonly totalRules: number;
   readonly sourceHits: number;
   readonly targetHits: number;
@@ -140,35 +162,43 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
   };
 }
 
-export async function restoreWorkbenchBackup(root: string, context: vscode.ExtensionContext): Promise<PatchRestoreResult> {
-  const metadata = getPatchMetadata(context);
-  if (!metadata?.backupPath) {
-    throw new Error('没有找到可恢复的补丁备份记录。');
-  }
-
-  await assertFile(metadata.backupPath, '备份文件不存在');
+export async function restoreWorkbenchBackup(root: string, context: vscode.ExtensionContext, backupPath?: string): Promise<PatchRestoreResult> {
   const install = await validateCursorRoot(root, '补丁恢复');
   if (!install.valid) {
     throw new Error(install.problems.join('\n'));
   }
 
+  const metadata = getPatchMetadata(context);
+  const backups = await scanBackupFiles(install, context);
+  const selectedBackup = backupPath
+    ? backups.find(backup => samePath(backup.path, backupPath))
+    : backups.find(backup => metadata?.backupPath && samePath(backup.path, metadata.backupPath));
+
+  if (!selectedBackup) {
+    throw new Error(backupPath ? `所选备份文件不在当前 Cursor 安装的备份列表中: ${backupPath}` : '没有选择可恢复的补丁备份。');
+  }
+
+  await assertFile(selectedBackup.path, '备份文件不存在');
+
   const currentContent = await fs.readFile(install.workbenchPath, 'utf8');
   const safetyBackupPath = backupPathFor(install, 'before-restore');
   await fs.writeFile(safetyBackupPath, currentContent, 'utf8');
 
-  const backupContent = await fs.readFile(metadata.backupPath, 'utf8');
+  const backupContent = await fs.readFile(selectedBackup.path, 'utf8');
   await fs.writeFile(install.workbenchPath, backupContent, 'utf8');
 
-  const updatedMetadata: PatchMetadata = {
-    ...metadata,
-    restoredAt: new Date().toISOString(),
-    restoreSafetyBackupPath: safetyBackupPath
-  };
-  await context.globalState.update(metadataKey, updatedMetadata);
+  if (metadata) {
+    const updatedMetadata: PatchMetadata = {
+      ...metadata,
+      restoredAt: new Date().toISOString(),
+      restoreSafetyBackupPath: safetyBackupPath
+    };
+    await context.globalState.update(metadataKey, updatedMetadata);
+  }
 
   return {
     restored: true,
-    backupPath: metadata.backupPath,
+    backupPath: selectedBackup.path,
     safetyBackupPath,
     after: await scanInstallPatch(install, context)
   };
@@ -180,28 +210,109 @@ export function getPatchMetadata(context: vscode.ExtensionContext): PatchMetadat
 
 async function scanInstallPatch(install: CursorInstall, context: vscode.ExtensionContext): Promise<PatchScanResult> {
   const content = await fs.readFile(install.workbenchPath, 'utf8');
-  const rules = workbenchPatchRules.map(rule => ({
-    id: rule.id,
-    sourceHits: countOccurrences(content, rule.source),
-    targetHits: countOccurrences(content, rule.target)
-  }));
-  const sourceHits = rules.reduce((sum, rule) => sum + rule.sourceHits, 0);
-  const targetHits = rules.reduce((sum, rule) => sum + rule.targetHits, 0);
-  const matchedRules = rules.filter(rule => rule.sourceHits > 0 || rule.targetHits > 0).length;
+  const rules = getPatchRuleStatuses(content);
+  const status = getPatchStatusFromRules(rules);
   const metadata = getPatchMetadata(context);
 
   return {
-    state: getPatchState(sourceHits, targetHits, matchedRules),
+    state: status.state,
     filePath: install.workbenchPath,
     cursorRoot: install.root,
     cursorVersion: install.version,
     currentHash: sha256(content),
     backupPath: metadata?.backupPath,
+    backups: await scanBackupFiles(install, context),
     totalRules: workbenchPatchRules.length,
+    sourceHits: status.sourceHits,
+    targetHits: status.targetHits,
+    matchedRules: status.matchedRules,
+    rules
+  };
+}
+
+async function scanBackupFiles(install: CursorInstall, context: vscode.ExtensionContext): Promise<PatchBackupInfo[]> {
+  const directory = path.dirname(install.workbenchPath);
+  const metadata = getPatchMetadata(context);
+  let entries: string[];
+
+  try {
+    entries = await fs.readdir(directory);
+  } catch {
+    return [];
+  }
+
+  const backups = await Promise.all(entries
+    .filter(name => name.startsWith(backupFilePrefix))
+    .map(async name => readPatchBackupInfo(directory, name, metadata)));
+
+  return backups
+    .filter((backup): backup is PatchBackupInfo => backup !== undefined)
+    .sort((left, right) => Date.parse(right.modifiedAt) - Date.parse(left.modifiedAt));
+}
+
+async function readPatchBackupInfo(directory: string, name: string, metadata: PatchMetadata | undefined): Promise<PatchBackupInfo | undefined> {
+  const filePath = path.join(directory, name);
+
+  try {
+    const stat = await fs.stat(filePath);
+    if (!stat.isFile()) {
+      return undefined;
+    }
+
+    const content = await fs.readFile(filePath, 'utf8');
+    const status = getPatchContentStatus(content);
+    const kind = getPatchBackupKind(name);
+
+    return {
+      path: filePath,
+      name,
+      kind,
+      isOriginal: kind === 'original' && status.state === 'not-applied',
+      currentMetadataBackup: metadata?.backupPath ? samePath(filePath, metadata.backupPath) : false,
+      hash: sha256(content),
+      size: stat.size,
+      modifiedAt: stat.mtime.toISOString(),
+      status
+    };
+  } catch {
+    return undefined;
+  }
+}
+
+function getPatchBackupKind(name: string): PatchBackupKind {
+  if (name.startsWith(`${backupFilePrefix}bak.`)) {
+    return 'original';
+  }
+
+  if (name.startsWith(`${backupFilePrefix}before-restore.`)) {
+    return 'before-restore';
+  }
+
+  return 'unknown';
+}
+
+function getPatchContentStatus(content: string): PatchBackupStatus {
+  return getPatchStatusFromRules(getPatchRuleStatuses(content));
+}
+
+function getPatchRuleStatuses(content: string): PatchRuleStatus[] {
+  return workbenchPatchRules.map(rule => ({
+    id: rule.id,
+    sourceHits: countOccurrences(content, rule.source),
+    targetHits: countOccurrences(content, rule.target)
+  }));
+}
+
+function getPatchStatusFromRules(rules: readonly PatchRuleStatus[]): PatchBackupStatus {
+  const sourceHits = rules.reduce((sum, rule) => sum + rule.sourceHits, 0);
+  const targetHits = rules.reduce((sum, rule) => sum + rule.targetHits, 0);
+  const matchedRules = rules.filter(rule => rule.sourceHits > 0 || rule.targetHits > 0).length;
+
+  return {
+    state: getPatchState(sourceHits, targetHits, matchedRules),
     sourceHits,
     targetHits,
-    matchedRules,
-    rules
+    matchedRules
   };
 }
 
@@ -219,7 +330,16 @@ async function ensureBackup(install: CursorInstall, content: string, context: vs
 function backupPathFor(install: CursorInstall, kind: 'bak' | 'before-restore'): string {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const version = install.version ?? 'unknown';
-  return path.join(path.dirname(install.workbenchPath), `workbench.desktop.main.js.cursor-zh-cn-pack.${kind}.${version}.${timestamp}`);
+  return path.join(path.dirname(install.workbenchPath), `${backupFilePrefix}${kind}.${version}.${timestamp}`);
+}
+
+function samePath(left: string, right: string): boolean {
+  const normalizedLeft = path.resolve(left);
+  const normalizedRight = path.resolve(right);
+
+  return process.platform === 'win32'
+    ? normalizedLeft.toLowerCase() === normalizedRight.toLowerCase()
+    : normalizedLeft === normalizedRight;
 }
 
 function getPatchState(sourceHits: number, targetHits: number, matchedRules: number): PatchState {

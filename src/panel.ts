@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { CursorInstall, locateCursorInstall, validateCursorRoot } from './cursorLocator';
-import { applyWorkbenchPatch, getPatchMetadata, PatchScanResult, restoreWorkbenchBackup, scanWorkbenchPatch } from './workbenchPatcher';
+import { applyWorkbenchPatch, PatchBackupInfo, PatchScanResult, restoreWorkbenchBackup, scanWorkbenchPatch } from './workbenchPatcher';
 
 interface ManagerState {
   cursorRoot?: string;
@@ -11,6 +11,7 @@ interface ManagerState {
 
 interface WebviewMessage {
   readonly command: 'autoLocate' | 'chooseRoot' | 'rescan' | 'applyPatch' | 'restoreBackup' | 'openReport';
+  readonly backupPath?: string;
 }
 
 export class ManagerPanel {
@@ -67,7 +68,7 @@ export class ManagerPanel {
           await this.applyPatch();
           break;
         case 'restoreBackup':
-          await this.restoreBackup();
+          await this.restoreBackup(message.backupPath);
           break;
         case 'openReport':
           await this.openReport();
@@ -160,12 +161,17 @@ export class ManagerPanel {
     this.render();
   }
 
-  private async restoreBackup(): Promise<void> {
+  private async restoreBackup(backupPath?: string): Promise<void> {
     if (!this.state.install?.valid) {
       throw new Error('请先识别或选择有效的 Cursor 安装目录。');
     }
 
-    const result = await restoreWorkbenchBackup(this.state.install.root, this.context);
+    const selectedBackupPath = backupPath ?? this.state.patch?.backups.find(backup => backup.currentMetadataBackup)?.path ?? this.state.patch?.backups[0]?.path;
+    if (!selectedBackupPath) {
+      throw new Error('没有可恢复的备份文件。');
+    }
+
+    const result = await restoreWorkbenchBackup(this.state.install.root, this.context, selectedBackupPath);
     this.state = { ...this.state, patch: result.after };
     this.log(`已从备份恢复: ${result.backupPath}`);
     this.log(`恢复前当前文件已另存为: ${result.safetyBackupPath}`);
@@ -226,7 +232,6 @@ async function saveCursorRoot(root: string): Promise<void> {
 function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, state: ManagerState): string {
   const nonce = getNonce();
   const cspSource = webview.cspSource;
-  const metadata = getPatchMetadata(context);
   const install = state.install;
   const patch = state.patch;
   const patchStatusText: Record<string, string> = {
@@ -235,6 +240,8 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
     partial: '部分应用',
     unknown: '未知'
   };
+  const backupOptions = renderBackupOptions(patch?.backups ?? [], patchStatusText);
+  const selectedBackup = getSelectedBackup(patch?.backups ?? []);
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -263,7 +270,8 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
     .section { margin-top: 18px; }
     .mono { font-family: var(--vscode-editor-font-family); font-size: 12px; }
     .list { margin: 8px 0 0; padding-left: 18px; }
-    .log { min-height: 160px; max-height: 300px; overflow: auto; border: 1px solid var(--vscode-panel-border); border-radius: 8px; padding: 12px; background: var(--vscode-input-background); }
+    .backup-select { width: 100%; margin-top: 10px; padding: 6px 8px; color: var(--vscode-dropdown-foreground); background: var(--vscode-dropdown-background); border: 1px solid var(--vscode-dropdown-border); border-radius: 4px; }
+    .backup-detail { margin-top: 8px; color: var(--vscode-descriptionForeground); overflow-wrap: anywhere; }
     .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; background: var(--vscode-badge-background); color: var(--vscode-badge-foreground); }
   </style>
 </head>
@@ -291,7 +299,11 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
       </div>
       <div class="card">
         <div class="label">备份状态</div>
-        <div class="value mono">${escapeHtml(metadata?.backupPath ?? '暂无备份记录')}</div>
+        <div class="value">${patch ? `${patch.backups.length} 个可选备份` : '未扫描'}</div>
+        <select id="backupSelect" class="backup-select" ${patch?.backups.length ? '' : 'disabled'}>
+          ${backupOptions}
+        </select>
+        ${selectedBackup ? `<div class="backup-detail mono">${escapeHtml(formatBackupDetail(selectedBackup, patchStatusText))}</div>` : '<div class="backup-detail mono">暂无备份记录</div>'}
       </div>
       <div class="card">
         <div class="label">补丁命中</div>
@@ -324,11 +336,74 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
   <script nonce="${nonce}">
     const vscode = acquireVsCodeApi();
     document.querySelectorAll('button[data-command]').forEach(button => {
-      button.addEventListener('click', () => vscode.postMessage({ command: button.dataset.command }));
+      button.addEventListener('click', () => {
+        const command = button.dataset.command;
+        const backupSelect = document.getElementById('backupSelect');
+        vscode.postMessage({
+          command,
+          backupPath: command === 'restoreBackup' && backupSelect instanceof HTMLSelectElement ? backupSelect.value : undefined
+        });
+      });
     });
   </script>
 </body>
 </html>`;
+}
+
+function getSelectedBackup(backups: readonly PatchBackupInfo[]): PatchBackupInfo | undefined {
+  return backups.find(backup => backup.currentMetadataBackup) ?? backups[0];
+}
+
+function renderBackupOptions(backups: readonly PatchBackupInfo[], patchStatusText: Record<string, string>): string {
+  if (backups.length === 0) {
+    return '<option value="">暂无备份记录</option>';
+  }
+
+  const selectedBackup = getSelectedBackup(backups);
+  return backups.map(backup => {
+    const selected = selectedBackup?.path === backup.path ? ' selected' : '';
+    return `<option value="${escapeHtml(backup.path)}"${selected}>${escapeHtml(formatBackupOption(backup, patchStatusText))}</option>`;
+  }).join('');
+}
+
+function formatBackupOption(backup: PatchBackupInfo, patchStatusText: Record<string, string>): string {
+  const markers = [formatBackupKind(backup), patchStatusText[backup.status.state] ?? backup.status.state];
+
+  if (backup.currentMetadataBackup) {
+    markers.push('当前补丁备份');
+  }
+
+  return `${markers.join(' / ')} · ${formatDateTime(backup.modifiedAt)} · ${backup.name}`;
+}
+
+function formatBackupDetail(backup: PatchBackupInfo, patchStatusText: Record<string, string>): string {
+  const patchState = patchStatusText[backup.status.state] ?? backup.status.state;
+  return `${formatBackupKind(backup)}；补丁状态: ${patchState}；中文目标 ${backup.status.targetHits} / 英文源 ${backup.status.sourceHits}；${backup.path}`;
+}
+
+function formatBackupKind(backup: PatchBackupInfo): string {
+  if (backup.isOriginal) {
+    return '原始官方备份';
+  }
+
+  if (backup.kind === 'original') {
+    return '原始备份候选';
+  }
+
+  if (backup.kind === 'before-restore') {
+    return '恢复前快照';
+  }
+
+  return '未知备份';
+}
+
+function formatDateTime(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleString('zh-CN', { hour12: false });
 }
 
 function escapeHtml(value: string): string {
