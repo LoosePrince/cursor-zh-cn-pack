@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { CursorInstall, locateCursorInstall, validateCursorRoot } from './cursorLocator';
-import { applyWorkbenchPatch, PatchBackupInfo, PatchScanResult, restoreWorkbenchBackup, scanWorkbenchPatch } from './workbenchPatcher';
+import { applyWorkbenchPatch, PatchBackupInfo, PatchScanResult, restoreWorkbenchBackup, scanWorkbenchPatch, unapplyWorkbenchPatch } from './workbenchPatcher';
 
 interface ManagerState {
   cursorRoot?: string;
@@ -10,7 +10,7 @@ interface ManagerState {
 }
 
 interface WebviewMessage {
-  readonly command: 'autoLocate' | 'chooseRoot' | 'rescan' | 'applyPatch' | 'restoreBackup' | 'openReport';
+  readonly command: 'autoLocate' | 'chooseRoot' | 'rescan' | 'applyPatch' | 'unapplyPatch' | 'restoreBackup' | 'openReport';
   readonly backupPath?: string;
 }
 
@@ -66,6 +66,9 @@ export class ManagerPanel {
           break;
         case 'applyPatch':
           await this.applyPatch();
+          break;
+        case 'unapplyPatch':
+          await this.unapplyPatch();
           break;
         case 'restoreBackup':
           await this.restoreBackup(message.backupPath);
@@ -158,6 +161,19 @@ export class ManagerPanel {
     this.log(result.changed
       ? `补丁已应用，命中 ${result.appliedRuleIds.length} 项，备份: ${result.backupPath}`
       : '补丁未写入：当前文件已经处于已应用或无需变更状态。');
+    this.render();
+  }
+
+  private async unapplyPatch(): Promise<void> {
+    if (!this.state.install?.valid) {
+      throw new Error('请先识别或选择有效的 Cursor 安装目录。');
+    }
+
+    const result = await unapplyWorkbenchPatch(this.state.install.root, this.context);
+    this.state = { ...this.state, patch: result.after };
+    this.log(result.changed
+      ? `补丁已卸载，反向处理 ${result.unappliedRuleIds.length} 项，卸载前快照: ${result.safetyBackupPath}`
+      : '补丁未卸载：当前文件没有命中已应用的中文补丁。');
     this.render();
   }
 
@@ -315,6 +331,7 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
       <button data-command="autoLocate">自动识别</button>
       <button data-command="chooseRoot" class="secondary">手动选择 Cursor 路径</button>
       <button data-command="applyPatch">应用补丁</button>
+      <button data-command="unapplyPatch" class="secondary">卸载补丁</button>
       <button data-command="restoreBackup" class="secondary">恢复备份</button>
       <button data-command="rescan" class="secondary">重新扫描</button>
       <button data-command="openReport" class="secondary">打开报告</button>
@@ -392,6 +409,10 @@ function formatBackupKind(backup: PatchBackupInfo): string {
 
   if (backup.kind === 'before-restore') {
     return '恢复前快照';
+  }
+
+  if (backup.kind === 'before-uninstall') {
+    return '卸载前快照';
   }
 
   return '未知备份';

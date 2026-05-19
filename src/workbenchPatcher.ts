@@ -9,7 +9,7 @@ const metadataKey = 'cursorZhCn.workbenchPatchMetadata';
 const backupFilePrefix = 'workbench.desktop.main.js.cursor-zh-cn-pack.';
 
 export type PatchState = 'not-applied' | 'applied' | 'partial' | 'unknown';
-export type PatchBackupKind = 'original' | 'before-restore' | 'unknown';
+export type PatchBackupKind = 'original' | 'before-restore' | 'before-uninstall' | 'unknown';
 
 export interface PatchRuleStatus {
   readonly id: string;
@@ -28,6 +28,8 @@ export interface PatchMetadata {
   readonly appliedAt: string;
   readonly restoredAt?: string;
   readonly restoreSafetyBackupPath?: string;
+  readonly uninstalledAt?: string;
+  readonly uninstallSafetyBackupPath?: string;
 }
 
 export interface PatchBackupStatus {
@@ -68,6 +70,14 @@ export interface PatchApplyResult {
   readonly changed: boolean;
   readonly backupPath?: string;
   readonly appliedRuleIds: readonly string[];
+  readonly before: PatchScanResult;
+  readonly after: PatchScanResult;
+}
+
+export interface PatchUnapplyResult {
+  readonly changed: boolean;
+  readonly safetyBackupPath?: string;
+  readonly unappliedRuleIds: readonly string[];
   readonly before: PatchScanResult;
   readonly after: PatchScanResult;
 }
@@ -157,6 +167,71 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
     changed: true,
     backupPath,
     appliedRuleIds,
+    before,
+    after: await scanInstallPatch(install, context)
+  };
+}
+
+export async function unapplyWorkbenchPatch(root: string, context: vscode.ExtensionContext): Promise<PatchUnapplyResult> {
+  const install = await validateCursorRoot(root, '补丁卸载');
+  if (!install.valid) {
+    throw new Error(install.problems.join('\n'));
+  }
+
+  const before = await scanInstallPatch(install, context);
+  if (before.targetHits === 0) {
+    return {
+      changed: false,
+      unappliedRuleIds: [],
+      before,
+      after: before
+    };
+  }
+
+  const currentContent = await fs.readFile(install.workbenchPath, 'utf8');
+  let restoredContent = currentContent;
+  let unappliedOccurrences = 0;
+  const unappliedRuleIds: string[] = [];
+
+  for (const rule of workbenchPatchRules) {
+    const occurrences = countOccurrences(restoredContent, rule.target);
+    if (occurrences > 0) {
+      restoredContent = replaceAll(restoredContent, rule.target, rule.source);
+      unappliedOccurrences += occurrences;
+      unappliedRuleIds.push(rule.id);
+    }
+  }
+
+  if (restoredContent === currentContent) {
+    const after = await scanInstallPatch(install, context);
+    return {
+      changed: false,
+      unappliedRuleIds,
+      before,
+      after
+    };
+  }
+
+  assertRuntimePatchIsSafe(restoredContent, currentContent, unappliedRuleIds, unappliedOccurrences);
+
+  const safetyBackupPath = backupPathFor(install, 'before-uninstall');
+  await fs.writeFile(safetyBackupPath, currentContent, 'utf8');
+  await fs.writeFile(install.workbenchPath, restoredContent, 'utf8');
+
+  const metadata = getPatchMetadata(context);
+  if (metadata) {
+    const updatedMetadata: PatchMetadata = {
+      ...metadata,
+      uninstalledAt: new Date().toISOString(),
+      uninstallSafetyBackupPath: safetyBackupPath
+    };
+    await context.globalState.update(metadataKey, updatedMetadata);
+  }
+
+  return {
+    changed: true,
+    safetyBackupPath,
+    unappliedRuleIds,
     before,
     after: await scanInstallPatch(install, context)
   };
@@ -288,6 +363,10 @@ function getPatchBackupKind(name: string): PatchBackupKind {
     return 'before-restore';
   }
 
+  if (name.startsWith(`${backupFilePrefix}before-uninstall.`)) {
+    return 'before-uninstall';
+  }
+
   return 'unknown';
 }
 
@@ -327,7 +406,7 @@ async function ensureBackup(install: CursorInstall, content: string, context: vs
   return backupPath;
 }
 
-function backupPathFor(install: CursorInstall, kind: 'bak' | 'before-restore'): string {
+function backupPathFor(install: CursorInstall, kind: 'bak' | 'before-restore' | 'before-uninstall'): string {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const version = install.version ?? 'unknown';
   return path.join(path.dirname(install.workbenchPath), `${backupFilePrefix}${kind}.${version}.${timestamp}`);
