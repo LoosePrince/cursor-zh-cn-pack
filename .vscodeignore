@@ -1,0 +1,12 @@
+node_modules
+*.vsix
+.vscode-test
+.DS_Store
+baselines
+reports/untranslated-*.json
+reports/workbench-untranslated.*
+package-lock.json
+tsconfig.json
+src
+scripts
+out/**/*.map

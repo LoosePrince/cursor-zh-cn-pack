@@ -1,0 +1,13 @@
+{
+  "": [
+    "Generated for Cursor-specific resources by cursor-zh-cn-pack.",
+    "VS Code base translations are delegated to MS-CEINTL.vscode-language-pack-zh-hans."
+  ],
+  "version": "1.0.0",
+  "contents": {
+    "package": {
+      "displayName": "Cursor 影子工作区",
+      "description": "管理一个隐藏的本地窗口，供 AI 智能体在向你展示代码前先细化修改。"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "": [
+    "Generated for Cursor-specific resources by cursor-zh-cn-pack.",
+    "VS Code base translations are delegated to MS-CEINTL.vscode-language-pack-zh-hans."
+  ],
+  "version": "1.0.0",
+  "contents": {
+    "package": {
+      "displayName": "Cursor 本地功能",
+      "description": "Cursor 实验性功能"
+    }
+  }
+}

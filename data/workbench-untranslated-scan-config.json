@@ -1,0 +1,90 @@
+{
+  "minLength": 2,
+  "maxLength": 320,
+  "maxSamplesPerCandidate": 5,
+  "markdownCandidateLimit": 800,
+  "surroundingChars": 90,
+  "statusOrder": [
+    "candidate",
+    "tracked-needle",
+    "already-in-patch-map"
+  ],
+  "confidenceOrder": [
+    "high",
+    "medium",
+    "low"
+  ],
+  "contextTagOrder": [
+    "cursor-settings",
+    "settings-dom",
+    "settings-route"
+  ],
+  "contextTags": [
+    {
+      "id": "cursor-settings",
+      "label": "Cursor 设置页",
+      "patterns": [
+        "cursor-settings",
+        "Cursor Account",
+        "Plan \\u0026 Usage",
+        "Rules, Skills, Subagents",
+        "Tools \\u0026 MCPs",
+        "Indexing \\u0026 Docs",
+        "Import Settings from VS Code",
+        "Reset \"Don't Ask Again\" Dialogs"
+      ]
+    },
+    {
+      "id": "settings-dom",
+      "label": "设置页 DOM",
+      "patterns": [
+        "cursor-settings-cell-label",
+        "cursor-settings-cell-description",
+        "settings-search",
+        "settings-sidebar"
+      ]
+    },
+    {
+      "id": "settings-route",
+      "label": "设置页路由",
+      "patterns": [
+        "vscode-settings",
+        "plan-usage",
+        "local-automations",
+        "background-composer",
+        "worktrees"
+      ]
+    }
+  ],
+  "excludePatterns": [
+    "^[\\s\\d\\p{P}\\p{S}]+$",
+    "^https?://",
+    "^data:",
+    "^file:",
+    "^vscode-resource:",
+    "\\.(?:js|mjs|cjs|css|json|html|svg|png|jpe?g|gif|webp|ico|ttf|woff2?)(?:[?#].*)?$",
+    "^(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)$",
+    "^(?:true|false|null|undefined|NaN|Infinity)$",
+    "^#[0-9a-fA-F]{3,8}$",
+    "^[A-Fa-f0-9]{24,}$",
+    "^[-+]?\\d+(?:\\.\\d+)?(?:px|em|rem|vh|vw|ms|s|%)?$",
+    "^[\\w.+-]+@[\\w.-]+$"
+  ],
+  "lowConfidencePatterns": [
+    "^use strict$",
+    "^[a-z0-9_$-]{2,}$",
+    "^[A-Z0-9_]{2,}$",
+    "^[a-zA-Z_$][\\w$]*(?:\\.[a-zA-Z_$][\\w$]*)+$",
+    "^[a-zA-Z_$][\\w$]*(?:[/:-][a-zA-Z0-9_.-]+)+$",
+    "^--[a-z0-9-]+$",
+    "^[a-z]{2,3}(?:-[A-Z]{2})?$",
+    "\\b(?:function|return|const|let|var|class|case|switch|throw|typeof|prototype|constructor|Uint8Array|void 0)\\b",
+    "[{};=<>]",
+    "^(?:flex|grid|items|justify|text|bg|border|rounded|px|py|mx|my|gap|w|h|min|max|cursor|opacity|overflow|relative|absolute|fixed|sticky|z)-"
+  ],
+  "highConfidencePatterns": [
+    "[.!?]$",
+    "^[A-Z][A-Za-z0-9'’+&/().,-]*(?: [A-Z0-9][A-Za-z0-9'’+&/().,-]*)+$",
+    "^(?:Enable|Disable|Open|Close|Show|Hide|Select|Choose|Create|Delete|Remove|Update|Configure|Search|Import|Export|Reset|Save|Cancel|Apply|Accept|Reject|Continue|Retry|Sign|Manage|Connect|Disconnect|Copy|Paste|Edit|View|Run|Start|Stop|New|Add|Set|Use|Ask|Refresh|Clear|Download|Upload)\\b"
+  ]
+}

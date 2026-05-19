@@ -1,0 +1,182 @@
+[
+  {
+    "id": "settings.nav.rules.title.fn",
+    "source": "CZ_=()=>\"Rules, Skills, Subagents\"",
+    "target": "CZ_=()=>\"规则、技能、子智能体\""
+  },
+  {
+    "id": "settings.nav.general",
+    "source": "general:\"General\"",
+    "target": "general:\"通用\""
+  },
+  {
+    "id": "settings.nav.vscode-settings",
+    "source": "\"vscode-settings\":\"VS Code Settings\"",
+    "target": "\"vscode-settings\":\"VS Code 设置\""
+  },
+  {
+    "id": "settings.nav.appearance",
+    "source": "appearance:\"Appearance\"",
+    "target": "appearance:\"外观\""
+  },
+  {
+    "id": "settings.nav.plan-usage",
+    "source": "\"plan-usage\":\"Plan & Usage\"",
+    "target": "\"plan-usage\":\"计划与用量\""
+  },
+  {
+    "id": "settings.nav.agents",
+    "source": "chat:\"Agents\"",
+    "target": "chat:\"智能体\""
+  },
+  {
+    "id": "settings.nav.tab",
+    "source": "tab:\"Tab\"",
+    "target": "tab:\"Tab 补全\""
+  },
+  {
+    "id": "settings.nav.models",
+    "source": "models:\"Models\"",
+    "target": "models:\"模型\""
+  },
+  {
+    "id": "settings.nav.rules",
+    "source": "rules:\"Rules, Skills, Subagents\"",
+    "target": "rules:\"规则、技能、子智能体\""
+  },
+  {
+    "id": "settings.nav.plugins",
+    "source": "plugins:\"Plugins\"",
+    "target": "plugins:\"插件\""
+  },
+  {
+    "id": "settings.nav.indexing",
+    "source": "indexing:\"Indexing & Docs\"",
+    "target": "indexing:\"索引与文档\""
+  },
+  {
+    "id": "settings.nav.mcp",
+    "source": "mcp:\"Tools & MCPs\"",
+    "target": "mcp:\"工具与 MCP\""
+  },
+  {
+    "id": "settings.nav.hooks",
+    "source": "hooks:\"Hooks\"",
+    "target": "hooks:\"钩子\""
+  },
+  {
+    "id": "settings.nav.automations",
+    "source": "\"local-automations\":\"Automations\"",
+    "target": "\"local-automations\":\"自动化\""
+  },
+  {
+    "id": "settings.nav.beta",
+    "source": "beta:\"Beta\"",
+    "target": "beta:\"Beta 功能\""
+  },
+  {
+    "id": "settings.nav.network",
+    "source": "network:\"Network\"",
+    "target": "network:\"网络\""
+  },
+  {
+    "id": "settings.nav.cloud-agents",
+    "source": "\"background-composer\":\"Cloud Agents\"",
+    "target": "\"background-composer\":\"云端智能体\""
+  },
+  {
+    "id": "settings.nav.worktrees",
+    "source": "worktrees:\"Worktrees\"",
+    "target": "worktrees:\"工作树\""
+  },
+  {
+    "id": "settings.nav.indexing.glass",
+    "source": "?\"Indexing\":\"Indexing & Docs\"",
+    "target": "?\"索引\":\"索引与文档\""
+  },
+  {
+    "id": "settings.account.label",
+    "source": "label:\"Cursor Account\"",
+    "target": "label:\"Cursor 账户\""
+  },
+  {
+    "id": "settings.account.description",
+    "source": "description:\"Manage your account and billing\"",
+    "target": "description:\"管理账户与账单\""
+  },
+  {
+    "id": "settings.preferences.title",
+    "source": "title:\"Preferences\"",
+    "target": "title:\"首选项\""
+  },
+  {
+    "id": "settings.editor.label",
+    "source": "label:\"Editor Settings\"",
+    "target": "label:\"编辑器设置\""
+  },
+  {
+    "id": "settings.editor.description",
+    "source": "description:\"Configure font, formatting, minimap and more\"",
+    "target": "description:\"配置字体、格式化、缩略图等\""
+  },
+  {
+    "id": "settings.keybindings.label",
+    "source": "label:\"Keyboard Shortcuts\"",
+    "target": "label:\"键盘快捷键\""
+  },
+  {
+    "id": "settings.import-vscode.label",
+    "source": "label:\"Import Settings from VS Code\"",
+    "target": "label:\"从 VS Code 导入设置\""
+  },
+  {
+    "id": "settings.import-vscode.description",
+    "source": "description:\"Import settings, extensions, and keybindings from VS Code\"",
+    "target": "description:\"从 VS Code 导入设置、扩展和键盘绑定\""
+  },
+  {
+    "id": "settings.reset-dont-ask-again.label",
+    "source": "label:\"Reset \\\"Don't Ask Again\\\" Dialogs\"",
+    "target": "label:\"重置“不再询问”对话框\""
+  },
+  {
+    "id": "settings.reset-dont-ask-again.title",
+    "source": "title:\"Reset \\\"Don't Ask Again\\\" Dialogs\"",
+    "target": "title:\"重置“不再询问”对话框\""
+  },
+  {
+    "id": "settings.subagents.header",
+    "source": "WXC=st(\"<div><span>Subagents\")",
+    "target": "WXC=st(\"<div><span>子智能体\")"
+  },
+  {
+    "id": "settings.subagents.explore-model-title",
+    "source": "title=\"Choose Explore subagent model\"",
+    "target": "title=\"选择 Explore 子智能体模型\""
+  },
+  {
+    "id": "settings.subagents.web-search-tool",
+    "source": "VXC=st(\"<div>Web Search Tool\")",
+    "target": "VXC=st(\"<div>网页搜索工具\")"
+  },
+  {
+    "id": "settings.chat.collapse-composer.tooltip",
+    "source": "tooltip:\"Collapse Composer\"",
+    "target": "tooltip:\"折叠 Composer\""
+  },
+  {
+    "id": "settings.max-mode-required.aria-label",
+    "source": "aria-label=\"Max Mode required\"",
+    "target": "aria-label=\"需要 Max 模式\""
+  },
+  {
+    "id": "settings.theme.switch-title",
+    "source": "title:\"Switch Theme\"",
+    "target": "title:\"切换主题\""
+  },
+  {
+    "id": "settings.cloud-agent.disabled-notification",
+    "source": "this.notificationService.info(\"Cloud Agent is not enabled. Please enable it in the settings.\")",
+    "target": "this.notificationService.info(\"云端智能体未启用。请在设置中启用。\")"
+  }
+]

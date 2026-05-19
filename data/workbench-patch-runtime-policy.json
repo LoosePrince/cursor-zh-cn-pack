@@ -1,0 +1,49 @@
+{
+  "runtimeRuleIdPrefixes": [
+    "settings."
+  ],
+  "safeSourcePrefixes": [
+    "label:",
+    "description:",
+    "title:",
+    "children:",
+    "actionTitle:",
+    "general:",
+    "appearance:",
+    "chat:",
+    "tab:",
+    "models:",
+    "rules:",
+    "plugins:",
+    "indexing:",
+    "mcp:",
+    "hooks:",
+    "beta:",
+    "network:",
+    "worktrees:",
+    "\"vscode-settings\":",
+    "\"plan-usage\":",
+    "\"local-automations\":",
+    "\"background-composer\":",
+    "CZ_=()=>",
+    "Ye=",
+    "?",
+    "<p class=cursor-settings-cell-label>",
+    "<div class=cursor-settings-cell-description>",
+    "title=",
+    "tooltip:",
+    "aria-label=",
+    "WXC=st(",
+    "VXC=st(",
+    "this.notificationService.info("
+  ],
+  "guardedRuntimeNeedles": [
+    "globalStorage",
+    "local storage",
+    "state.vscdb",
+    "Storage Error",
+    "Cursor was unable to open local storage"
+  ],
+  "maxRuntimePatchRuleHits": 220,
+  "maxRuntimePatchChangedLines": 260
+}

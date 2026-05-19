@@ -1,0 +1,15 @@
+{
+  "languagePackHeader": [
+    "Generated for Cursor-specific resources by cursor-zh-cn-pack.",
+    "VS Code base translations are delegated to MS-CEINTL.vscode-language-pack-zh-hans."
+  ],
+  "cursorExtensionIdPrefixes": [
+    "anysphere.cursor-"
+  ],
+  "cursorExtensionIds": [],
+  "preferredExtensionOrder": [
+    "anysphere.cursor-always-local",
+    "anysphere.cursor-retrieval",
+    "anysphere.cursor-shadow-workspace"
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "name": "cursor-zh-cn-pack",
+  "displayName": "Cursor 简体中文语言包",
+  "description": "为 Cursor 专用扩展和私有界面提供简体中文补充翻译；VS Code 基础翻译由官方中文语言包处理。",
+  "version": "0.0.1",
+  "publisher": "LoosePrince",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LoosePrince/cursor-zh-cn-pack"
+  },
+  "main": "./out/extension.js",
+  "engines": {
+    "vscode": "^1.105.0"
+  },
+  "categories": [
+    "Language Packs"
+  ],
+  "contributes": {
+    "localizations": [
+      {
+        "languageId": "zh-cn",
+        "languageName": "Chinese Simplified",
+        "localizedLanguageName": "简体中文",
+        "translations": [
+          {
+            "id": "anysphere.cursor-always-local",
+            "path": "./translations/extensions/anysphere.cursor-always-local.i18n.json"
+          },
+          {
+            "id": "anysphere.cursor-retrieval",
+            "path": "./translations/extensions/anysphere.cursor-retrieval.i18n.json"
+          },
+          {
+            "id": "anysphere.cursor-shadow-workspace",
+            "path": "./translations/extensions/anysphere.cursor-shadow-workspace.i18n.json"
+          }
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": "cursor-zh-cn-pack.openManager",
+        "title": "Cursor 汉化管理器"
+      }
+    ],
+    "configuration": {
+      "title": "Cursor 汉化语言包",
+      "properties": {
+        "cursorZhCn.cursorRoot": {
+          "type": "string",
+          "default": "",
+          "description": "Cursor 安装根目录，例如 D:\\cursor。留空时由汉化管理器自动识别。"
+        },
+        "cursorZhCn.enableWorkbenchPatch": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否允许汉化管理器修改 Cursor 的 workbench.desktop.main.js 以补丁式汉化硬编码界面。"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "extract": "node ./scripts/extract-cursor-nls.mjs",
+    "scan:workbench": "node ./scripts/scan-workbench-untranslated.mjs",
+    "package": "vsce package --no-dependencies",
+    "build": "npm run extract && npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.0",
+    "@types/vscode": "^1.105.0",
+    "@vscode/vsce": "latest",
+    "typescript": "^6.0.3"
+  }
+}

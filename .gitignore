@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# VS Code extension artifacts
+*.vsix
+.vscode-test/
+
+# Generated extraction artifacts
+cursor-zh-cn-pack/baselines/
+cursor-zh-cn-pack/reports/coverage-report.md
+cursor-zh-cn-pack/reports/untranslated-*.json
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
