@@ -71,6 +71,7 @@ export interface PatchApplyResult {
   readonly changed: boolean;
   readonly backupPath?: string;
   readonly appliedRuleIds: readonly string[];
+  readonly appliedOccurrences: number;
   readonly before: PatchScanResult;
   readonly after: PatchScanResult;
 }
@@ -126,6 +127,7 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
       changed: false,
       backupPath: before.backupPath,
       appliedRuleIds: [],
+      appliedOccurrences: 0,
       before,
       after: before
     };
@@ -178,6 +180,7 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
       changed: false,
       backupPath,
       appliedRuleIds,
+      appliedOccurrences,
       before,
       after
     };
@@ -213,6 +216,7 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
     changed: true,
     backupPath,
     appliedRuleIds,
+    appliedOccurrences,
     before,
     after
   };

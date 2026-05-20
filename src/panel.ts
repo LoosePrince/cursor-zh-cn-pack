@@ -217,9 +217,12 @@ export class ManagerPanel {
 
       const result = await applyWorkbenchPatch(install.root, this.context, progress);
       this.updateState({ patch: result.after });
+      this.log(`Cursor 根目录: ${result.after.cursorRoot}`);
+      this.log(`Workbench 文件: ${result.after.filePath}`);
+      this.log(`补丁命中: 英文源 ${result.before.sourceHits} 处，已翻译 ${result.before.targetHits} 处，本次写入 ${result.appliedRuleIds.length} 项/${result.appliedOccurrences} 处。`);
       this.log(result.changed
-        ? `补丁已应用，命中 ${result.appliedRuleIds.length} 项，备份: ${result.backupPath}`
-        : '补丁未写入：当前文件已经处于已应用或无需变更状态。');
+        ? `补丁已应用，备份: ${result.backupPath}`
+        : `补丁未写入：英文源 ${result.before.sourceHits} 处，已翻译 ${result.before.targetHits} 处。`);
     });
   }
 

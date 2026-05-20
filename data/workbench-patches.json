@@ -613,5 +613,570 @@
     "id": "settings.git.branch-prefix.description",
     "source": "description:\"Prefix for new branches created by Agent (e.g., cursor/, username/)\"",
     "target": "description:\"智能体创建新分支时使用的前缀（例如 cursor/、username/）\""
+  },
+  {
+    "id": "settings.rules.project-rule-save-button",
+    "source": "return d()?\"Saving...\":\"Save\"",
+    "target": "return d()?\"正在保存...\":\"保存\""
+  },
+  {
+    "id": "settings.rules.user-rule-save-button",
+    "source": "return s()?\"Saving...\":\"Save\"",
+    "target": "return s()?\"正在保存...\":\"保存\""
+  },
+  {
+    "id": "settings.chat.open-composer-settings.action",
+    "source": "label:\"Open Composer Settings\",tooltip:\"Open Composer Settings\"",
+    "target": "label:\"打开 Composer 设置\",tooltip:\"打开 Composer 设置\""
+  },
+  {
+    "id": "settings.agents.auto-run-mode.options",
+    "source": "return\"Ask Every Time\";case YD.USE_ALLOWLIST:return n.toolType===\"terminal\"&&un()?\"Run in Sandbox\":\"Use Allowlist\";case YD.RUN_EVERYTHING:return\"Run Everything\"",
+    "target": "return\"每次询问\";case YD.USE_ALLOWLIST:return n.toolType===\"terminal\"&&un()?\"在沙箱中运行\":\"使用允许列表\";case YD.RUN_EVERYTHING:return\"运行所有内容\""
+  },
+  {
+    "id": "settings.agents.enable-run-everything.title",
+    "source": "title:\"Enable Run Everything?\"",
+    "target": "title:\"启用运行所有内容？\""
+  },
+  {
+    "id": "settings.agents.enable-run-everything.primary-button",
+    "source": "primaryButton:{id:$kp,label:\"Enable Run Everything\"}",
+    "target": "primaryButton:{id:$kp,label:\"启用运行所有内容\"}"
+  },
+  {
+    "id": "settings.agents.enable-run-everything.safer-mode-button",
+    "source": "label:i?\"Use Sandbox instead\":\"Use Allowlist instead\"",
+    "target": "label:i?\"改用沙箱\":\"改用允许列表\""
+  },
+  {
+    "id": "settings.agents.enable-run-everything.warning-sandbox",
+    "source": "RUN_EVERYTHING_SANDBOX_AVAILABLE:\"This allows the agent to execute any tool or shell command without approval. A prompt injection or a malicious tool could delete files or exfiltrate secrets from your machine. We recommend using Sandbox.\"",
+    "target": "RUN_EVERYTHING_SANDBOX_AVAILABLE:\"这会允许智能体无需批准即可执行任何工具或 shell 命令。提示注入或恶意工具可能会删除文件或从你的机器泄露机密。建议使用沙箱。\""
+  },
+  {
+    "id": "settings.agents.enable-run-everything.warning-allowlist",
+    "source": "RUN_EVERYTHING_SANDBOX_UNAVAILABLE:\"This allows the agent to execute any tool or shell command without approval. A prompt injection or a malicious tool could delete files or exfiltrate secrets from your machine. We recommend using Allowlist.\"",
+    "target": "RUN_EVERYTHING_SANDBOX_UNAVAILABLE:\"这会允许智能体无需批准即可执行任何工具或 shell 命令。提示注入或恶意工具可能会删除文件或从你的机器泄露机密。建议使用允许列表。\""
+  },
+  {
+    "id": "settings.feedback.quick-pick.report-good-label",
+    "source": "label:\"Report Good\"",
+    "target": "label:\"反馈良好\""
+  },
+  {
+    "id": "settings.feedback.quick-pick.report-bad-label",
+    "source": "label:\"Report Bad\"",
+    "target": "label:\"反馈较差\""
+  },
+  {
+    "id": "settings.feedback.quick-pick.report-comment-label",
+    "source": "label:\"Report with Comment\"",
+    "target": "label:\"带评论反馈\""
+  },
+  {
+    "id": "settings.feedback.quick-pick.copy-request-id-label",
+    "source": "label:\"Copy Request ID\",disabled:d,description:d?\"Disabled in privacy mode\":void 0",
+    "target": "label:\"复制请求 ID\",disabled:d,description:d?\"隐私模式下已禁用\":void 0"
+  },
+  {
+    "id": "settings.feedback.quick-pick.open-prompt-quality-label",
+    "source": "label:\"Open in Prompt Quality\"",
+    "target": "label:\"在 Prompt Quality 中打开\""
+  },
+  {
+    "id": "settings.feedback.quick-pick.report-good-case",
+    "source": "case\"Report Good\":",
+    "target": "case\"反馈良好\":"
+  },
+  {
+    "id": "settings.feedback.quick-pick.report-bad-case",
+    "source": "case\"Report Bad\":",
+    "target": "case\"反馈较差\":"
+  },
+  {
+    "id": "settings.feedback.quick-pick.report-comment-case",
+    "source": "case\"Report with Comment\":",
+    "target": "case\"带评论反馈\":"
+  },
+  {
+    "id": "settings.feedback.quick-pick.copy-request-id-case",
+    "source": "case\"Copy Request ID\":",
+    "target": "case\"复制请求 ID\":"
+  },
+  {
+    "id": "settings.feedback.quick-pick.open-prompt-quality-case",
+    "source": "case\"Open in Prompt Quality\":",
+    "target": "case\"在 Prompt Quality 中打开\":"
+  },
+  {
+    "id": "settings.feedback.quick-pick.placeholder",
+    "source": "f.placeholder=\"Choose an action\"+(a?` (${a})`:\"\")",
+    "target": "f.placeholder=\"选择操作\"+(a?` (${a})`:\"\")"
+  },
+  {
+    "id": "settings.models.api-key-invalid.message",
+    "source": "message:\"API key is invalid or expired.\",extraDetail:\"Update API Key\"",
+    "target": "message:\"API 密钥无效或已过期。\",extraDetail:\"更新 API 密钥\""
+  },
+  {
+    "id": "settings.models.bad-api-key.error-label",
+    "source": "label:\"Bad API Key\",error:Bu.BAD_API_KEY,detail:\"The provided API key is invalid or malformed.\",message:\"Invalid API key provided.\"",
+    "target": "label:\"API 密钥错误\",error:Bu.BAD_API_KEY,detail:\"提供的 API 密钥无效或格式错误。\",message:\"提供的 API 密钥无效。\""
+  },
+  {
+    "id": "settings.worktrees.empty-git-folder.message",
+    "source": "return\"Open a folder with a Git repository to use worktrees.\"",
+    "target": "return\"打开包含 Git 仓库的文件夹以使用工作树。\""
+  },
+  {
+    "id": "settings.cloud-agents.privacy-legacy-dialog.title",
+    "source": "title:\"Cloud Agents Not Supported in Privacy Mode (Legacy)\"",
+    "target": "title:\"隐私模式（旧版）不支持云端智能体\""
+  },
+  {
+    "id": "settings.cloud-agents.privacy-legacy-dialog.team-admin-message",
+    "source": "message:\"Your team admin can switch to 'Privacy Mode' to use cloud agents.\"",
+    "target": "message:\"你的团队管理员可以切换到“隐私模式”以使用云端智能体。\""
+  },
+  {
+    "id": "settings.cloud-agents.privacy-legacy-dialog.user-message",
+    "source": "message:\"Go to Cursor Settings -> General -> Privacy, and switch to 'Privacy Mode' to use cloud agents.\"",
+    "target": "message:\"前往 Cursor 设置 -> 通用 -> 隐私，并切换到“隐私模式”以使用云端智能体。\""
+  },
+  {
+    "id": "workbench.common.category.view",
+    "source": "View:Kt(1775,\"View\")",
+    "target": "View:Kt(1775,\"查看\")"
+  },
+  {
+    "id": "workbench.common.category.help",
+    "source": "Help:Kt(1776,\"Help\")",
+    "target": "Help:Kt(1776,\"帮助\")"
+  },
+  {
+    "id": "workbench.common.category.test",
+    "source": "Test:Kt(1777,\"Test\")",
+    "target": "Test:Kt(1777,\"测试\")"
+  },
+  {
+    "id": "workbench.common.category.file",
+    "source": "File:Kt(1778,\"File\")",
+    "target": "File:Kt(1778,\"文件\")"
+  },
+  {
+    "id": "workbench.common.category.preferences",
+    "source": "Preferences:Kt(1779,\"Preferences\")",
+    "target": "Preferences:Kt(1779,\"首选项\")"
+  },
+  {
+    "id": "workbench.common.category.developer",
+    "source": "Developer:Kt(1780,\"Developer\")",
+    "target": "Developer:Kt(1780,\"开发者\")"
+  },
+  {
+    "id": "workbench.composer.new-agent.constant",
+    "source": "UZm=\"New Agent\"",
+    "target": "UZm=\"新建智能体\""
+  },
+  {
+    "id": "workbench.composer.new-agent.service-title",
+    "source": "z6i=\"New Agent\"",
+    "target": "z6i=\"新建智能体\""
+  },
+  {
+    "id": "workbench.composer.new-agent.fallback-title",
+    "source": "a||\"New Agent\"",
+    "target": "a||\"新建智能体\""
+  },
+  {
+    "id": "workbench.agent.approval.run-terminal",
+    "source": "accept:\"Run\",reject:\"Stop\",waitText:\"Waiting for approval\"",
+    "target": "accept:\"运行\",reject:\"停止\",waitText:\"等待批准\""
+  },
+  {
+    "id": "workbench.agent.approval.web-search",
+    "source": "accept:\"Continue\",reject:\"Cancel\",waitText:\"Waiting for approval\"",
+    "target": "accept:\"继续\",reject:\"取消\",waitText:\"等待批准\""
+  },
+  {
+    "id": "workbench.agent.tool-group.search",
+    "source": "title:\"Search\",description:\"Codebase, web\"",
+    "target": "title:\"搜索\",description:\"代码库、网页\""
+  },
+  {
+    "id": "workbench.agent.tool-group.run",
+    "source": "title:\"Run\",description:\"Commands\"",
+    "target": "title:\"运行\",description:\"命令\""
+  },
+  {
+    "id": "workbench.agent.tool.edit-reapply",
+    "source": "label:\"Edit & Reapply\"",
+    "target": "label:\"编辑并重新应用\""
+  },
+  {
+    "id": "workbench.agent.tool.delete-file",
+    "source": "label:\"Delete file\"",
+    "target": "label:\"删除文件\""
+  },
+  {
+    "id": "workbench.checkout.stash-changes.option",
+    "source": "label:\"Stash Changes\",description:\"Save changes to a stash and restore them later\",id:\"stash\"",
+    "target": "label:\"暂存更改\",description:\"将更改保存到 stash，稍后再恢复\",id:\"stash\""
+  },
+  {
+    "id": "workbench.checkout.commit-changes.option",
+    "source": "label:\"Commit Changes\",description:\"Create a checkpoint commit with your current changes\",id:\"commit\"",
+    "target": "label:\"提交更改\",description:\"使用当前更改创建检查点提交\",id:\"commit\""
+  },
+  {
+    "id": "workbench.checkout.discard-changes.option",
+    "source": "label:\"Discard Changes\",description:\"Permanently discard your current changes before switching branches\",id:\"discard\"",
+    "target": "label:\"放弃更改\",description:\"切换分支前永久放弃当前更改\",id:\"discard\""
+  },
+  {
+    "id": "workbench.checkout.branch.primary-button",
+    "source": "primaryButton:{id:\"checkout\",label:\"Checkout Branch\"}",
+    "target": "primaryButton:{id:\"checkout\",label:\"检出分支\"}"
+  },
+  {
+    "id": "workbench.checkout.branch.continue-anyway-button",
+    "source": "extraButtons:[{id:\"continue\",label:\"Continue Anyway\",type:\"secondary\"}]",
+    "target": "extraButtons:[{id:\"continue\",label:\"仍然继续\",type:\"secondary\"}]"
+  },
+  {
+    "id": "workbench.git-required.error-title",
+    "source": "title:\"Git Required\"",
+    "target": "title:\"需要 Git\""
+  },
+  {
+    "id": "workbench.git-required.error-message",
+    "source": "message:\"Your organization has configured repository access rules that require Git to be installed. Please install Git and restart Cursor to continue using the agent.\"",
+    "target": "message:\"你的组织配置了需要安装 Git 的仓库访问规则。请安装 Git 并重启 Cursor 以继续使用智能体。\""
+  },
+  {
+    "id": "workbench.git-required.error-detail",
+    "source": "detail:\"Your organization has configured repository access rules that require Git to be installed. Please install Git and restart Cursor to continue using the agent.\"",
+    "target": "detail:\"你的组织配置了需要安装 Git 的仓库访问规则。请安装 Git 并重启 Cursor 以继续使用智能体。\""
+  },
+  {
+    "id": "workbench.git-required.error-text",
+    "source": "errorText:\"Your organization has configured repository access rules that require Git to be installed. Please install Git and restart Cursor to continue using the agent.\"",
+    "target": "errorText:\"你的组织配置了需要安装 Git 的仓库访问规则。请安装 Git 并重启 Cursor 以继续使用智能体。\""
+  },
+  {
+    "id": "workbench.agent-machine.restart-message.children",
+    "source": "children:\"The agent's machine may not be running. Send a message to restart.\"",
+    "target": "children:\"智能体的机器可能未运行。发送消息以重新启动。\""
+  },
+  {
+    "id": "workbench.agent-machine.restart-message.title",
+    "source": "title:\"The agent's machine may not be running. Send a message to restart.\"",
+    "target": "title:\"智能体的机器可能未运行。发送消息以重新启动。\""
+  },
+  {
+    "id": "workbench.agent-machine.restart-message.return-title",
+    "source": "return{title:\"The agent's machine may not be running. Send a message to restart.\"",
+    "target": "return{title:\"智能体的机器可能未运行。发送消息以重新启动。\""
+  },
+  {
+    "id": "workbench.settings.open-mcp.command-title",
+    "source": "title:{value:\"Open MCP Settings\",original:\"Open MCP Settings\"}",
+    "target": "title:{value:\"打开 MCP 设置\",original:\"Open MCP Settings\"}"
+  },
+  {
+    "id": "workbench.settings.open-mcp.palette-title",
+    "source": "title:\"Open MCP Settings\",icon:\"settings-gear\",glassCategory:\"Settings\"",
+    "target": "title:\"打开 MCP 设置\",icon:\"settings-gear\",glassCategory:\"Settings\""
+  },
+  {
+    "id": "workbench.data-sharing.title-help-improve",
+    "source": "title:\"Data Sharing\",subtitle:\"Help improve Cursor for everyone\"",
+    "target": "title:\"数据共享\",subtitle:\"帮助为每个人改进 Cursor\""
+  },
+  {
+    "id": "workbench.data-sharing.model-provider-note.children",
+    "source": "get children(){return[\" \",\"Prompts and limited telemetry may also be shared with model providers when you explicitly select their models.\"]}",
+    "target": "get children(){return[\" \",\"当你明确选择模型提供商的模型时，提示词和有限遥测也可能会与模型提供商共享。\"]}"
+  },
+  {
+    "id": "workbench.command.copy-cursor-link",
+    "source": "title:Kt(6123,\"Copy cursor.com link\")",
+    "target": "title:Kt(6123,\"复制 cursor.com 链接\")"
+  },
+  {
+    "id": "workbench.command.copy-cursor-link-without-range",
+    "source": "title:Kt(6124,\"Copy cursor.com link\")",
+    "target": "title:Kt(6124,\"复制 cursor.com 链接\")"
+  },
+  {
+    "id": "workbench.command.copy-cursor-link-title-context",
+    "source": "title:Kt(6125,\"Copy cursor.com link\")",
+    "target": "title:Kt(6125,\"复制 cursor.com 链接\")"
+  },
+  {
+    "id": "workbench.command.reload-window",
+    "source": "title:Kt(3219,\"Reload Window\")",
+    "target": "title:Kt(3219,\"重新加载窗口\")"
+  },
+  {
+    "id": "workbench.command.open-file.notebook-diff",
+    "source": "title:Kt(9312,\"Open File\")",
+    "target": "title:Kt(9312,\"打开文件\")"
+  },
+  {
+    "id": "workbench.command.open-file.merge-result",
+    "source": "title:Kt(8864,\"Open File\")",
+    "target": "title:Kt(8864,\"打开文件\")"
+  },
+  {
+    "id": "workbench.command.open-file.multi-diff",
+    "source": "title:Kt(8998,\"Open File\")",
+    "target": "title:Kt(8998,\"打开文件\")"
+  },
+  {
+    "id": "workbench.command.markdown-editor.category",
+    "source": "category:Kt(8580,\"Markdown Editor\")",
+    "target": "category:Kt(8580,\"Markdown 编辑器\")"
+  },
+  {
+    "id": "workbench.command.markdown-editor.toggle-mode",
+    "source": "title:Kt(8579,\"Toggle Editor Mode\")",
+    "target": "title:Kt(8579,\"切换编辑器模式\")"
+  },
+  {
+    "id": "workbench.glass.terminal.new-terminal-title",
+    "source": "P(\"glass.terminal.treeNewTerminal\",\"New Terminal\")",
+    "target": "P(\"glass.terminal.treeNewTerminal\",\"新建终端\")"
+  },
+  {
+    "id": "workbench.composer.skill-category.agent-review",
+    "source": "[za.bugbot]:\"Agent Review\"",
+    "target": "[za.bugbot]:\"智能体审阅\""
+  },
+  {
+    "id": "workbench.composer.skill-category.open-browser",
+    "source": "[za.open_browser]:\"Open Browser\"",
+    "target": "[za.open_browser]:\"打开浏览器\""
+  },
+  {
+    "id": "workbench.composer.skill-category.files-folders",
+    "source": "[za.files_and_folders]:\"Files & Folders\"",
+    "target": "[za.files_and_folders]:\"文件与文件夹\""
+  },
+  {
+    "id": "workbench.composer.skill-category.terminal",
+    "source": "[za.terminal]:\"Terminals\"",
+    "target": "[za.terminal]:\"终端\""
+  },
+  {
+    "id": "workbench.command.attempt-update.title",
+    "source": "title:{value:\"Attempt Update\",original:\"Attempt Update\"}",
+    "target": "title:{value:\"尝试更新\",original:\"Attempt Update\"}"
+  },
+  {
+    "id": "workbench.command.clear-all-mcp-tokens.title",
+    "source": "title:{value:\"Clear All MCP Tokens\",original:\"Clear All MCP Tokens\"}",
+    "target": "title:{value:\"清除所有 MCP 令牌\",original:\"Clear All MCP Tokens\"}"
+  },
+  {
+    "id": "workbench.command.close-tab.title",
+    "source": "title:\"Close Tab\",icon:\"close\",glassCategory:\"View\"",
+    "target": "title:\"关闭标签页\",icon:\"close\",glassCategory:\"View\""
+  },
+  {
+    "id": "workbench.command.build-plan.agent-title",
+    "source": "title:\"Build Plan\",icon:\"list-todo\",glassCategory:\"Agent\"",
+    "target": "title:\"构建计划\",icon:\"list-todo\",glassCategory:\"Agent\""
+  },
+  {
+    "id": "workbench.command.build-plan.view-title",
+    "source": "title:\"Build Plan\",icon:\"list-todo\",glassCategory:\"View\"",
+    "target": "title:\"构建计划\",icon:\"list-todo\",glassCategory:\"View\""
+  },
+  {
+    "id": "workbench.cursor-tab.accept-suggestion.command-label",
+    "source": "label:\"Accept Cursor Tab Suggestion\",alias:\"Accept Cursor Tab Suggestion\"",
+    "target": "label:\"接受 Cursor Tab 建议\",alias:\"Accept Cursor Tab Suggestion\""
+  },
+  {
+    "id": "workbench.inline-edit.cancel-edits.command-label",
+    "source": "label:\"Cancel Edits\",alias:\"Cancel Edits\"",
+    "target": "label:\"取消编辑\",alias:\"Cancel Edits\""
+  },
+  {
+    "id": "workbench.checkout.abort.option-description",
+    "source": "label:\"Cancel\",description:\"Cancel the checkout operation\",id:\"abort\"",
+    "target": "label:\"取消\",description:\"取消检出操作\",id:\"abort\""
+  },
+  {
+    "id": "workbench.chat-too-old.error-title-message",
+    "source": "title:\"Chat Too Old\",message:\"This chat was created in an older version of Cursor and is no longer supported. Please start a new chat.\"",
+    "target": "title:\"聊天过旧\",message:\"此聊天是在较旧版本的 Cursor 中创建的，已不再受支持。请开始新的聊天。\""
+  },
+  {
+    "id": "workbench.chat-too-old.error-detail",
+    "source": "detail:\"This chat was created in an older version of Cursor and is no longer supported. Please start a new chat.\"",
+    "target": "detail:\"此聊天是在较旧版本的 Cursor 中创建的，已不再受支持。请开始新的聊天。\""
+  },
+  {
+    "id": "workbench.clear-conversation-history.dialog-title-message",
+    "source": "title:\"Clear Conversation History\",message:\"Are you sure you want to clear the conversation history? This action cannot be undone.\"",
+    "target": "title:\"清除对话历史\",message:\"确定要清除对话历史吗？此操作无法撤销。\""
+  },
+  {
+    "id": "workbench.clear-conversation-history.clear-button",
+    "source": "primaryButton:{id:\"clear\",label:\"Clear History\"}",
+    "target": "primaryButton:{id:\"clear\",label:\"清除历史\"}"
+  },
+  {
+    "id": "workbench.clear-conversation-history.export-first-button",
+    "source": "extraButtons:[{id:\"export\",label:\"Export First\",type:\"secondary\"}]",
+    "target": "extraButtons:[{id:\"export\",label:\"先导出\",type:\"secondary\"}]"
+  },
+  {
+    "id": "workbench.archive-prior-chats.action-label-tooltip",
+    "source": "label:\"Archive Prior Chats\",enabled:!0,class:\"\",tooltip:\"Archive all chats older than this one\"",
+    "target": "label:\"归档之前的聊天\",enabled:!0,class:\"\",tooltip:\"归档早于此聊天的所有聊天\""
+  },
+  {
+    "id": "workbench.archive-prior-chats.action-label-tooltip-compact",
+    "source": "label:\"Archive Prior Chats\",tooltip:\"Archive all chats older than this one\",class:void 0",
+    "target": "label:\"归档之前的聊天\",tooltip:\"归档早于此聊天的所有聊天\",class:void 0"
+  },
+  {
+    "id": "workbench.cloud-desktop.retry-button",
+    "source": "children:\"Check Again\"}),description:\"No VNC endpoint is available for this session.\",title:\"Cloud Desktop unavailable\"",
+    "target": "children:\"重新检查\"}),description:\"此会话没有可用的 VNC 端点。\",title:\"云桌面不可用\""
+  },
+  {
+    "id": "workbench.cloud-desktop.pod-details-unavailable",
+    "source": "children:\"Check Again\"}),description:\"Pod connection details are not available.\",title:\"Cloud Desktop unavailable\"",
+    "target": "children:\"重新检查\"}),description:\"Pod 连接详情不可用。\",title:\"云桌面不可用\""
+  },
+  {
+    "id": "workbench.canvas.share-error-message",
+    "source": "message:\"Canvas has errors. Please fix them before sharing.\"",
+    "target": "message:\"Canvas 存在错误。请先修复后再分享。\""
+  },
+  {
+    "id": "workbench.create-pr.button-label",
+    "source": "label:\"Create PR\",disabled:!1",
+    "target": "label:\"创建 PR\",disabled:!1"
+  },
+  {
+    "id": "workbench.create-pr.loading-children",
+    "source": "children:[H(UR,{indeterminate:!0,size:\"xs\",variant:\"ring\"}),\"Creating PR...\"]",
+    "target": "children:[H(UR,{indeterminate:!0,size:\"xs\",variant:\"ring\"}),\"正在创建 PR...\"]"
+  },
+  {
+    "id": "workbench.create-pr.menu-item-label",
+    "source": "children:[\"Create PR\",be]",
+    "target": "children:[\"创建 PR\",be]"
+  },
+  {
+    "id": "workbench.create-pr.ready-dropdown-label",
+    "source": "label:\"Create PR\"},{value:\"draft\"",
+    "target": "label:\"创建 PR\"},{value:\"draft\""
+  },
+  {
+    "id": "workbench.create-pr.draft-dropdown-label",
+    "source": "label:\"Create Draft PR\"}",
+    "target": "label:\"创建草稿 PR\"}"
+  },
+  {
+    "id": "workbench.copy-tokens.copied-state",
+    "source": "children:\"Copied!\"",
+    "target": "children:\"已复制！\""
+  },
+  {
+    "id": "workbench.data-sharing.learn-more-button",
+    "source": "children:\"Learn More\"",
+    "target": "children:\"了解更多\""
+  },
+  {
+    "id": "workbench.cloud-agents.learn-more-button",
+    "source": "label:\"Learn More\",callback:()=\u003e{this.openerService.open(\"https://cursor.com/docs/cloud-agent#how-to-use\"",
+    "target": "label:\"了解更多\",callback:()=\u003e{this.openerService.open(\"https://cursor.com/docs/cloud-agent#how-to-use\""
+  },
+  {
+    "id": "workbench.context.add-file-to-cursor-chat.literal",
+    "source": "\"Add File to Cursor Chat\"",
+    "target": "\"添加文件到 Cursor 聊天\""
+  },
+  {
+    "id": "workbench.context.add-file-to-new-cursor-chat.literal",
+    "source": "\"Add File to New Cursor Chat\"",
+    "target": "\"添加文件到新 Cursor 聊天\""
+  },
+  {
+    "id": "workbench.settings.search-settings.literal",
+    "source": "\"Search settings\"",
+    "target": "\"搜索设置\""
+  },
+  {
+    "id": "workbench.chat.open-in-chat.literal",
+    "source": "\"Open in Chat\"",
+    "target": "\"在聊天中打开\""
+  },
+  {
+    "id": "workbench.plan-usage.current-plan.uppercase-children",
+    "source": "children:\"CURRENT PLAN\"",
+    "target": "children:\"当前计划\""
+  },
+  {
+    "id": "workbench.plan-usage.current-plan.literal",
+    "source": "\"Current Plan\"",
+    "target": "\"当前计划\""
+  },
+  {
+    "id": "workbench.plan-usage.ultra-plan.literal",
+    "source": "\"Ultra Plan\"",
+    "target": "\"Ultra 计划\""
+  },
+  {
+    "id": "workbench.plan-usage.included-in-ultra-plan.literal",
+    "source": "\"Included in Ultra Plan\"",
+    "target": "\"Ultra 计划包含\""
+  },
+  {
+    "id": "workbench.plan-usage.on-demand-usage.literal",
+    "source": "\"On-Demand Usage\"",
+    "target": "\"按需用量\""
+  },
+  {
+    "id": "workbench.plan-usage.on-demand-spending.literal",
+    "source": "\"On-Demand Spending\"",
+    "target": "\"按需支出\""
+  },
+  {
+    "id": "workbench.plan-usage.monthly-limit.literal",
+    "source": "\"Monthly Limit\"",
+    "target": "\"每月限额\""
+  },
+  {
+    "id": "workbench.composer-pr.apply-changes.literal",
+    "source": "\"Apply changes\"",
+    "target": "\"应用更改\""
+  },
+  {
+    "id": "workbench.edits.accept-edits.command-label-alias",
+    "source": "label:\"Accept Edits\",alias:\"Accept Edits\"",
+    "target": "label:\"接受编辑\",alias:\"接受编辑\""
+  },
+  {
+    "id": "workbench.edits.reject-all-edits.command-label-alias",
+    "source": "label:\"Reject All Edits\",alias:\"Reject All Edits\"",
+    "target": "label:\"拒绝所有编辑\",alias:\"拒绝所有编辑\""
+  },
+  {
+    "id": "workbench.background-agent.literal",
+    "source": "\"Background Agent\"",
+    "target": "\"后台智能体\""
+  },
+  {
+    "id": "workbench.cursor-tab.literal",
+    "source": "\"Cursor Tab\"",
+    "target": "\"Cursor Tab 补全\""
   }
 ]
