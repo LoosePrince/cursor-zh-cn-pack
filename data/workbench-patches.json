@@ -167,7 +167,7 @@
   {
     "id": "settings.chat.collapse-composer.tooltip",
     "source": "tooltip:\"Collapse Composer\"",
-    "target": "tooltip:\"折叠 Composer\""
+    "target": "tooltip:\"折叠编写器\""
   },
   {
     "id": "settings.max-mode-required.aria-label",
@@ -627,7 +627,7 @@
   {
     "id": "settings.chat.open-composer-settings.action",
     "source": "label:\"Open Composer Settings\",tooltip:\"Open Composer Settings\"",
-    "target": "label:\"打开 Composer 设置\",tooltip:\"打开 Composer 设置\""
+    "target": "label:\"打开编写器设置\",tooltip:\"打开编写器设置\""
   },
   {
     "id": "settings.agents.auto-run-mode.options",
@@ -997,7 +997,7 @@
   {
     "id": "workbench.cursor-tab.accept-suggestion.command-label",
     "source": "label:\"Accept Cursor Tab Suggestion\",alias:\"Accept Cursor Tab Suggestion\"",
-    "target": "label:\"接受 Cursor Tab 建议\",alias:\"Accept Cursor Tab Suggestion\""
+    "target": "label:\"接受 Cursor Tab 建议\",alias:\"接受 Cursor Tab 建议\""
   },
   {
     "id": "workbench.inline-edit.cancel-edits.command-label",
@@ -1125,6 +1125,16 @@
     "target": "children:\"当前计划\""
   },
   {
+    "id": "workbench.plan-usage.plan-names.trial-dynamic",
+    "source": "return()=>Je()?\"Pro Trial\":r()===yc.FREE?\"Free Plan\":\"Pro+ Trial\"",
+    "target": "return()=>Je()?\"Pro 试用\":r()===yc.FREE?\"免费计划\":\"Pro+ 试用\""
+  },
+  {
+    "id": "workbench.plan-usage.plan-description.pro-pro-plus-ultra",
+    "source": "case\"pro\":return\"Entry-level plan with access to premium models, unlimited Tab completions, and more.\";case\"pro_plus\":return\"Get 3x more usage than Pro, unlock higher limits on Agent, and more.\";case\"ultra\":return\"Get maximum value with 20x usage limits and early access to advanced features.\"",
+    "target": "case\"pro\":return\"入门计划，可使用高级模型、无限 Tab 补全等功能。\";case\"pro_plus\":return\"用量是 Pro 的 3 倍，解锁更高的 Agent 限额等功能。\";case\"ultra\":return\"最高价值方案，拥有 20 倍用量限额，并可提前使用高级功能。\""
+  },
+  {
     "id": "workbench.plan-usage.current-plan.literal",
     "source": "\"Current Plan\"",
     "target": "\"当前计划\""
@@ -1155,6 +1165,96 @@
     "target": "\"每月限额\""
   },
   {
+    "id": "workbench.plan-usage.usage-pricing-required.admin-detail",
+    "source": "title:\"Usage Pricing Required\",detail:\"Please contact an administrator in your organization to enable usage-based pricing\"",
+    "target": "title:\"需要启用用量计费\",detail:\"请联系你组织中的管理员以启用按用量计费\""
+  },
+  {
+    "id": "workbench.plan-usage.usage-pricing-required.enable-detail",
+    "source": "title:\"Usage Pricing Required\",detail:\"Please enable usage-based pricing to use this model\"",
+    "target": "title:\"需要启用用量计费\",detail:\"请启用按用量计费以使用此模型\""
+  },
+  {
+    "id": "workbench.plan-usage.usage-billing-required.premium-models",
+    "source": "title:\"Set up usage billing for premium models\",detail:\"To use premium models, you need to set up usage-based billing.\",message:\"Usage billing required for premium models.\"",
+    "target": "title:\"为高级模型设置用量计费\",detail:\"要使用高级模型，你需要设置按用量计费。\",message:\"高级模型需要启用用量计费。\""
+  },
+  {
+    "id": "workbench.plan-usage.usage-pricing-setup.required",
+    "source": "label:\"Usage Pricing Required\",error:Bu.USAGE_PRICING_REQUIRED,detail:\"Usage pricing setup required.\",message:\"Usage pricing required.\"",
+    "target": "label:\"需要用量计费\",error:Bu.USAGE_PRICING_REQUIRED,detail:\"需要设置用量计费。\",message:\"需要用量计费。\""
+  },
+  {
+    "id": "workbench.plan-usage.pro-rate-limit.title-detail-message",
+    "source": "label:\"Pro User Rate Limit\",error:Bu.PRO_USER_RATE_LIMIT_EXCEEDED,title:\"You've hit rate limit for your Pro Plan\",detail:\"Upgrade to Ultra Plan for near unlimited use, or set a Spend Limit for overages.\",message:\"Pro user rate limit exceeded.\"",
+    "target": "label:\"Pro 用户速率限制\",error:Bu.PRO_USER_RATE_LIMIT_EXCEEDED,title:\"你已达到 Pro 计划的速率限制\",detail:\"升级到 Ultra 计划以获得近乎无限的使用量，或设置超额用量的支出限额。\",message:\"已超过 Pro 用户速率限制。\""
+  },
+  {
+    "id": "workbench.plan-usage.free-user-usage-limit",
+    "source": "label:\"Free User Usage Limit\",error:Bu.FREE_USER_USAGE_LIMIT,detail:\"Free user usage limit reached for this model.\",message:\"Free user usage limit reached.\"",
+    "target": "label:\"免费用户用量限制\",error:Bu.FREE_USER_USAGE_LIMIT,detail:\"此模型已达到免费用户用量限制。\",message:\"已达到免费用户用量限制。\""
+  },
+  {
+    "id": "workbench.plan-usage.pro-user-usage-limit",
+    "source": "label:\"Pro User Usage Limit\",error:Bu.PRO_USER_USAGE_LIMIT,detail:\"Pro user usage limit reached for this model.\"",
+    "target": "label:\"Pro 用户用量限制\",error:Bu.PRO_USER_USAGE_LIMIT,detail:\"此模型已达到 Pro 用户用量限制。\""
+  },
+  {
+    "id": "workbench.plan-usage.enable-usage-based-pricing.title",
+    "source": "title:\"Enable usage-based pricing\"",
+    "target": "title:\"启用按用量计费\""
+  },
+  {
+    "id": "workbench.plan-usage.enable-usage-based-pricing-premium.title",
+    "source": "title:\"Enable usage-based pricing for premium models\"",
+    "target": "title:\"为高级模型启用按用量计费\""
+  },
+  {
+    "id": "workbench.plan-usage.configure-usage-pricing.modal",
+    "source": "mWT=st(\"<div><div><span>Configure Usage-Based Pricing</span><span></span></div><div class=cursor-modal-marketing-description>Skip the wait. Pay only for what you use.\")",
+    "target": "mWT=st(\"<div><div><span>配置按用量计费</span><span></span></div><div class=cursor-modal-marketing-description>无需等待，只为实际使用量付费。\")"
+  },
+  {
+    "id": "workbench.plan-usage.hard-limit.input",
+    "source": "dWT=st('<div><span>Hard limit</span><div><input type=text placeholder=\"Enter usage-based spend limit\">')",
+    "target": "dWT=st('<div><span>硬性限额</span><div><input type=text placeholder=\"输入按用量计费支出限额\">')"
+  },
+  {
+    "id": "workbench.rules.add-skills.children",
+    "source": "children:\"Add Skills\"",
+    "target": "children:\"添加技能\""
+  },
+  {
+    "id": "workbench.rules.view-user-rules.command-label",
+    "source": "static{this.LABEL=\"View User Rules\"}",
+    "target": "static{this.LABEL=\"查看用户规则\"}"
+  },
+  {
+    "id": "workbench.rules.cursor-rules.literal",
+    "source": "[il.CURSOR_RULES]:\"Cursor Rules\"",
+    "target": "[il.CURSOR_RULES]:\"Cursor 规则\""
+  },
+  {
+    "id": "workbench.subagents.cloud-tip.text",
+    "source": "text:\"Use /in-cloud for cloud subagents\"",
+    "target": "text:\"使用 /in-cloud 创建云端子智能体\""
+  },
+  {
+    "id": "workbench.subagents.triage-description",
+    "source": "description:\"Coordinate long-horizon tasks with delegated subagents\"",
+    "target": "description:\"使用委派的子智能体协调长周期任务\""
+  },
+  {
+    "id": "workbench.context.open-in-browser.primary-button",
+    "source": "primaryButtonLabel:\"Open in Browser\"",
+    "target": "primaryButtonLabel:\"在浏览器中打开\""
+  },
+  {
+    "id": "workbench.context.reveal-file-in-os.windows-mac-folder",
+    "source": "Pqf=zu?Kt(8179,\"Reveal in File Explorer\"):Jo?Kt(8180,\"Reveal in Finder\"):Kt(8181,\"Open Containing Folder\")",
+    "target": "Pqf=zu?Kt(8179,\"在文件资源管理器中显示\"):Jo?Kt(8180,\"在 Finder 中显示\"):Kt(8181,\"打开所在文件夹\")"
+  },
+  {
     "id": "workbench.composer-pr.apply-changes.literal",
     "source": "\"Apply changes\"",
     "target": "\"应用更改\""
@@ -1178,5 +1278,110 @@
     "id": "workbench.cursor-tab.literal",
     "source": "\"Cursor Tab\"",
     "target": "\"Cursor Tab 补全\""
+  },
+  {
+    "id": "workbench.rules.project-save-state.short-labels",
+    "source": "return d()?\"Saving...\":\"Save\"",
+    "target": "return d()?\"正在保存...\":\"保存\""
+  },
+  {
+    "id": "workbench.rules.user-save-state.short-labels",
+    "source": "children(){return s()?\"Saving...\":\"Save\"}",
+    "target": "children(){return s()?\"正在保存...\":\"保存\"}"
+  },
+  {
+    "id": "workbench.plan-usage.hard-limit-save-state.short-labels",
+    "source": "get title(){return Er(()=>!!s())()?\"Saving...\":u()?\"Saved \\u2713\":\"Save\"},onClick:()=>{e()===\"no-usage-based\"",
+    "target": "get title(){return Er(()=>!!s())()?\"正在保存...\":u()?\"已保存 \\u2713\":\"保存\"},onClick:()=>{e()===\"no-usage-based\""
+  },
+  {
+    "id": "workbench.plugins.scope-filter.all-user.short-labels",
+    "source": "label:\"All\"},{id:\"user\",label:\"User\"}];return R!=null",
+    "target": "label:\"全部\"},{id:\"user\",label:\"用户\"}];return R!=null"
+  },
+  {
+    "id": "workbench.mcp.add-server-form.cancel-save.short-labels",
+    "source": "children:\"Cancel\"}),e[4]=r,e[5]=d):d=e[5];const h=s===null;let f;e[6]!==l||e[7]!==h?(f=H(Zc,{variant:\"primary\",color:\"monochrome\",size:\"lg\",onClick:l,disabled:h,children:\"Save\"})",
+    "target": "children:\"取消\"}),e[4]=r,e[5]=d):d=e[5];const h=s===null;let f;e[6]!==l||e[7]!==h?(f=H(Zc,{variant:\"primary\",color:\"monochrome\",size:\"lg\",onClick:l,disabled:h,children:\"保存\"})"
+  },
+  {
+    "id": "workbench.plan-usage.included-usage-bar-labels.short-total",
+    "source": "autoUsageBarLabel:\"your included total usage\",apiUsageBarLabel:\"your included API usage\"",
+    "target": "autoUsageBarLabel:\"你包含的总用量\",apiUsageBarLabel:\"你包含的 API 用量\""
+  },
+  {
+    "id": "workbench.scm.agent-review-settings.command-title",
+    "source": "title:Kt(10448,\"Agent Review Settings\")",
+    "target": "title:Kt(10448,\"智能体审阅设置\")"
+  },
+  {
+    "id": "workbench.scm.start-agent-review.command-title",
+    "source": "title:Kt(10449,\"Start Agent Review\")",
+    "target": "title:Kt(10449,\"开始智能体审阅\")"
+  },
+  {
+    "id": "workbench.bugbot.setup.command-title",
+    "source": "title:Kt(3025,\"Setup Bugbot\")",
+    "target": "title:Kt(3025,\"设置 Bugbot\")"
+  },
+  {
+    "id": "workbench.bugbot.link.single-folder-error",
+    "source": "Fi.error(\"Choose a single local folder (repository root) to open this Bugbot link.\")",
+    "target": "Fi.error(\"请选择一个本地文件夹（仓库根目录）以打开此 Bugbot 链接。\")"
+  },
+  {
+    "id": "workbench.agent.sidebar.new-agent.hint-text",
+    "source": "return s?`New Agent (${s})`:\"New Agent\"",
+    "target": "return s?`新建智能体 (${s})`:\"新建智能体\""
+  },
+  {
+    "id": "workbench.agent.sidebar.new-agent.children",
+    "source": "children:\"New Agent\"})}function TTC()",
+    "target": "children:\"新建智能体\"})}function TTC()"
+  },
+  {
+    "id": "workbench.agent.new-agent-preserve-editor.title",
+    "source": "title:\"New Agent (preserve editor panel)\"",
+    "target": "title:\"新建智能体（保留编辑器面板）\""
+  },
+  {
+    "id": "workbench.background-agent.overview-button.children",
+    "source": "children:\"Open Background Agent Overview\"",
+    "target": "children:\"打开后台智能体概览\""
+  },
+  {
+    "id": "workbench.background-agent.worktree-tab-title.html",
+    "source": "ImC=st('\u003cspan title=\"Agent in Worktree\"\u003e')",
+    "target": "ImC=st('\u003cspan title=\"工作树中的智能体\"\u003e')"
+  },
+  {
+    "id": "workbench.cursor-tab.configure-diff-peek-view.command-title",
+    "source": "static{this.LABEL=\"Configure Cursor Tab Diff Peek View\"}",
+    "target": "static{this.LABEL=\"配置 Cursor Tab 差异预览视图\"}"
+  },
+  {
+    "id": "workbench.cursor-tab.set-diff-peek-view.command-title",
+    "source": "static{this.LABEL=\"Set Cursor Tab Diff Peek View\"}",
+    "target": "static{this.LABEL=\"设置 Cursor Tab 差异预览视图\"}"
+  },
+  {
+    "id": "workbench.inline-edit.reject-partial-edit.command-label",
+    "source": "label:\"Reject Partial Edit\",alias:\"Reject Partial Edit\"",
+    "target": "label:\"拒绝部分编辑\",alias:\"拒绝部分编辑\""
+  },
+  {
+    "id": "workbench.diff.native-accept-reject.setting-label",
+    "source": "label:\"Native Accept/Reject\",get value(){return n.diff.showNativeAcceptReject}",
+    "target": "label:\"原生接受/拒绝\",get value(){return n.diff.showNativeAcceptReject}"
+  },
+  {
+    "id": "workbench.review.apply-worktree.hint-text",
+    "source": "hintText:\"Apply changes to the main working directory\"",
+    "target": "hintText:\"将更改应用到主工作目录\""
+  },
+  {
+    "id": "workbench.rules.apply-mode.options",
+    "source": "label:\"Always Apply\",description:\"Apply to every chat and cmd-k session\"},{value:\"agent\",label:\"Apply Intelligently\",description:\"When Agent decides it's relevant based on description\"},{value:\"auto\",label:\"Specific Files\",description:\"When file matches a specified pattern\"},{value:\"manual\",label:\"Apply Manually\",description:\"When @-mentioned\"",
+    "target": "label:\"始终应用\",description:\"应用到每个聊天和 cmd-k 会话\"},{value:\"agent\",label:\"智能应用\",description:\"当智能体根据描述判断相关时\"},{value:\"auto\",label:\"指定文件\",description:\"当文件匹配指定模式时\"},{value:\"manual\",label:\"手动应用\",description:\"当被 @ 提及时\""
   }
 ]
