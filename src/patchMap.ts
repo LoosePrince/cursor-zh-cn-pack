@@ -1,5 +1,6 @@
-import * as fs from 'fs';
+import * as fs from 'fs/promises';
 import * as path from 'path';
+import { createScopedProgress, ProgressCallback, reportProgress, toPercent, yieldToEventLoop } from './progress';
 
 export interface WorkbenchPatchRule {
   readonly id: string;
@@ -16,37 +17,126 @@ export interface WorkbenchPatchRuntimePolicy {
   readonly maxRuntimePatchChangedLines: number;
 }
 
+export interface WorkbenchPatchData {
+  readonly runtimePolicy: WorkbenchPatchRuntimePolicy;
+  readonly allRules: readonly WorkbenchPatchRule[];
+  readonly rules: readonly WorkbenchPatchRule[];
+}
+
 const patchDataPath = path.join(__dirname, '..', 'data', 'workbench-patches.json');
 const runtimePolicyPath = path.join(__dirname, '..', 'data', 'workbench-patch-runtime-policy.json');
 
-export const workbenchPatchRuntimePolicy: WorkbenchPatchRuntimePolicy = loadWorkbenchPatchRuntimePolicy();
-export const allWorkbenchPatchRules: readonly WorkbenchPatchRule[] = loadWorkbenchPatchRules();
-export const workbenchPatchRules: readonly WorkbenchPatchRule[] = allWorkbenchPatchRules.filter(rule => isRuntimeSafePatchRule(rule, workbenchPatchRuntimePolicy));
+let cachedPatchData: WorkbenchPatchData | undefined;
+let loadingPatchData: Promise<WorkbenchPatchData> | undefined;
 
-function loadWorkbenchPatchRules(): readonly WorkbenchPatchRule[] {
-  const rawRules = readJson(patchDataPath);
+export async function loadWorkbenchPatchData(progress?: ProgressCallback): Promise<WorkbenchPatchData> {
+  if (cachedPatchData) {
+    await reportProgress(progress, {
+      message: `补丁数据已加载（${cachedPatchData.rules.length}/${cachedPatchData.allRules.length} 条可用）`,
+      percent: 100,
+      current: cachedPatchData.rules.length,
+      total: cachedPatchData.allRules.length
+    });
+    return cachedPatchData;
+  }
+
+  if (!loadingPatchData) {
+    loadingPatchData = loadWorkbenchPatchDataCore(progress);
+  } else {
+    await reportProgress(progress, { message: '等待补丁数据加载完成', percent: 20 });
+  }
+
+  cachedPatchData = await loadingPatchData;
+  await reportProgress(progress, {
+    message: `补丁数据加载完成（${cachedPatchData.rules.length}/${cachedPatchData.allRules.length} 条可用）`,
+    percent: 100,
+    current: cachedPatchData.rules.length,
+    total: cachedPatchData.allRules.length
+  });
+  return cachedPatchData;
+}
+
+async function loadWorkbenchPatchDataCore(progress?: ProgressCallback): Promise<WorkbenchPatchData> {
+  await reportProgress(progress, { message: '读取补丁运行策略', percent: 5 });
+  const runtimePolicy = await readWorkbenchPatchRuntimePolicy();
+
+  await reportProgress(progress, { message: '读取补丁规则文件', percent: 20 });
+  const rawRules = await readJson(patchDataPath);
   if (!Array.isArray(rawRules)) {
     throw new Error(`无效的 workbench 补丁映射文件: ${patchDataPath}`);
   }
 
-  return rawRules.map((rule, index) => {
+  const allRules = await parseWorkbenchPatchRules(rawRules, createScopedProgress(progress, 30, 70, '校验补丁规则'));
+  const rules = await filterRuntimeSafePatchRules(allRules, runtimePolicy, createScopedProgress(progress, 70, 95, '筛选运行时安全规则'));
+
+  return { runtimePolicy, allRules, rules };
+}
+
+async function parseWorkbenchPatchRules(rawRules: readonly unknown[], progress?: ProgressCallback): Promise<readonly WorkbenchPatchRule[]> {
+  const rules: WorkbenchPatchRule[] = [];
+  const total = rawRules.length;
+  await reportProgress(progress, { message: '开始校验补丁规则', percent: 0, current: 0, total });
+
+  for (let index = 0; index < total; index += 1) {
+    const rule = rawRules[index];
     if (!isWorkbenchPatchRule(rule)) {
       throw new Error(`无效的 workbench 补丁规则 #${index + 1}: ${patchDataPath}`);
     }
-    return rule;
-  });
+
+    rules.push(rule);
+    if ((index + 1) % 25 === 0 || index + 1 === total) {
+      await reportProgress(progress, {
+        message: `校验补丁规则 ${index + 1}/${total}`,
+        percent: toPercent(index + 1, total),
+        current: index + 1,
+        total
+      });
+      await yieldToEventLoop();
+    }
+  }
+
+  return rules;
 }
 
-function loadWorkbenchPatchRuntimePolicy(): WorkbenchPatchRuntimePolicy {
-  const value = readJson(runtimePolicyPath);
+async function filterRuntimeSafePatchRules(
+  allRules: readonly WorkbenchPatchRule[],
+  policy: WorkbenchPatchRuntimePolicy,
+  progress?: ProgressCallback
+): Promise<readonly WorkbenchPatchRule[]> {
+  const rules: WorkbenchPatchRule[] = [];
+  const total = allRules.length;
+  await reportProgress(progress, { message: '开始筛选运行时安全规则', percent: 0, current: 0, total });
+
+  for (let index = 0; index < total; index += 1) {
+    const rule = allRules[index];
+    if (isRuntimeSafePatchRule(rule, policy)) {
+      rules.push(rule);
+    }
+
+    if ((index + 1) % 25 === 0 || index + 1 === total) {
+      await reportProgress(progress, {
+        message: `筛选运行时安全规则 ${index + 1}/${total}`,
+        percent: toPercent(index + 1, total),
+        current: index + 1,
+        total
+      });
+      await yieldToEventLoop();
+    }
+  }
+
+  return rules;
+}
+
+async function readWorkbenchPatchRuntimePolicy(): Promise<WorkbenchPatchRuntimePolicy> {
+  const value = await readJson(runtimePolicyPath);
   if (!isWorkbenchPatchRuntimePolicy(value)) {
     throw new Error(`无效的 workbench 补丁运行策略文件: ${runtimePolicyPath}`);
   }
   return value;
 }
 
-function readJson(filePath: string): unknown {
-  return JSON.parse(fs.readFileSync(filePath, 'utf8')) as unknown;
+async function readJson(filePath: string): Promise<unknown> {
+  return JSON.parse(await fs.readFile(filePath, 'utf8')) as unknown;
 }
 
 function isRuntimeSafePatchRule(rule: WorkbenchPatchRule, policy: WorkbenchPatchRuntimePolicy): boolean {

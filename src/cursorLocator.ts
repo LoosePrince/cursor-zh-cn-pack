@@ -2,6 +2,7 @@ import { execFile } from 'child_process';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { promisify } from 'util';
+import { createScopedProgress, ProgressCallback, reportProgress, toPercent, yieldToEventLoop } from './progress';
 
 const execFileAsync = promisify(execFile);
 
@@ -30,50 +31,73 @@ interface Candidate {
   readonly source: string;
 }
 
-export async function locateCursorInstall(savedRoot?: string): Promise<LocateCursorResult> {
+export async function locateCursorInstall(savedRoot?: string, progress?: ProgressCallback): Promise<LocateCursorResult> {
   const candidates: Candidate[] = [];
 
   if (savedRoot?.trim()) {
     candidates.push({ root: savedRoot.trim(), source: '已保存配置' });
+    await reportProgress(progress, { message: '已加入保存的 Cursor 路径', percent: 5, current: candidates.length, total: candidates.length });
   }
 
+  await reportProgress(progress, { message: '检查正在运行的 Cursor 进程', percent: 10 });
   for (const processPath of await getRunningCursorProcessPaths()) {
     candidates.push({ root: processPath, source: '正在运行的 Cursor.exe' });
   }
 
+  await reportProgress(progress, { message: '读取 PATH 中的 Cursor 候选路径', percent: 25, current: candidates.length, total: candidates.length });
   for (const pathCandidate of getPathCandidates()) {
     candidates.push(pathCandidate);
   }
+  await yieldToEventLoop();
 
+  await reportProgress(progress, { message: '读取注册表中的 Cursor 候选路径', percent: 40, current: candidates.length, total: candidates.length });
   for (const registryCandidate of await getRegistryCandidates()) {
     candidates.push(registryCandidate);
   }
 
+  await reportProgress(progress, { message: '加入常见安装路径', percent: 55, current: candidates.length, total: candidates.length });
   for (const commonPath of getCommonInstallPaths()) {
     candidates.push({ root: commonPath, source: '常见安装路径' });
   }
 
-  const validated = await validateCandidates(candidates);
+  const validated = await validateCandidates(candidates, createScopedProgress(progress, 60, 98, '校验候选路径'));
+  await reportProgress(progress, {
+    message: `识别完成，已检查 ${validated.length} 个候选路径`,
+    percent: 100,
+    current: validated.length,
+    total: validated.length
+  });
   return {
     install: validated.find(candidate => candidate.valid),
     candidates: validated
   };
 }
 
-export async function validateCursorRoot(root: string, source = '手动选择'): Promise<CursorInstall> {
+export async function validateCursorRoot(root: string, source = '手动选择', progress?: ProgressCallback): Promise<CursorInstall> {
   const normalizedRoot = path.resolve(root.trim());
   const paths = getCursorPaths(normalizedRoot);
   const problems: string[] = [];
-
-  for (const [label, filePath] of [
+  const requiredFiles = [
     ['Cursor package.json', paths.appPackagePath],
     ['nls.keys.json', paths.nlsKeysPath],
     ['nls.messages.json', paths.nlsMessagesPath],
     ['workbench.desktop.main.js', paths.workbenchPath]
-  ] as const) {
+  ] as const;
+
+  await reportProgress(progress, { message: `校验目录 ${normalizedRoot}`, percent: 0, current: 0, total: requiredFiles.length });
+  for (let index = 0; index < requiredFiles.length; index += 1) {
+    const [label, filePath] = requiredFiles[index];
     if (!await fileExists(filePath)) {
       problems.push(`缺少 ${label}: ${filePath}`);
     }
+
+    await reportProgress(progress, {
+      message: `校验 ${label}`,
+      percent: toPercent(index + 1, requiredFiles.length),
+      current: index + 1,
+      total: requiredFiles.length
+    });
+    await yieldToEventLoop();
   }
 
   return {
@@ -86,9 +110,10 @@ export async function validateCursorRoot(root: string, source = '手动选择'):
   };
 }
 
-export async function resolveCursorRoot(input: string, source = '候选路径'): Promise<CursorInstall | undefined> {
-  for (const root of expandPossibleRoots(input)) {
-    const install = await validateCursorRoot(root, source);
+export async function resolveCursorRoot(input: string, source = '候选路径', progress?: ProgressCallback): Promise<CursorInstall | undefined> {
+  const roots = expandPossibleRoots(input);
+  for (let index = 0; index < roots.length; index += 1) {
+    const install = await validateCursorRoot(roots[index], source, createScopedProgress(progress, toPercent(index, roots.length), toPercent(index + 1, roots.length)));
     if (install.valid) {
       return install;
     }
@@ -107,19 +132,36 @@ export function getCursorPaths(root: string): CursorInstallPaths {
   };
 }
 
-async function validateCandidates(candidates: readonly Candidate[]): Promise<CursorInstall[]> {
+async function validateCandidates(candidates: readonly Candidate[], progress?: ProgressCallback): Promise<CursorInstall[]> {
   const seen = new Set<string>();
   const validated: CursorInstall[] = [];
+  let processed = 0;
+  const estimatedTotal = candidates.reduce((sum, candidate) => sum + expandPossibleRoots(candidate.root).length, 0);
 
+  await reportProgress(progress, { message: '开始校验候选路径', percent: 0, current: 0, total: estimatedTotal });
   for (const candidate of candidates) {
     for (const root of expandPossibleRoots(candidate.root)) {
+      processed += 1;
       const key = root.toLowerCase();
       if (seen.has(key)) {
+        await reportProgress(progress, {
+          message: `跳过重复候选路径 ${processed}/${estimatedTotal}`,
+          percent: toPercent(processed, estimatedTotal),
+          current: processed,
+          total: estimatedTotal
+        });
         continue;
       }
 
       seen.add(key);
       validated.push(await validateCursorRoot(root, candidate.source));
+      await reportProgress(progress, {
+        message: `校验候选路径 ${processed}/${estimatedTotal}`,
+        percent: toPercent(processed, estimatedTotal),
+        current: processed,
+        total: estimatedTotal
+      });
+      await yieldToEventLoop();
       if (validated[validated.length - 1].valid) {
         break;
       }

@@ -1,11 +1,18 @@
 import * as vscode from 'vscode';
 import { CursorInstall, locateCursorInstall, validateCursorRoot } from './cursorLocator';
+import { createScopedProgress, ProgressCallback, ProgressUpdate, reportProgress } from './progress';
 import { applyWorkbenchPatch, PatchBackupInfo, PatchScanResult, restoreWorkbenchBackup, scanWorkbenchPatch, unapplyWorkbenchPatch } from './workbenchPatcher';
+
+interface ManagerProgressState extends ProgressUpdate {
+  readonly operation: string;
+  readonly startedAt: string;
+}
 
 interface ManagerState {
   cursorRoot?: string;
   install?: CursorInstall;
   patch?: PatchScanResult;
+  progress?: ManagerProgressState;
   logs: readonly string[];
 }
 
@@ -27,13 +34,13 @@ export class ManagerPanel {
   ) {
     this.panel.onDidDispose(() => this.dispose(), undefined, this.context.subscriptions);
     this.panel.webview.onDidReceiveMessage(message => this.handleMessage(message as WebviewMessage), undefined, this.context.subscriptions);
-    void this.refresh(true);
+    void this.refresh(true, '管理器加载');
   }
 
   public static reveal(context: vscode.ExtensionContext): void {
     if (ManagerPanel.current) {
       ManagerPanel.current.panel.reveal(vscode.ViewColumn.One);
-      void ManagerPanel.current.refresh(false);
+      void ManagerPanel.current.refresh(false, '管理器刷新');
       return;
     }
 
@@ -52,6 +59,42 @@ export class ManagerPanel {
     ManagerPanel.current = undefined;
   }
 
+  private async runOperation<T>(operation: string, task: (progress: ProgressCallback) => Promise<T>): Promise<T | undefined> {
+    if (this.state.progress) {
+      this.log(`已有操作正在进行：${this.state.progress.operation}`);
+      this.render();
+      return undefined;
+    }
+
+    const startedAt = new Date().toISOString();
+    const progress: ProgressCallback = update => {
+      this.updateState({
+        progress: {
+          ...update,
+          operation,
+          startedAt
+        }
+      });
+      this.render();
+    };
+
+    try {
+      await reportProgress(progress, { message: '准备开始', percent: 0 });
+      return await task(progress);
+    } finally {
+      this.updateState({ progress: undefined });
+      this.render();
+    }
+  }
+
+  private updateState(update: Omit<Partial<ManagerState>, 'logs'>): void {
+    this.state = {
+      ...this.state,
+      ...update,
+      logs: this.logs
+    };
+  }
+
   private async handleMessage(message: WebviewMessage): Promise<void> {
     try {
       switch (message.command) {
@@ -62,7 +105,7 @@ export class ManagerPanel {
           await this.chooseRoot();
           break;
         case 'rescan':
-          await this.refresh(true);
+          await this.refresh(true, '重新扫描');
           break;
         case 'applyPatch':
           await this.applyPatch();
@@ -83,39 +126,50 @@ export class ManagerPanel {
     }
   }
 
-  private async refresh(scanOnly: boolean): Promise<void> {
-    const configuredRoot = vscode.workspace.getConfiguration('cursorZhCn').get<string>('cursorRoot')?.trim();
+  private async refresh(scanOnly: boolean, operation = scanOnly ? '重新扫描' : '管理器刷新'): Promise<void> {
+    await this.runOperation(operation, async progress => {
+      const configuredRoot = vscode.workspace.getConfiguration('cursorZhCn').get<string>('cursorRoot')?.trim();
 
-    if (!configuredRoot && scanOnly) {
-      await this.autoLocate();
-      return;
-    }
+      if (!configuredRoot && scanOnly) {
+        await this.autoLocateCore(createScopedProgress(progress, 5, 100, '自动识别'));
+        return;
+      }
 
-    if (configuredRoot) {
-      await this.loadRoot(configuredRoot, '已保存配置');
-    } else {
-      this.state = { cursorRoot: undefined, logs: this.logs };
-    }
-
-    this.render();
+      if (configuredRoot) {
+        await this.loadRoot(configuredRoot, '已保存配置', progress);
+      } else {
+        this.updateState({ cursorRoot: undefined, install: undefined, patch: undefined });
+        await reportProgress(progress, { message: '未配置 Cursor 安装目录', percent: 100 });
+      }
+    });
   }
 
   private async autoLocate(): Promise<void> {
+    await this.runOperation('自动识别', progress => this.autoLocateCore(progress));
+  }
+
+  private async autoLocateCore(progress: ProgressCallback | undefined): Promise<void> {
     this.log('开始自动识别 Cursor 安装目录。');
     const configuredRoot = vscode.workspace.getConfiguration('cursorZhCn').get<string>('cursorRoot');
-    const result = await locateCursorInstall(configuredRoot);
+    const result = await locateCursorInstall(configuredRoot, createScopedProgress(progress, 0, 70, '识别安装目录'));
 
     if (!result.install) {
-      this.state = { logs: this.logs };
+      this.updateState({ cursorRoot: undefined, install: undefined, patch: undefined });
       this.log(`自动识别失败，已检查 ${result.candidates.length} 个候选路径。`);
-      this.render();
+      await reportProgress(progress, {
+        message: `自动识别失败，已检查 ${result.candidates.length} 个候选路径`,
+        percent: 100,
+        current: result.candidates.length,
+        total: result.candidates.length
+      });
       return;
     }
 
+    await reportProgress(progress, { message: '保存识别到的 Cursor 路径', percent: 72 });
     await saveCursorRoot(result.install.root);
-    await this.loadInstall(result.install);
+    await this.loadInstall(result.install, createScopedProgress(progress, 75, 99, '加载安装数据'));
     this.log(`已识别 Cursor ${result.install.version ?? '未知版本'}: ${result.install.root}`);
-    this.render();
+    await reportProgress(progress, { message: '自动识别完成', percent: 100 });
   }
 
   private async chooseRoot(): Promise<void> {
@@ -131,67 +185,76 @@ export class ManagerPanel {
       return;
     }
 
-    const install = await validateCursorRoot(folder, '手动选择');
-    if (!install.valid) {
-      this.log(`目录校验失败: ${install.problems.join('；')}`);
-      void vscode.window.showErrorMessage('所选目录不是有效的 Cursor 安装根目录。');
-      this.state = { cursorRoot: folder, install, logs: this.logs };
-      this.render();
-      return;
-    }
+    await this.runOperation('手动选择 Cursor 路径', async progress => {
+      const install = await validateCursorRoot(folder, '手动选择', createScopedProgress(progress, 0, 35, '校验安装目录'));
+      if (!install.valid) {
+        this.log(`目录校验失败: ${install.problems.join('；')}`);
+        void vscode.window.showErrorMessage('所选目录不是有效的 Cursor 安装根目录。');
+        this.updateState({ cursorRoot: folder, install, patch: undefined });
+        await reportProgress(progress, { message: '目录校验失败', percent: 100, current: 0, total: 1 });
+        return;
+      }
 
-    await saveCursorRoot(install.root);
-    await this.loadInstall(install);
-    this.log(`已保存手动选择路径: ${install.root}`);
-    this.render();
+      await reportProgress(progress, { message: '保存手动选择路径', percent: 40, current: 1, total: 1 });
+      await saveCursorRoot(install.root);
+      await this.loadInstall(install, createScopedProgress(progress, 45, 99, '加载安装数据'));
+      this.log(`已保存手动选择路径: ${install.root}`);
+      await reportProgress(progress, { message: '手动选择完成', percent: 100, current: 1, total: 1 });
+    });
   }
 
   private async applyPatch(): Promise<void> {
-    if (!this.state.install?.valid) {
-      throw new Error('请先识别或选择有效的 Cursor 安装目录。');
-    }
+    await this.runOperation('应用补丁', async progress => {
+      const install = this.state.install;
+      if (!install?.valid) {
+        throw new Error('请先识别或选择有效的 Cursor 安装目录。');
+      }
 
-    const allowed = vscode.workspace.getConfiguration('cursorZhCn').get<boolean>('enableWorkbenchPatch', true);
-    if (!allowed) {
-      throw new Error('配置 cursorZhCn.enableWorkbenchPatch 已禁用，未执行补丁。');
-    }
+      const allowed = vscode.workspace.getConfiguration('cursorZhCn').get<boolean>('enableWorkbenchPatch', true);
+      if (!allowed) {
+        throw new Error('配置 cursorZhCn.enableWorkbenchPatch 已禁用，未执行补丁。');
+      }
 
-    const result = await applyWorkbenchPatch(this.state.install.root, this.context);
-    this.state = { ...this.state, patch: result.after };
-    this.log(result.changed
-      ? `补丁已应用，命中 ${result.appliedRuleIds.length} 项，备份: ${result.backupPath}`
-      : '补丁未写入：当前文件已经处于已应用或无需变更状态。');
-    this.render();
+      const result = await applyWorkbenchPatch(install.root, this.context, progress);
+      this.updateState({ patch: result.after });
+      this.log(result.changed
+        ? `补丁已应用，命中 ${result.appliedRuleIds.length} 项，备份: ${result.backupPath}`
+        : '补丁未写入：当前文件已经处于已应用或无需变更状态。');
+    });
   }
 
   private async unapplyPatch(): Promise<void> {
-    if (!this.state.install?.valid) {
-      throw new Error('请先识别或选择有效的 Cursor 安装目录。');
-    }
+    await this.runOperation('卸载补丁', async progress => {
+      const install = this.state.install;
+      if (!install?.valid) {
+        throw new Error('请先识别或选择有效的 Cursor 安装目录。');
+      }
 
-    const result = await unapplyWorkbenchPatch(this.state.install.root, this.context);
-    this.state = { ...this.state, patch: result.after };
-    this.log(result.changed
-      ? `补丁已卸载，反向处理 ${result.unappliedRuleIds.length} 项，卸载前快照: ${result.safetyBackupPath}`
-      : '补丁未卸载：当前文件没有命中已应用的中文补丁。');
-    this.render();
+      const result = await unapplyWorkbenchPatch(install.root, this.context, progress);
+      this.updateState({ patch: result.after });
+      this.log(result.changed
+        ? `补丁已卸载，反向处理 ${result.unappliedRuleIds.length} 项，卸载前快照: ${result.safetyBackupPath}`
+        : '补丁未卸载：当前文件没有命中已应用的中文补丁。');
+    });
   }
 
   private async restoreBackup(backupPath?: string): Promise<void> {
-    if (!this.state.install?.valid) {
-      throw new Error('请先识别或选择有效的 Cursor 安装目录。');
-    }
+    await this.runOperation('恢复备份', async progress => {
+      const install = this.state.install;
+      if (!install?.valid) {
+        throw new Error('请先识别或选择有效的 Cursor 安装目录。');
+      }
 
-    const selectedBackupPath = backupPath ?? this.state.patch?.backups.find(backup => backup.currentMetadataBackup)?.path ?? this.state.patch?.backups[0]?.path;
-    if (!selectedBackupPath) {
-      throw new Error('没有可恢复的备份文件。');
-    }
+      const selectedBackupPath = backupPath ?? this.state.patch?.backups.find(backup => backup.currentMetadataBackup)?.path ?? this.state.patch?.backups[0]?.path;
+      if (!selectedBackupPath) {
+        throw new Error('没有可恢复的备份文件。');
+      }
 
-    const result = await restoreWorkbenchBackup(this.state.install.root, this.context, selectedBackupPath);
-    this.state = { ...this.state, patch: result.after };
-    this.log(`已从备份恢复: ${result.backupPath}`);
-    this.log(`恢复前当前文件已另存为: ${result.safetyBackupPath}`);
-    this.render();
+      const result = await restoreWorkbenchBackup(install.root, this.context, selectedBackupPath, progress);
+      this.updateState({ patch: result.after });
+      this.log(`已从备份恢复: ${result.backupPath}`);
+      this.log(`恢复前当前文件已另存为: ${result.safetyBackupPath}`);
+    });
   }
 
   private async openReport(): Promise<void> {
@@ -203,27 +266,34 @@ export class ManagerPanel {
     }
   }
 
-  private async loadRoot(root: string, source: string): Promise<void> {
-    const install = await validateCursorRoot(root, source);
-    await this.loadInstall(install);
+  private async loadRoot(root: string, source: string, progress?: ProgressCallback): Promise<void> {
+    const install = await validateCursorRoot(root, source, createScopedProgress(progress, 0, 30, '校验安装目录'));
+    await this.loadInstall(install, createScopedProgress(progress, 30, 100, '加载安装数据'));
   }
 
-  private async loadInstall(install: CursorInstall): Promise<void> {
+  private async loadInstall(install: CursorInstall, progress?: ProgressCallback): Promise<void> {
     let patch: PatchScanResult | undefined;
+    await reportProgress(progress, { message: '准备加载安装数据', percent: 0 });
+
     if (install.valid) {
       try {
-        patch = await scanWorkbenchPatch(install.root, this.context);
+        patch = await scanWorkbenchPatch(install.root, this.context, createScopedProgress(progress, 10, 95, '扫描补丁数据'));
       } catch (error) {
         this.log(error instanceof Error ? error.message : String(error));
       }
     }
 
-    this.state = {
+    this.updateState({
       cursorRoot: install.root,
       install,
-      patch,
-      logs: this.logs
-    };
+      patch
+    });
+    await reportProgress(progress, {
+      message: install.valid ? '安装数据加载完成' : '安装目录无效',
+      percent: 100,
+      current: install.valid ? 1 : 0,
+      total: 1
+    });
   }
 
   private log(message: string): void {
@@ -258,6 +328,8 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
   };
   const backupOptions = renderBackupOptions(patch?.backups ?? [], patchStatusText);
   const selectedBackup = getSelectedBackup(patch?.backups ?? []);
+  const progressSection = renderProgressSection(state.progress);
+  const busyAttribute = state.progress ? ' disabled' : '';
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -283,6 +355,17 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
     button:hover { background: var(--vscode-button-hoverBackground); }
     button.secondary { color: var(--vscode-button-secondaryForeground); background: var(--vscode-button-secondaryBackground); }
     button.secondary:hover { background: var(--vscode-button-secondaryHoverBackground); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    button:disabled:hover { background: var(--vscode-button-background); }
+    button.secondary:disabled:hover { background: var(--vscode-button-secondaryBackground); }
+    .progress { margin: 18px 0 22px; border-left: 3px solid var(--vscode-progressBar-background); }
+    .progress-head { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .progress-title { font-weight: 700; }
+    .progress-percent { color: var(--vscode-descriptionForeground); }
+    .progress-message { color: var(--vscode-descriptionForeground); overflow-wrap: anywhere; }
+    .progress-track { height: 8px; margin-top: 12px; overflow: hidden; border-radius: 999px; background: var(--vscode-editorWidget-background); }
+    .progress-fill { height: 100%; border-radius: inherit; background: var(--vscode-progressBar-background); transition: width 120ms ease-out; }
+    .progress-count { margin-top: 8px; color: var(--vscode-descriptionForeground); }
     .section { margin-top: 18px; }
     .mono { font-family: var(--vscode-editor-font-family); font-size: 12px; }
     .list { margin: 8px 0 0; padding-left: 18px; }
@@ -328,14 +411,16 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
     </div>
 
     <div class="actions">
-      <button data-command="autoLocate">自动识别</button>
-      <button data-command="chooseRoot" class="secondary">手动选择 Cursor 路径</button>
-      <button data-command="applyPatch">应用补丁</button>
-      <button data-command="unapplyPatch" class="secondary">卸载补丁</button>
-      <button data-command="restoreBackup" class="secondary">恢复备份</button>
-      <button data-command="rescan" class="secondary">重新扫描</button>
+      <button data-command="autoLocate"${busyAttribute}>自动识别</button>
+      <button data-command="chooseRoot" class="secondary"${busyAttribute}>手动选择 Cursor 路径</button>
+      <button data-command="applyPatch"${busyAttribute}>应用补丁</button>
+      <button data-command="unapplyPatch" class="secondary"${busyAttribute}>卸载补丁</button>
+      <button data-command="restoreBackup" class="secondary"${busyAttribute}>恢复备份</button>
+      <button data-command="rescan" class="secondary"${busyAttribute}>重新扫描</button>
       <button data-command="openReport" class="secondary">打开报告</button>
     </div>
+
+    ${progressSection}
 
     ${install && !install.valid ? `<section class="section card"><div class="label">路径问题</div><ul class="list">${install.problems.map(problem => `<li>${escapeHtml(problem)}</li>`).join('')}</ul></section>` : ''}
 
@@ -365,6 +450,28 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
   </script>
 </body>
 </html>`;
+}
+
+function renderProgressSection(progress: ManagerProgressState | undefined): string {
+  if (!progress) {
+    return '';
+  }
+
+  const count = progress.current !== undefined && progress.total !== undefined
+    ? `<div class="progress-count mono">当前条数：${progress.current} / ${progress.total}</div>`
+    : '';
+
+  return `<section class="section card progress" aria-live="polite">
+    <div class="progress-head">
+      <div class="progress-title">${escapeHtml(progress.operation)}</div>
+      <div class="progress-percent mono">${progress.percent}%</div>
+    </div>
+    <div class="progress-message">${escapeHtml(progress.message)}</div>
+    <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${progress.percent}">
+      <div class="progress-fill" style="width: ${progress.percent}%"></div>
+    </div>
+    ${count}
+  </section>`;
 }
 
 function getSelectedBackup(backups: readonly PatchBackupInfo[]): PatchBackupInfo | undefined {
