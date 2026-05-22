@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { CursorInstall, locateCursorInstall, validateCursorRoot } from './cursorLocator';
-import { applyNlsMessagePatch, NlsMessagePatchScanResult, scanNlsMessagePatch, unapplyNlsMessagePatch } from './nlsMessagePatcher';
+import { applyNlsMessagePatch, NlsMessagePatchScanResult, restoreNlsMessageBackup, scanNlsMessagePatch, unapplyNlsMessagePatch } from './nlsMessagePatcher';
 import { createScopedProgress, ProgressCallback, ProgressUpdate, reportProgress } from './progress';
 import { applyWorkbenchPatch, PatchBackupInfo, PatchScanResult, restoreWorkbenchBackup, scanWorkbenchPatch, unapplyWorkbenchPatch } from './workbenchPatcher';
 
@@ -19,7 +19,7 @@ interface ManagerState {
 }
 
 interface WebviewMessage {
-  readonly command: 'autoLocate' | 'chooseRoot' | 'rescan' | 'applyPatch' | 'unapplyPatch' | 'restoreBackup' | 'openReport';
+  readonly command: 'autoLocate' | 'chooseRoot' | 'rescan' | 'applyPatch' | 'unapplyPatch' | 'restoreWorkbenchBackup' | 'restoreNlsBackup' | 'openReport';
   readonly backupPath?: string;
 }
 
@@ -115,8 +115,11 @@ export class ManagerPanel {
         case 'unapplyPatch':
           await this.unapplyPatch();
           break;
-        case 'restoreBackup':
-          await this.restoreBackup(message.backupPath);
+        case 'restoreWorkbenchBackup':
+          await this.restoreWorkbenchBackup(message.backupPath);
+          break;
+        case 'restoreNlsBackup':
+          await this.restoreNlsBackup(message.backupPath);
           break;
         case 'openReport':
           await this.openReport();
@@ -255,8 +258,8 @@ export class ManagerPanel {
     });
   }
 
-  private async restoreBackup(backupPath?: string): Promise<void> {
-    await this.runOperation('恢复备份', async progress => {
+  private async restoreWorkbenchBackup(backupPath?: string): Promise<void> {
+    await this.runOperation('恢复 Workbench 备份', async progress => {
       const install = this.state.install;
       if (!install?.valid) {
         throw new Error('请先识别或选择有效的 Cursor 安装目录。');
@@ -264,13 +267,32 @@ export class ManagerPanel {
 
       const selectedBackupPath = backupPath ?? this.state.patch?.backups.find(backup => backup.currentMetadataBackup)?.path ?? this.state.patch?.backups[0]?.path;
       if (!selectedBackupPath) {
-        throw new Error('没有可恢复的备份文件。');
+        throw new Error('没有可恢复的 Workbench 备份文件。');
       }
 
       const result = await restoreWorkbenchBackup(install.root, this.context, selectedBackupPath, progress);
       this.updateState({ patch: result.after });
-      this.log(`已从备份恢复: ${result.backupPath}`);
-      this.log(`恢复前当前文件已另存为: ${result.safetyBackupPath}`);
+      this.log(`Workbench 已从备份恢复: ${result.backupPath}`);
+      this.log(`Workbench 恢复前快照: ${result.safetyBackupPath}`);
+    });
+  }
+
+  private async restoreNlsBackup(backupPath?: string): Promise<void> {
+    await this.runOperation('恢复 NLS 消息表备份', async progress => {
+      const install = this.state.install;
+      if (!install?.valid) {
+        throw new Error('请先识别或选择有效的 Cursor 安装目录。');
+      }
+
+      const selectedBackupPath = backupPath ?? this.state.nlsPatch?.backups.find(backup => backup.currentMetadataBackup)?.path ?? this.state.nlsPatch?.backups[0]?.path;
+      if (!selectedBackupPath) {
+        throw new Error('没有可恢复的 NLS 消息表备份文件。');
+      }
+
+      const result = await restoreNlsMessageBackup(install.root, this.context, selectedBackupPath, progress);
+      this.updateState({ nlsPatch: result.after });
+      this.log(`NLS 消息表已从备份恢复: ${result.backupPath}`);
+      this.log(`NLS 消息表恢复前快照: ${result.safetyBackupPath}`);
     });
   }
 
@@ -354,6 +376,8 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
   };
   const backupOptions = renderBackupOptions(patch?.backups ?? [], patchStatusText);
   const selectedBackup = getSelectedBackup(patch?.backups ?? []);
+  const nlsBackupOptions = renderBackupOptions(nlsPatch?.backups ?? [], patchStatusText);
+  const selectedNlsBackup = getSelectedBackup(nlsPatch?.backups ?? []);
   const progressSection = renderProgressSection(state.progress);
   const busyAttribute = state.progress ? ' disabled' : '';
 
@@ -429,15 +453,18 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
       <div class="card">
         <div class="label">Workbench 备份状态</div>
         <div class="value">${patch ? `${patch.backups.length} 个可选备份` : '未扫描'}</div>
-        <select id="backupSelect" class="backup-select" ${patch?.backups.length ? '' : 'disabled'}>
+        <select id="workbenchBackupSelect" class="backup-select" ${patch?.backups.length ? '' : 'disabled'}>
           ${backupOptions}
         </select>
         ${selectedBackup ? `<div class="backup-detail mono">${escapeHtml(formatBackupDetail(selectedBackup, patchStatusText))}</div>` : '<div class="backup-detail mono">暂无备份记录</div>'}
       </div>
       <div class="card">
         <div class="label">NLS 消息表备份状态</div>
-        <div class="value">${nlsPatch?.backupPath ? '已有备份' : nlsPatch ? '暂无备份' : '未扫描'}</div>
-        <div class="backup-detail mono">${escapeHtml(nlsPatch?.backupPath ?? '暂无备份记录')}</div>
+        <div class="value">${nlsPatch ? `${nlsPatch.backups.length} 个可选备份` : '未扫描'}</div>
+        <select id="nlsBackupSelect" class="backup-select" ${nlsPatch?.backups.length ? '' : 'disabled'}>
+          ${nlsBackupOptions}
+        </select>
+        ${selectedNlsBackup ? `<div class="backup-detail mono">${escapeHtml(formatBackupDetail(selectedNlsBackup, patchStatusText))}</div>` : '<div class="backup-detail mono">暂无备份记录</div>'}
       </div>
       <div class="card">
         <div class="label">Workbench 补丁命中</div>
@@ -454,7 +481,8 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
       <button data-command="chooseRoot" class="secondary"${busyAttribute}>手动选择 Cursor 路径</button>
       <button data-command="applyPatch"${busyAttribute}>应用补丁</button>
       <button data-command="unapplyPatch" class="secondary"${busyAttribute}>卸载补丁</button>
-      <button data-command="restoreBackup" class="secondary"${busyAttribute}>恢复备份</button>
+      <button data-command="restoreWorkbenchBackup" class="secondary"${busyAttribute}>恢复 Workbench 备份</button>
+      <button data-command="restoreNlsBackup" class="secondary"${busyAttribute}>恢复 NLS 备份</button>
       <button data-command="rescan" class="secondary"${busyAttribute}>重新扫描</button>
       <button data-command="openReport" class="secondary">打开报告</button>
     </div>
@@ -479,10 +507,15 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
     document.querySelectorAll('button[data-command]').forEach(button => {
       button.addEventListener('click', () => {
         const command = button.dataset.command;
-        const backupSelect = document.getElementById('backupSelect');
+        const backupSelectId = command === 'restoreWorkbenchBackup'
+          ? 'workbenchBackupSelect'
+          : command === 'restoreNlsBackup'
+            ? 'nlsBackupSelect'
+            : undefined;
+        const backupSelect = backupSelectId ? document.getElementById(backupSelectId) : undefined;
         vscode.postMessage({
           command,
-          backupPath: command === 'restoreBackup' && backupSelect instanceof HTMLSelectElement ? backupSelect.value : undefined
+          backupPath: backupSelect instanceof HTMLSelectElement ? backupSelect.value : undefined
         });
       });
     });
