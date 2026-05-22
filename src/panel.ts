@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { CursorInstall, locateCursorInstall, validateCursorRoot } from './cursorLocator';
+import { applyNlsMessagePatch, NlsMessagePatchScanResult, scanNlsMessagePatch, unapplyNlsMessagePatch } from './nlsMessagePatcher';
 import { createScopedProgress, ProgressCallback, ProgressUpdate, reportProgress } from './progress';
 import { applyWorkbenchPatch, PatchBackupInfo, PatchScanResult, restoreWorkbenchBackup, scanWorkbenchPatch, unapplyWorkbenchPatch } from './workbenchPatcher';
 
@@ -12,6 +13,7 @@ interface ManagerState {
   cursorRoot?: string;
   install?: CursorInstall;
   patch?: PatchScanResult;
+  nlsPatch?: NlsMessagePatchScanResult;
   progress?: ManagerProgressState;
   logs: readonly string[];
 }
@@ -138,7 +140,7 @@ export class ManagerPanel {
       if (configuredRoot) {
         await this.loadRoot(configuredRoot, '已保存配置', progress);
       } else {
-        this.updateState({ cursorRoot: undefined, install: undefined, patch: undefined });
+        this.updateState({ cursorRoot: undefined, install: undefined, patch: undefined, nlsPatch: undefined });
         await reportProgress(progress, { message: '未配置 Cursor 安装目录', percent: 100 });
       }
     });
@@ -154,7 +156,7 @@ export class ManagerPanel {
     const result = await locateCursorInstall(configuredRoot, createScopedProgress(progress, 0, 70, '识别安装目录'));
 
     if (!result.install) {
-      this.updateState({ cursorRoot: undefined, install: undefined, patch: undefined });
+      this.updateState({ cursorRoot: undefined, install: undefined, patch: undefined, nlsPatch: undefined });
       this.log(`自动识别失败，已检查 ${result.candidates.length} 个候选路径。`);
       await reportProgress(progress, {
         message: `自动识别失败，已检查 ${result.candidates.length} 个候选路径`,
@@ -190,7 +192,7 @@ export class ManagerPanel {
       if (!install.valid) {
         this.log(`目录校验失败: ${install.problems.join('；')}`);
         void vscode.window.showErrorMessage('所选目录不是有效的 Cursor 安装根目录。');
-        this.updateState({ cursorRoot: folder, install, patch: undefined });
+        this.updateState({ cursorRoot: folder, install, patch: undefined, nlsPatch: undefined });
         await reportProgress(progress, { message: '目录校验失败', percent: 100, current: 0, total: 1 });
         return;
       }
@@ -215,14 +217,20 @@ export class ManagerPanel {
         throw new Error('配置 cursorZhCn.enableWorkbenchPatch 已禁用，未执行补丁。');
       }
 
-      const result = await applyWorkbenchPatch(install.root, this.context, progress);
-      this.updateState({ patch: result.after });
+      const result = await applyWorkbenchPatch(install.root, this.context, createScopedProgress(progress, 0, 62, 'Workbench 补丁'));
+      const nlsResult = await applyNlsMessagePatch(install.root, this.context, createScopedProgress(progress, 62, 100, 'NLS 消息表补丁'));
+      this.updateState({ patch: result.after, nlsPatch: nlsResult.after });
       this.log(`Cursor 根目录: ${result.after.cursorRoot}`);
       this.log(`Workbench 文件: ${result.after.filePath}`);
-      this.log(`补丁命中: 英文源 ${result.before.sourceHits} 处，已翻译 ${result.before.targetHits} 处，本次写入 ${result.appliedRuleIds.length} 项/${result.appliedOccurrences} 处。`);
+      this.log(`NLS 消息表: ${nlsResult.after.filePath}`);
+      this.log(`Workbench 补丁命中: 英文源 ${result.before.sourceHits} 处，已翻译 ${result.before.targetHits} 处，本次写入 ${result.appliedRuleIds.length} 项/${result.appliedOccurrences} 处。`);
+      this.log(`NLS 补丁命中: 英文源 ${nlsResult.before.sourceHits} 处，已翻译 ${nlsResult.before.targetHits} 处，本次写入 ${nlsResult.appliedRuleIds.length} 项/${nlsResult.appliedOccurrences} 处。`);
       this.log(result.changed
-        ? `补丁已应用，备份: ${result.backupPath}`
-        : `补丁未写入：英文源 ${result.before.sourceHits} 处，已翻译 ${result.before.targetHits} 处。`);
+        ? `Workbench 补丁已应用，备份: ${result.backupPath}`
+        : `Workbench 补丁未写入：英文源 ${result.before.sourceHits} 处，已翻译 ${result.before.targetHits} 处。`);
+      this.log(nlsResult.changed
+        ? `NLS 消息表补丁已应用，备份: ${nlsResult.backupPath}`
+        : `NLS 消息表补丁未写入：英文源 ${nlsResult.before.sourceHits} 处，已翻译 ${nlsResult.before.targetHits} 处。`);
     });
   }
 
@@ -233,11 +241,17 @@ export class ManagerPanel {
         throw new Error('请先识别或选择有效的 Cursor 安装目录。');
       }
 
-      const result = await unapplyWorkbenchPatch(install.root, this.context, progress);
-      this.updateState({ patch: result.after });
+      const result = await unapplyWorkbenchPatch(install.root, this.context, createScopedProgress(progress, 0, 62, 'Workbench 补丁'));
+      const nlsResult = await unapplyNlsMessagePatch(install.root, this.context, createScopedProgress(progress, 62, 100, 'NLS 消息表补丁'));
+      this.updateState({ patch: result.after, nlsPatch: nlsResult.after });
+      this.log(`Workbench 文件: ${result.after.filePath}`);
+      this.log(`NLS 消息表: ${nlsResult.after.filePath}`);
       this.log(result.changed
-        ? `补丁已卸载，反向处理 ${result.unappliedRuleIds.length} 项，卸载前快照: ${result.safetyBackupPath}`
-        : '补丁未卸载：当前文件没有命中已应用的中文补丁。');
+        ? `Workbench 补丁已卸载，反向处理 ${result.unappliedRuleIds.length} 项，卸载前快照: ${result.safetyBackupPath}`
+        : 'Workbench 补丁未卸载：当前文件没有命中已应用的中文补丁。');
+      this.log(nlsResult.changed
+        ? `NLS 消息表补丁已卸载，反向处理 ${nlsResult.unappliedRuleIds.length} 项，卸载前快照: ${nlsResult.safetyBackupPath}`
+        : 'NLS 消息表补丁未卸载：当前文件没有命中已应用的中文补丁。');
     });
   }
 
@@ -276,11 +290,18 @@ export class ManagerPanel {
 
   private async loadInstall(install: CursorInstall, progress?: ProgressCallback): Promise<void> {
     let patch: PatchScanResult | undefined;
+    let nlsPatch: NlsMessagePatchScanResult | undefined;
     await reportProgress(progress, { message: '准备加载安装数据', percent: 0 });
 
     if (install.valid) {
       try {
-        patch = await scanWorkbenchPatch(install.root, this.context, createScopedProgress(progress, 10, 95, '扫描补丁数据'));
+        patch = await scanWorkbenchPatch(install.root, this.context, createScopedProgress(progress, 10, 55, '扫描 Workbench 补丁数据'));
+      } catch (error) {
+        this.log(error instanceof Error ? error.message : String(error));
+      }
+
+      try {
+        nlsPatch = await scanNlsMessagePatch(install.root, this.context, createScopedProgress(progress, 55, 95, '扫描 NLS 消息表补丁数据'));
       } catch (error) {
         this.log(error instanceof Error ? error.message : String(error));
       }
@@ -289,7 +310,8 @@ export class ManagerPanel {
     this.updateState({
       cursorRoot: install.root,
       install,
-      patch
+      patch,
+      nlsPatch
     });
     await reportProgress(progress, {
       message: install.valid ? '安装数据加载完成' : '安装目录无效',
@@ -323,6 +345,7 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
   const cspSource = webview.cspSource;
   const install = state.install;
   const patch = state.patch;
+  const nlsPatch = state.nlsPatch;
   const patchStatusText: Record<string, string> = {
     'not-applied': '未应用',
     applied: '已应用',
@@ -396,11 +419,15 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
         <div class="value ok">扩展已安装时自动提供 zh-cn 语言包贡献</div>
       </div>
       <div class="card">
-        <div class="label">补丁状态</div>
+        <div class="label">Workbench 补丁状态</div>
         <div class="value ${patch?.state === 'applied' ? 'ok' : patch?.state === 'partial' ? 'warn' : ''}">${patch ? patchStatusText[patch.state] : '未扫描'}</div>
       </div>
       <div class="card">
-        <div class="label">备份状态</div>
+        <div class="label">NLS 消息表补丁状态</div>
+        <div class="value ${nlsPatch?.state === 'applied' ? 'ok' : nlsPatch?.state === 'partial' ? 'warn' : ''}">${nlsPatch ? patchStatusText[nlsPatch.state] : '未扫描'}</div>
+      </div>
+      <div class="card">
+        <div class="label">Workbench 备份状态</div>
         <div class="value">${patch ? `${patch.backups.length} 个可选备份` : '未扫描'}</div>
         <select id="backupSelect" class="backup-select" ${patch?.backups.length ? '' : 'disabled'}>
           ${backupOptions}
@@ -408,8 +435,17 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
         ${selectedBackup ? `<div class="backup-detail mono">${escapeHtml(formatBackupDetail(selectedBackup, patchStatusText))}</div>` : '<div class="backup-detail mono">暂无备份记录</div>'}
       </div>
       <div class="card">
-        <div class="label">补丁命中</div>
+        <div class="label">NLS 消息表备份状态</div>
+        <div class="value">${nlsPatch?.backupPath ? '已有备份' : nlsPatch ? '暂无备份' : '未扫描'}</div>
+        <div class="backup-detail mono">${escapeHtml(nlsPatch?.backupPath ?? '暂无备份记录')}</div>
+      </div>
+      <div class="card">
+        <div class="label">Workbench 补丁命中</div>
         <div class="value">${patch ? `${patch.targetHits} 个中文目标 / ${patch.sourceHits} 个英文源 / ${patch.totalRules} 条规则` : '未扫描'}</div>
+      </div>
+      <div class="card">
+        <div class="label">NLS 消息表补丁命中</div>
+        <div class="value">${nlsPatch ? `${nlsPatch.targetHits} 个中文目标 / ${nlsPatch.sourceHits} 个英文源 / ${nlsPatch.totalRules} 条规则` : '未扫描'}</div>
       </div>
     </div>
 

@@ -1,10 +1,5 @@
 [
   {
-    "id": "settings.nav.rules.title.fn",
-    "source": "CZ_=()=>\"Rules, Skills, Subagents\"",
-    "target": "CZ_=()=>\"规则、技能、子智能体\""
-  },
-  {
     "id": "settings.nav.general",
     "source": "general:\"General\"",
     "target": "general:\"通用\""
@@ -135,11 +130,6 @@
     "target": "description:\"从 VS Code 导入设置、扩展和键盘绑定\""
   },
   {
-    "id": "settings.reset-dont-ask-again.label",
-    "source": "label:'Reset \\\"Don\\u2019t Ask Again\\\" Dialogs'",
-    "target": "label:'重置“不再询问”对话框'"
-  },
-  {
     "id": "settings.reset-dont-ask-again.description",
     "source": "description:\"See warnings and tips that you\\u2019ve hidden\"",
     "target": "description:\"查看你已隐藏的警告和提示\""
@@ -150,19 +140,9 @@
     "target": "get title(){return r()?\"隐藏\":\"显示\"}"
   },
   {
-    "id": "settings.subagents.header",
-    "source": "WXC=st(\"<div><span>Subagents\")",
-    "target": "WXC=st(\"<div><span>子智能体\")"
-  },
-  {
     "id": "settings.subagents.explore-model-title",
     "source": "title=\"Choose Explore subagent model\"",
     "target": "title=\"选择 Explore 子智能体模型\""
-  },
-  {
-    "id": "settings.subagents.web-search-tool",
-    "source": "VXC=st(\"<div>Web Search Tool\")",
-    "target": "VXC=st(\"<div>网页搜索工具\")"
   },
   {
     "id": "settings.chat.collapse-composer.tooltip",
@@ -300,16 +280,6 @@
     "target": "description:\"显示警告级别的应用内提示\""
   },
   {
-    "id": "settings.notifications.tray-menu.label",
-    "source": "label:Jo?\"Menu Bar Icon\":\"System Tray Icon\"",
-    "target": "label:Jo?\"菜单栏图标\":\"系统托盘图标\""
-  },
-  {
-    "id": "settings.notifications.tray-menu.description",
-    "source": "description:Jo?\"Show Cursor in menu bar\":\"Show Cursor in system tray\"",
-    "target": "description:Jo?\"在菜单栏中显示 Cursor\":\"在系统托盘中显示 Cursor\""
-  },
-  {
     "id": "settings.notifications.completion-sound.label",
     "source": "label:\"Completion Sound\"",
     "target": "label:\"完成提示音\""
@@ -323,16 +293,6 @@
     "id": "settings.privacy.section-title",
     "source": "title:\"Privacy\"",
     "target": "title:\"隐私\""
-  },
-  {
-    "id": "settings.privacy.mode.html-block",
-    "source": "AZC=st(\"<div><div>Privacy Mode (Legacy)</div><div>No training and no storage. Background Agent and other features that require code storage will be disabled.\")",
-    "target": "AZC=st(\"<div><div>隐私模式（旧版）</div><div>不训练且不存储。后台智能体和其它需要代码存储的功能将被禁用。\")"
-  },
-  {
-    "id": "settings.privacy.switch-to-privacy-mode.html",
-    "source": "xZC=st(\"<div><span>Switch to Privacy Mode\")",
-    "target": "xZC=st(\"<div><span>切换到隐私模式\")"
   },
   {
     "id": "settings.privacy.no-training-description.text",
@@ -393,11 +353,6 @@
     "id": "settings.tab.imports.label",
     "source": "label:\"Imports\"",
     "target": "label:\"导入\""
-  },
-  {
-    "id": "settings.tab.imports.description",
-    "source": "description:\"Automatically import necessary modules for TypeScript\"",
-    "target": "description:\"自动为 TypeScript 导入必要模块\""
   },
   {
     "id": "settings.tab.auto-import-python.label-prefix",
@@ -530,11 +485,6 @@
     "target": "get description(){return`防止智能体自动运行 MCP 工具${l().isAdminControlled?\"（由管理员控制）\":\"\"}`}"
   },
   {
-    "id": "settings.agents.auto-run-mode.title",
-    "source": "se=He(()=>{const Le=l();return Le.isDisabledByAdmin?\"Auto-Run Mode Disabled by Team Admin\":Le.isAdminControlled?Le.sandboxingControls?.sandboxing===\"enabled\"&&y()?\"Auto-Run Mode Controlled by Team Admin (Sandbox Enabled)\":\"Auto-Run Mode Controlled by Team Admin\":!Le.isAdminControlled&&e.composerEffectiveAllowlistService.shouldPermissionsFileConstrainUnrestrictedMode()?`Auto-Run Mode (enforced by ~/${e.productService.dataFolderName??\".cursor\"}/permissions.json)`:\"Auto-Run Mode\"})",
-    "target": "se=He(()=>{const Le=l();return Le.isDisabledByAdmin?\"自动运行模式已被团队管理员禁用\":Le.isAdminControlled?Le.sandboxingControls?.sandboxing===\"enabled\"&&y()?\"自动运行模式由团队管理员控制（沙箱已启用）\":\"自动运行模式由团队管理员控制\":!Le.isAdminControlled&&e.composerEffectiveAllowlistService.shouldPermissionsFileConstrainUnrestrictedMode()?`自动运行模式（由 ~/${e.productService.dataFolderName??\".cursor\"}/permissions.json 强制执行）`:\"自动运行模式\"})"
-  },
-  {
     "id": "settings.applying-changes.auto-format-on-agent-finish.label",
     "source": "label:\"Auto Format on Agent Finish\"",
     "target": "label:\"智能体完成后自动格式化\""
@@ -573,11 +523,6 @@
     "id": "settings.inline-terminal.terminal-hint.label",
     "source": "label:\"Terminal Hint\"",
     "target": "label:\"终端提示\""
-  },
-  {
-    "id": "settings.inline-terminal.terminal-hint.description",
-    "source": "description:`Show a hint for ${Jo?\"\\u2318\":\"Ctrl+\"}K in the Terminal`",
-    "target": "description:`显示 ${Jo?\"\\u2318\":\"Ctrl+\"}K 的终端提示`"
   },
   {
     "id": "settings.attribution.section-title",
@@ -630,19 +575,9 @@
     "target": "label:\"打开编写器设置\",tooltip:\"打开编写器设置\""
   },
   {
-    "id": "settings.agents.auto-run-mode.options",
-    "source": "return\"Ask Every Time\";case YD.USE_ALLOWLIST:return n.toolType===\"terminal\"&&un()?\"Run in Sandbox\":\"Use Allowlist\";case YD.RUN_EVERYTHING:return\"Run Everything\"",
-    "target": "return\"每次询问\";case YD.USE_ALLOWLIST:return n.toolType===\"terminal\"&&un()?\"在沙箱中运行\":\"使用允许列表\";case YD.RUN_EVERYTHING:return\"运行所有内容\""
-  },
-  {
     "id": "settings.agents.enable-run-everything.title",
     "source": "title:\"Enable Run Everything?\"",
     "target": "title:\"启用运行所有内容？\""
-  },
-  {
-    "id": "settings.agents.enable-run-everything.primary-button",
-    "source": "primaryButton:{id:$kp,label:\"Enable Run Everything\"}",
-    "target": "primaryButton:{id:$kp,label:\"启用运行所有内容\"}"
   },
   {
     "id": "settings.agents.enable-run-everything.safer-mode-button",
@@ -720,11 +655,6 @@
     "target": "message:\"API 密钥无效或已过期。\",extraDetail:\"更新 API 密钥\""
   },
   {
-    "id": "settings.models.bad-api-key.error-label",
-    "source": "label:\"Bad API Key\",error:Bu.BAD_API_KEY,detail:\"The provided API key is invalid or malformed.\",message:\"Invalid API key provided.\"",
-    "target": "label:\"API 密钥错误\",error:Bu.BAD_API_KEY,detail:\"提供的 API 密钥无效或格式错误。\",message:\"提供的 API 密钥无效。\""
-  },
-  {
     "id": "settings.worktrees.empty-git-folder.message",
     "source": "return\"Open a folder with a Git repository to use worktrees.\"",
     "target": "return\"打开包含 Git 仓库的文件夹以使用工作树。\""
@@ -743,46 +673,6 @@
     "id": "settings.cloud-agents.privacy-legacy-dialog.user-message",
     "source": "message:\"Go to Cursor Settings -> General -> Privacy, and switch to 'Privacy Mode' to use cloud agents.\"",
     "target": "message:\"前往 Cursor 设置 -> 通用 -> 隐私，并切换到“隐私模式”以使用云端智能体。\""
-  },
-  {
-    "id": "workbench.common.category.view",
-    "source": "View:Kt(1775,\"View\")",
-    "target": "View:Kt(1775,\"查看\")"
-  },
-  {
-    "id": "workbench.common.category.help",
-    "source": "Help:Kt(1776,\"Help\")",
-    "target": "Help:Kt(1776,\"帮助\")"
-  },
-  {
-    "id": "workbench.common.category.test",
-    "source": "Test:Kt(1777,\"Test\")",
-    "target": "Test:Kt(1777,\"测试\")"
-  },
-  {
-    "id": "workbench.common.category.file",
-    "source": "File:Kt(1778,\"File\")",
-    "target": "File:Kt(1778,\"文件\")"
-  },
-  {
-    "id": "workbench.common.category.preferences",
-    "source": "Preferences:Kt(1779,\"Preferences\")",
-    "target": "Preferences:Kt(1779,\"首选项\")"
-  },
-  {
-    "id": "workbench.common.category.developer",
-    "source": "Developer:Kt(1780,\"Developer\")",
-    "target": "Developer:Kt(1780,\"开发者\")"
-  },
-  {
-    "id": "workbench.composer.new-agent.constant",
-    "source": "UZm=\"New Agent\"",
-    "target": "UZm=\"新建智能体\""
-  },
-  {
-    "id": "workbench.composer.new-agent.service-title",
-    "source": "z6i=\"New Agent\"",
-    "target": "z6i=\"新建智能体\""
   },
   {
     "id": "workbench.composer.new-agent.fallback-title",
@@ -900,74 +790,9 @@
     "target": "get children(){return[\" \",\"当你明确选择模型提供商的模型时，提示词和有限遥测也可能会与模型提供商共享。\"]}"
   },
   {
-    "id": "workbench.command.copy-cursor-link",
-    "source": "title:Kt(6123,\"Copy cursor.com link\")",
-    "target": "title:Kt(6123,\"复制 cursor.com 链接\")"
-  },
-  {
-    "id": "workbench.command.copy-cursor-link-without-range",
-    "source": "title:Kt(6124,\"Copy cursor.com link\")",
-    "target": "title:Kt(6124,\"复制 cursor.com 链接\")"
-  },
-  {
-    "id": "workbench.command.copy-cursor-link-title-context",
-    "source": "title:Kt(6125,\"Copy cursor.com link\")",
-    "target": "title:Kt(6125,\"复制 cursor.com 链接\")"
-  },
-  {
-    "id": "workbench.command.reload-window",
-    "source": "title:Kt(3219,\"Reload Window\")",
-    "target": "title:Kt(3219,\"重新加载窗口\")"
-  },
-  {
-    "id": "workbench.command.open-file.notebook-diff",
-    "source": "title:Kt(9312,\"Open File\")",
-    "target": "title:Kt(9312,\"打开文件\")"
-  },
-  {
-    "id": "workbench.command.open-file.merge-result",
-    "source": "title:Kt(8864,\"Open File\")",
-    "target": "title:Kt(8864,\"打开文件\")"
-  },
-  {
-    "id": "workbench.command.open-file.multi-diff",
-    "source": "title:Kt(8998,\"Open File\")",
-    "target": "title:Kt(8998,\"打开文件\")"
-  },
-  {
-    "id": "workbench.command.markdown-editor.category",
-    "source": "category:Kt(8580,\"Markdown Editor\")",
-    "target": "category:Kt(8580,\"Markdown 编辑器\")"
-  },
-  {
-    "id": "workbench.command.markdown-editor.toggle-mode",
-    "source": "title:Kt(8579,\"Toggle Editor Mode\")",
-    "target": "title:Kt(8579,\"切换编辑器模式\")"
-  },
-  {
     "id": "workbench.glass.terminal.new-terminal-title",
     "source": "P(\"glass.terminal.treeNewTerminal\",\"New Terminal\")",
     "target": "P(\"glass.terminal.treeNewTerminal\",\"新建终端\")"
-  },
-  {
-    "id": "workbench.composer.skill-category.agent-review",
-    "source": "[za.bugbot]:\"Agent Review\"",
-    "target": "[za.bugbot]:\"智能体审阅\""
-  },
-  {
-    "id": "workbench.composer.skill-category.open-browser",
-    "source": "[za.open_browser]:\"Open Browser\"",
-    "target": "[za.open_browser]:\"打开浏览器\""
-  },
-  {
-    "id": "workbench.composer.skill-category.files-folders",
-    "source": "[za.files_and_folders]:\"Files & Folders\"",
-    "target": "[za.files_and_folders]:\"文件与文件夹\""
-  },
-  {
-    "id": "workbench.composer.skill-category.terminal",
-    "source": "[za.terminal]:\"Terminals\"",
-    "target": "[za.terminal]:\"终端\""
   },
   {
     "id": "workbench.command.attempt-update.title",
@@ -1055,19 +880,9 @@
     "target": "children:\"重新检查\"}),description:\"Pod 连接详情不可用。\",title:\"云桌面不可用\""
   },
   {
-    "id": "workbench.canvas.share-error-message",
-    "source": "message:\"Canvas has errors. Please fix them before sharing.\"",
-    "target": "message:\"Canvas 存在错误。请先修复后再分享。\""
-  },
-  {
     "id": "workbench.create-pr.button-label",
     "source": "label:\"Create PR\",disabled:!1",
     "target": "label:\"创建 PR\",disabled:!1"
-  },
-  {
-    "id": "workbench.create-pr.loading-children",
-    "source": "children:[H(UR,{indeterminate:!0,size:\"xs\",variant:\"ring\"}),\"Creating PR...\"]",
-    "target": "children:[H(UR,{indeterminate:!0,size:\"xs\",variant:\"ring\"}),\"正在创建 PR...\"]"
   },
   {
     "id": "workbench.create-pr.menu-item-label",
@@ -1085,19 +900,14 @@
     "target": "label:\"创建草稿 PR\"}"
   },
   {
-    "id": "workbench.copy-tokens.copied-state",
-    "source": "children:\"Copied!\"",
-    "target": "children:\"已复制！\""
-  },
-  {
     "id": "workbench.data-sharing.learn-more-button",
     "source": "children:\"Learn More\"",
     "target": "children:\"了解更多\""
   },
   {
     "id": "workbench.cloud-agents.learn-more-button",
-    "source": "label:\"Learn More\",callback:()=\u003e{this.openerService.open(\"https://cursor.com/docs/cloud-agent#how-to-use\"",
-    "target": "label:\"了解更多\",callback:()=\u003e{this.openerService.open(\"https://cursor.com/docs/cloud-agent#how-to-use\""
+    "source": "label:\"Learn More\",callback:()=>{this.openerService.open(\"https://cursor.com/docs/cloud-agent#how-to-use\"",
+    "target": "label:\"了解更多\",callback:()=>{this.openerService.open(\"https://cursor.com/docs/cloud-agent#how-to-use\""
   },
   {
     "id": "workbench.context.add-file-to-cursor-chat.literal",
@@ -1110,24 +920,9 @@
     "target": "\"添加文件到新 Cursor 聊天\""
   },
   {
-    "id": "workbench.settings.search-settings.literal",
-    "source": "\"Search settings\"",
-    "target": "\"搜索设置\""
-  },
-  {
     "id": "workbench.chat.open-in-chat.literal",
     "source": "\"Open in Chat\"",
     "target": "\"在聊天中打开\""
-  },
-  {
-    "id": "workbench.plan-usage.current-plan.uppercase-children",
-    "source": "children:\"CURRENT PLAN\"",
-    "target": "children:\"当前计划\""
-  },
-  {
-    "id": "workbench.plan-usage.plan-names.trial-dynamic",
-    "source": "return()=>Je()?\"Pro Trial\":r()===yc.FREE?\"Free Plan\":\"Pro+ Trial\"",
-    "target": "return()=>Je()?\"Pro 试用\":r()===yc.FREE?\"免费计划\":\"Pro+ 试用\""
   },
   {
     "id": "workbench.plan-usage.plan-description.pro-pro-plus-ultra",
@@ -1135,19 +930,9 @@
     "target": "case\"pro\":return\"入门计划，可使用高级模型、无限 Tab 补全等功能。\";case\"pro_plus\":return\"用量是 Pro 的 3 倍，解锁更高的 Agent 限额等功能。\";case\"ultra\":return\"最高价值方案，拥有 20 倍用量限额，并可提前使用高级功能。\""
   },
   {
-    "id": "workbench.plan-usage.current-plan.literal",
-    "source": "\"Current Plan\"",
-    "target": "\"当前计划\""
-  },
-  {
     "id": "workbench.plan-usage.ultra-plan.literal",
     "source": "\"Ultra Plan\"",
     "target": "\"Ultra 计划\""
-  },
-  {
-    "id": "workbench.plan-usage.included-in-ultra-plan.literal",
-    "source": "\"Included in Ultra Plan\"",
-    "target": "\"Ultra 计划包含\""
   },
   {
     "id": "workbench.plan-usage.on-demand-usage.literal",
@@ -1180,26 +965,6 @@
     "target": "title:\"为高级模型设置用量计费\",detail:\"要使用高级模型，你需要设置按用量计费。\",message:\"高级模型需要启用用量计费。\""
   },
   {
-    "id": "workbench.plan-usage.usage-pricing-setup.required",
-    "source": "label:\"Usage Pricing Required\",error:Bu.USAGE_PRICING_REQUIRED,detail:\"Usage pricing setup required.\",message:\"Usage pricing required.\"",
-    "target": "label:\"需要用量计费\",error:Bu.USAGE_PRICING_REQUIRED,detail:\"需要设置用量计费。\",message:\"需要用量计费。\""
-  },
-  {
-    "id": "workbench.plan-usage.pro-rate-limit.title-detail-message",
-    "source": "label:\"Pro User Rate Limit\",error:Bu.PRO_USER_RATE_LIMIT_EXCEEDED,title:\"You've hit rate limit for your Pro Plan\",detail:\"Upgrade to Ultra Plan for near unlimited use, or set a Spend Limit for overages.\",message:\"Pro user rate limit exceeded.\"",
-    "target": "label:\"Pro 用户速率限制\",error:Bu.PRO_USER_RATE_LIMIT_EXCEEDED,title:\"你已达到 Pro 计划的速率限制\",detail:\"升级到 Ultra 计划以获得近乎无限的使用量，或设置超额用量的支出限额。\",message:\"已超过 Pro 用户速率限制。\""
-  },
-  {
-    "id": "workbench.plan-usage.free-user-usage-limit",
-    "source": "label:\"Free User Usage Limit\",error:Bu.FREE_USER_USAGE_LIMIT,detail:\"Free user usage limit reached for this model.\",message:\"Free user usage limit reached.\"",
-    "target": "label:\"免费用户用量限制\",error:Bu.FREE_USER_USAGE_LIMIT,detail:\"此模型已达到免费用户用量限制。\",message:\"已达到免费用户用量限制。\""
-  },
-  {
-    "id": "workbench.plan-usage.pro-user-usage-limit",
-    "source": "label:\"Pro User Usage Limit\",error:Bu.PRO_USER_USAGE_LIMIT,detail:\"Pro user usage limit reached for this model.\"",
-    "target": "label:\"Pro 用户用量限制\",error:Bu.PRO_USER_USAGE_LIMIT,detail:\"此模型已达到 Pro 用户用量限制。\""
-  },
-  {
     "id": "workbench.plan-usage.enable-usage-based-pricing.title",
     "source": "title:\"Enable usage-based pricing\"",
     "target": "title:\"启用按用量计费\""
@@ -1210,16 +975,6 @@
     "target": "title:\"为高级模型启用按用量计费\""
   },
   {
-    "id": "workbench.plan-usage.configure-usage-pricing.modal",
-    "source": "mWT=st(\"<div><div><span>Configure Usage-Based Pricing</span><span></span></div><div class=cursor-modal-marketing-description>Skip the wait. Pay only for what you use.\")",
-    "target": "mWT=st(\"<div><div><span>配置按用量计费</span><span></span></div><div class=cursor-modal-marketing-description>无需等待，只为实际使用量付费。\")"
-  },
-  {
-    "id": "workbench.plan-usage.hard-limit.input",
-    "source": "dWT=st('<div><span>Hard limit</span><div><input type=text placeholder=\"Enter usage-based spend limit\">')",
-    "target": "dWT=st('<div><span>硬性限额</span><div><input type=text placeholder=\"输入按用量计费支出限额\">')"
-  },
-  {
     "id": "workbench.rules.add-skills.children",
     "source": "children:\"Add Skills\"",
     "target": "children:\"添加技能\""
@@ -1228,11 +983,6 @@
     "id": "workbench.rules.view-user-rules.command-label",
     "source": "static{this.LABEL=\"View User Rules\"}",
     "target": "static{this.LABEL=\"查看用户规则\"}"
-  },
-  {
-    "id": "workbench.rules.cursor-rules.literal",
-    "source": "[il.CURSOR_RULES]:\"Cursor Rules\"",
-    "target": "[il.CURSOR_RULES]:\"Cursor 规则\""
   },
   {
     "id": "workbench.subagents.cloud-tip.text",
@@ -1248,11 +998,6 @@
     "id": "workbench.context.open-in-browser.primary-button",
     "source": "primaryButtonLabel:\"Open in Browser\"",
     "target": "primaryButtonLabel:\"在浏览器中打开\""
-  },
-  {
-    "id": "workbench.context.reveal-file-in-os.windows-mac-folder",
-    "source": "Pqf=zu?Kt(8179,\"Reveal in File Explorer\"):Jo?Kt(8180,\"Reveal in Finder\"):Kt(8181,\"Open Containing Folder\")",
-    "target": "Pqf=zu?Kt(8179,\"在文件资源管理器中显示\"):Jo?Kt(8180,\"在 Finder 中显示\"):Kt(8181,\"打开所在文件夹\")"
   },
   {
     "id": "workbench.composer-pr.apply-changes.literal",
@@ -1300,34 +1045,9 @@
     "target": "label:\"全部\"},{id:\"user\",label:\"用户\"}];return R!=null"
   },
   {
-    "id": "workbench.mcp.add-server-form.cancel-save.short-labels",
-    "source": "children:\"Cancel\"}),e[4]=r,e[5]=d):d=e[5];const h=s===null;let f;e[6]!==l||e[7]!==h?(f=H(Zc,{variant:\"primary\",color:\"monochrome\",size:\"lg\",onClick:l,disabled:h,children:\"Save\"})",
-    "target": "children:\"取消\"}),e[4]=r,e[5]=d):d=e[5];const h=s===null;let f;e[6]!==l||e[7]!==h?(f=H(Zc,{variant:\"primary\",color:\"monochrome\",size:\"lg\",onClick:l,disabled:h,children:\"保存\"})"
-  },
-  {
     "id": "workbench.plan-usage.included-usage-bar-labels.short-total",
     "source": "autoUsageBarLabel:\"your included total usage\",apiUsageBarLabel:\"your included API usage\"",
     "target": "autoUsageBarLabel:\"你包含的总用量\",apiUsageBarLabel:\"你包含的 API 用量\""
-  },
-  {
-    "id": "workbench.scm.agent-review-settings.command-title",
-    "source": "title:Kt(10448,\"Agent Review Settings\")",
-    "target": "title:Kt(10448,\"智能体审阅设置\")"
-  },
-  {
-    "id": "workbench.scm.start-agent-review.command-title",
-    "source": "title:Kt(10449,\"Start Agent Review\")",
-    "target": "title:Kt(10449,\"开始智能体审阅\")"
-  },
-  {
-    "id": "workbench.bugbot.setup.command-title",
-    "source": "title:Kt(3025,\"Setup Bugbot\")",
-    "target": "title:Kt(3025,\"设置 Bugbot\")"
-  },
-  {
-    "id": "workbench.bugbot.link.single-folder-error",
-    "source": "Fi.error(\"Choose a single local folder (repository root) to open this Bugbot link.\")",
-    "target": "Fi.error(\"请选择一个本地文件夹（仓库根目录）以打开此 Bugbot 链接。\")"
   },
   {
     "id": "workbench.agent.sidebar.new-agent.hint-text",
@@ -1335,9 +1055,19 @@
     "target": "return s?`新建智能体 (${s})`:\"新建智能体\""
   },
   {
-    "id": "workbench.agent.sidebar.new-agent.children",
-    "source": "children:\"New Agent\"})}function TTC()",
-    "target": "children:\"新建智能体\"})}function TTC()"
+    "id": "workbench.composer.new-agent.current-constant",
+    "source": "eXm=\"New Agent\"",
+    "target": "eXm=\"新建智能体\""
+  },
+  {
+    "id": "workbench.plan-agent-list.new-agent-button",
+    "source": "className:\"plan-agent-list__new-button\",children:\"New Agent\"",
+    "target": "className:\"plan-agent-list__new-button\",children:\"新建智能体\""
+  },
+  {
+    "id": "workbench.editor-title.new-agent-command",
+    "source": "title:\"New Agent\",icon:lt.addTwo},alt:{id:sui,title:\"Replace Agent\"",
+    "target": "title:\"新建智能体\",icon:lt.addTwo},alt:{id:sui,title:\"替换智能体\""
   },
   {
     "id": "workbench.agent.new-agent-preserve-editor.title",
@@ -1348,11 +1078,6 @@
     "id": "workbench.background-agent.overview-button.children",
     "source": "children:\"Open Background Agent Overview\"",
     "target": "children:\"打开后台智能体概览\""
-  },
-  {
-    "id": "workbench.background-agent.worktree-tab-title.html",
-    "source": "ImC=st('\u003cspan title=\"Agent in Worktree\"\u003e')",
-    "target": "ImC=st('\u003cspan title=\"工作树中的智能体\"\u003e')"
   },
   {
     "id": "workbench.cursor-tab.configure-diff-peek-view.command-title",
@@ -1380,8 +1105,488 @@
     "target": "hintText:\"将更改应用到主工作目录\""
   },
   {
-    "id": "workbench.rules.apply-mode.options",
-    "source": "label:\"Always Apply\",description:\"Apply to every chat and cmd-k session\"},{value:\"agent\",label:\"Apply Intelligently\",description:\"When Agent decides it's relevant based on description\"},{value:\"auto\",label:\"Specific Files\",description:\"When file matches a specified pattern\"},{value:\"manual\",label:\"Apply Manually\",description:\"When @-mentioned\"",
-    "target": "label:\"始终应用\",description:\"应用到每个聊天和 cmd-k 会话\"},{value:\"agent\",label:\"智能应用\",description:\"当智能体根据描述判断相关时\"},{value:\"auto\",label:\"指定文件\",description:\"当文件匹配指定模式时\"},{value:\"manual\",label:\"手动应用\",description:\"当被 @ 提及时\""
+    "id": "workbench.composer.mode-agent.name",
+    "source": "modes4:[{id:\"agent\",name:\"Agent\",actionId:\"composerMode.agent\"",
+    "target": "modes4:[{id:\"agent\",name:\"智能体\",actionId:\"composerMode.agent\""
+  },
+  {
+    "id": "workbench.composer.mode-plan.name",
+    "source": "{id:\"plan\",name:\"Plan\",actionId:\"composerMode.plan\"",
+    "target": "{id:\"plan\",name:\"计划\",actionId:\"composerMode.plan\""
+  },
+  {
+    "id": "workbench.composer.mode-debug.name",
+    "source": "{id:\"debug\",name:\"Debug\",actionId:\"composerMode.debug\"",
+    "target": "{id:\"debug\",name:\"调试\",actionId:\"composerMode.debug\""
+  },
+  {
+    "id": "workbench.composer.mode-ask.name",
+    "source": "{id:\"chat\",name:\"Ask\",actionId:\"composerMode.chat\"",
+    "target": "{id:\"chat\",name:\"询问\",actionId:\"composerMode.chat\""
+  },
+  {
+    "id": "workbench.browser-pending-changes.apply-button",
+    "source": "class:\"browser-pending-changes-button\",children:\"Apply\"",
+    "target": "class:\"browser-pending-changes-button\",children:\"应用\""
+  },
+  {
+    "id": "workbench.composer-notification.accept-reject-buttons",
+    "source": "actions:[{type:\"button\",text:\"Accept\"},{type:\"button\",text:\"Reject\"}]",
+    "target": "actions:[{type:\"button\",text:\"接受\"},{type:\"button\",text:\"拒绝\"}]"
+  },
+  {
+    "id": "workbench.composer-source.label",
+    "source": "case\"composer\":return t?`Composer: ${t}`:\"Composer\";case\"cursorRules\"",
+    "target": "case\"composer\":return t?`编写器: ${t}`:\"编写器\";case\"cursorRules\""
+  },
+  {
+    "id": "workbench.composer.chat-history.command-title",
+    "source": "aXm=\"Show Chat History\"",
+    "target": "aXm=\"显示聊天历史\""
+  },
+  {
+    "id": "workbench.composer.chat-history-editor.command-title",
+    "source": "lXm=\"Show Chat History (Editor)\"",
+    "target": "lXm=\"显示聊天历史（编辑器）\""
+  },
+  {
+    "id": "workbench.editor-title.chat-history.command-title",
+    "source": "title:\"Show Chat History\",icon:lt.historyTwo",
+    "target": "title:\"显示聊天历史\",icon:lt.historyTwo"
+  },
+  {
+    "id": "workbench.common.more-actions.aria-label",
+    "source": "H(ch,{icon:\"ellipsis\",size:\"sm\",variant:\"default\",\"aria-label\":\"More actions\"",
+    "target": "H(ch,{icon:\"ellipsis\",size:\"sm\",variant:\"default\",\"aria-label\":\"更多操作\""
+  },
+  {
+    "id": "workbench.composer.more-actions.command-title",
+    "source": "title:{value:\"More Actions\",original:\"More Actions\"}",
+    "target": "title:{value:\"更多操作\",original:\"更多操作\"}"
+  },
+  {
+    "id": "workbench.background-composer.more-actions.hint-text",
+    "source": "hintText:\"More actions\",size:16",
+    "target": "hintText:\"更多操作\",size:16"
+  },
+  {
+    "id": "workbench.agent-settings.command-title",
+    "source": "title:{value:\"Agent Settings\",original:\"Agent Settings\"}",
+    "target": "title:{value:\"智能体设置\",original:\"智能体设置\"}"
+  },
+  {
+    "id": "workbench.composer.toggle-chat-pane.command-title",
+    "source": "command:{id:\"workbench.action.toggleAuxiliaryBar\",title:\"Toggle Chat Pane\"}",
+    "target": "command:{id:\"workbench.action.toggleAuxiliaryBar\",title:\"切换聊天面板\"}"
+  },
+  {
+    "id": "workbench.composer.maximize-chat.command-title",
+    "source": "command:{id:\"workbench.action.maximizeChatSize\",title:\"Maximize Chat\",toggled:je.equals(\"agentChatMaximized\",!0)}",
+    "target": "command:{id:\"workbench.action.maximizeChatSize\",title:\"最大化聊天\",toggled:je.equals(\"agentChatMaximized\",!0)}"
+  },
+  {
+    "id": "workbench.composer.close-tab.command-title",
+    "source": "title:{value:\"Close Tab\",original:\"Close Tab\"}",
+    "target": "title:{value:\"关闭标签页\",original:\"关闭标签页\"}"
+  },
+  {
+    "id": "workbench.composer.close-other-tabs.command-title",
+    "source": "title:{value:\"Close Other Tabs\",original:\"Close Other Tabs\"}",
+    "target": "title:{value:\"关闭其他标签页\",original:\"关闭其他标签页\"}"
+  },
+  {
+    "id": "workbench.composer.close-all-tabs.command-title",
+    "source": "title:{value:\"Close All Tabs\",original:\"Close All Tabs\"}",
+    "target": "title:{value:\"关闭所有标签页\",original:\"关闭所有标签页\"}"
+  },
+  {
+    "id": "workbench.composer.open-tab-as-editor.command-title",
+    "source": "title:{value:\"Open Tab as Editor\",original:\"Open Tab as Editor\"}",
+    "target": "title:{value:\"作为编辑器打开标签页\",original:\"作为编辑器打开标签页\"}"
+  },
+  {
+    "id": "workbench.composer.export-transcript.command-title",
+    "source": "title:{value:\"Export Transcript\",original:\"Export Transcript\"}",
+    "target": "title:{value:\"导出转录\",original:\"导出转录\"}"
+  },
+  {
+    "id": "workbench.composer.copy-request-id.command-title",
+    "source": "title:{value:\"Copy Request ID\",original:\"Copy Request ID\"}",
+    "target": "title:{value:\"复制请求 ID\",original:\"复制请求 ID\"}"
+  },
+  {
+    "id": "workbench.composer.mode-agent.current-description",
+    "source": "description:\"Plan, search, make edits, run commands\"",
+    "target": "description:\"规划、搜索、编辑、运行命令\""
+  },
+  {
+    "id": "workbench.composer.mode-plan.description",
+    "source": "description:\"Create detailed plans for accomplishing tasks\"",
+    "target": "description:\"创建用于完成任务的详细计划\""
+  },
+  {
+    "id": "workbench.composer.mode-debug.description",
+    "source": "description:\"Systematically diagnose and fix bugs using runtime traces\"",
+    "target": "description:\"使用运行时跟踪系统化诊断并修复错误\""
+  },
+  {
+    "id": "workbench.composer.mode-ask.description",
+    "source": "description:\"Ask Cursor questions about your codebase\"",
+    "target": "description:\"向 Cursor 询问你的代码库相关问题\""
+  },
+  {
+    "id": "workbench.composer.placeholder.plan-build-context",
+    "source": "if(s())return\"Plan, Build, / for commands, @ for context\"",
+    "target": "if(s())return\"计划、构建；输入 / 使用命令，输入 @ 添加上下文\""
+  },
+  {
+    "id": "workbench.composer.placeholder.ask-learn-brainstorm",
+    "source": "case\"chat\":return\"Ask, learn, brainstorm\"",
+    "target": "case\"chat\":return\"提问、学习、头脑风暴\""
+  },
+  {
+    "id": "workbench.composer.placeholder.agent-build-anything",
+    "source": "case\"agent\":default:return\"Plan, search, build anything\"",
+    "target": "case\"agent\":default:return\"规划、搜索、构建任何内容\""
+  },
+  {
+    "id": "workbench.agent.sidebar.toggle-command-label",
+    "source": "static{this.LABEL=jt(4798,\"Toggle Agents Side Bar\")}",
+    "target": "static{this.LABEL=jt(4798,\"切换智能体侧边栏\")}"
+  },
+  {
+    "id": "workbench.agent.sidebar.toggle-tooltip",
+    "source": "return a?`Toggle Agents Side Bar (${a})`:\"Toggle Agents Side Bar\"",
+    "target": "return a?`切换智能体侧边栏 (${a})`:\"切换智能体侧边栏\""
+  },
+  {
+    "id": "workbench.plan.build-in-new-agent-button",
+    "source": "className:\"plan-todos-section__phase-action plan-todos-section__phase-action--build\",children:\"Build in New Agent\"",
+    "target": "className:\"plan-todos-section__phase-action plan-todos-section__phase-action--build\",children:\"在新智能体中构建\""
+  },
+  {
+    "id": "workbench.plan.view-plan.menu-title",
+    "source": "id:\"view-plan\",title:\"View Plan\",onClick:",
+    "target": "id:\"view-plan\",title:\"查看计划\",onClick:"
+  },
+  {
+    "id": "workbench.plan.view-plan.button-children",
+    "source": "class:\"composer-create-plan-view-plan-button\",onClick:en,children:\"View Plan\"",
+    "target": "class:\"composer-create-plan-view-plan-button\",onClick:en,children:\"查看计划\""
+  },
+  {
+    "id": "workbench.plan.view-plan.task-card-action",
+    "source": "kind:\"view-plan\",label:\"View Plan\",variant:\"primary\"",
+    "target": "kind:\"view-plan\",label:\"查看计划\",variant:\"primary\""
+  },
+  {
+    "id": "workbench.composer.context.chat-history.section-title",
+    "source": "title:\"Chat history\",get each(){return a()},get show(){return a().length>0},get isFocused(){return n.focusedSection===\"ctx-chat-history\"}",
+    "target": "title:\"聊天历史\",get each(){return a()},get show(){return a().length>0},get isFocused(){return n.focusedSection===\"ctx-chat-history\"}"
+  },
+  {
+    "id": "workbench.composer.context.chat-history.box-title",
+    "source": "type:\"intent-chat-history\"},l,{boxPropsFunc:h=>({title:\"Chat history\",icon:Fn.asClassName(lt.commentDiscussion)",
+    "target": "type:\"intent-chat-history\"},l,{boxPropsFunc:h=>({title:\"聊天历史\",icon:Fn.asClassName(lt.commentDiscussion)"
+  },
+  {
+    "id": "workbench.composer.agent-data.default-title-constant",
+    "source": "wbp(),B6i=\"New Agent\",Uc=yr(\"composerDataService\")",
+    "target": "wbp(),B6i=\"新建智能体\",Uc=yr(\"composerDataService\")"
+  },
+  {
+    "id": "workbench.agent-repository.default-title-constant",
+    "source": "\"out-build/vs/workbench/services/agentData/common/agentRepositoryService.js\"(){\"use strict\";Js(),X_t=\"New Agent\"}",
+    "target": "\"out-build/vs/workbench/services/agentData/common/agentRepositoryService.js\"(){\"use strict\";Js(),X_t=\"新建智能体\"}"
+  },
+  {
+    "id": "workbench.composer.open-pr.default-title",
+    "source": "e.composerDataService.getComposerTitle(Nr)||o()?.data?.name||\"New Agent\";await(Zt()?e.composerService.openWorktreePR",
+    "target": "e.composerDataService.getComposerTitle(Nr)||o()?.data?.name||\"新建智能体\";await(Zt()?e.composerService.openWorktreePR"
+  },
+  {
+    "id": "workbench.composer.best-of-n.ai-name-fallback",
+    "source": ")).name||L0||\"New Agent\"}catch(Np){return console.error(\"Error generating AI name for Best-of-N\",Np),L0||\"New Agent\"}",
+    "target": ")).name||L0||\"新建智能体\"}catch(Np){return console.error(\"Error generating AI name for Best-of-N\",Np),L0||\"新建智能体\"}"
+  },
+  {
+    "id": "workbench.composer.best-of-n.subcomposer-name-fallback",
+    "source": "u0.name=Tr.data.name??(L0||\"New Agent\"),u0.unifiedMode=Tr.data.unifiedMode",
+    "target": "u0.name=Tr.data.name??(L0||\"新建智能体\"),u0.unifiedMode=Tr.data.unifiedMode"
+  },
+  {
+    "id": "workbench.composer.subagent-bubble.new-agent-title",
+    "source": "return fe()?\"New Agent\":Re()?Ttf({bubbleDescription:n.bubbleData.params?.description,liveComposerName:Jt,loadingTitle:xtf})",
+    "target": "return fe()?\"新建智能体\":Re()?Ttf({bubbleDescription:n.bubbleData.params?.description,liveComposerName:Jt,loadingTitle:xtf})"
+  },
+  {
+    "id": "workbench.composer.best-of-n-runner.new-agent-title",
+    "source": "n.bubbleData.params?.name||\"\")===\"best-of-n-runner\"),ye=We(()=>{const Ct=n.bubbleData.params?.name||\"general-purpose\",Rt=n.bubbleData.params?.subagentType,At=h()?.data.name,Pt=n.bubbleData.params?.description?.trim();return Y()?\"New Agent\"",
+    "target": "n.bubbleData.params?.name||\"\")===\"best-of-n-runner\"),ye=We(()=>{const Ct=n.bubbleData.params?.name||\"general-purpose\",Rt=n.bubbleData.params?.subagentType,At=h()?.data.name,Pt=n.bubbleData.params?.description?.trim();return Y()?\"新建智能体\""
+  },
+  {
+    "id": "workbench.composer.background-linked-default-title",
+    "source": "S()?.name?.trim()??CMn:n.composer.name||\"New Agent\"),I=We(()=>{if(n.filesChanged!==void 0)return n.filesChanged",
+    "target": "S()?.name?.trim()??CMn:n.composer.name||\"新建智能体\"),I=We(()=>{if(n.filesChanged!==void 0)return n.filesChanged"
+  },
+  {
+    "id": "workbench.agent-list.empty-state.new-agent-action",
+    "source": "title:\"No agents yet\",description:\"Create an agent to start working on tasks\",actionTitle:\"New Agent\",action:l",
+    "target": "title:\"暂无智能体\",description:\"创建一个智能体开始处理任务\",actionTitle:\"新建智能体\",action:l"
+  },
+  {
+    "id": "workbench.agent-list.composer-default-name",
+    "source": "return X.composer.name||\"New Agent\"}return X.backgroundComposer.name||\"Cloud Agent\"",
+    "target": "return X.composer.name||\"新建智能体\"}return X.backgroundComposer.name||\"云端智能体\""
+  },
+  {
+    "id": "workbench.more-actions.trigger-aria-label.default-button",
+    "source": "H(ch,{icon:\"ellipsis\",size:\"sm\",variant:\"default\",\"aria-label\":\"More actions\",...t})",
+    "target": "H(ch,{icon:\"ellipsis\",size:\"sm\",variant:\"default\",\"aria-label\":\"更多操作\",...t})"
+  },
+  {
+    "id": "workbench.more-actions.trigger-aria-label.menu-sm",
+    "source": "H(ch,{\"aria-label\":\"More actions\",icon:\"ellipsis\",size:\"sm\"})",
+    "target": "H(ch,{\"aria-label\":\"更多操作\",icon:\"ellipsis\",size:\"sm\"})"
+  },
+  {
+    "id": "workbench.more-actions.trigger-aria-label.menu-lg",
+    "source": "H(ch,{\"aria-label\":\"More actions\",icon:\"dots-3-horizontal\",size:\"lg\"})",
+    "target": "H(ch,{\"aria-label\":\"更多操作\",icon:\"dots-3-horizontal\",size:\"lg\"})"
+  },
+  {
+    "id": "workbench.agent-history.more-actions.button",
+    "source": "className:\"compact-agent-history-react-menu-actions\",children:[H(\"button\",{\"aria-label\":\"More actions\",className:\"compact-agent-history-react-menu-action-button\",onClick:rt.handleActionsClick,title:\"More actions\"",
+    "target": "className:\"compact-agent-history-react-menu-actions\",children:[H(\"button\",{\"aria-label\":\"更多操作\",className:\"compact-agent-history-react-menu-action-button\",onClick:rt.handleActionsClick,title:\"更多操作\""
+  },
+  {
+    "id": "workbench.agent-history.more-actions.button-alt",
+    "source": "className:\"compact-agent-history-react-menu-actions\",children:[H(\"button\",{\"aria-label\":\"More actions\",className:\"compact-agent-history-react-menu-action-button\",onClick:tt.handleActionsClick,title:\"More actions\"",
+    "target": "className:\"compact-agent-history-react-menu-actions\",children:[H(\"button\",{\"aria-label\":\"更多操作\",className:\"compact-agent-history-react-menu-action-button\",onClick:tt.handleActionsClick,title:\"更多操作\""
+  },
+  {
+    "id": "workbench.more-actions.row-actions.aria-label",
+    "source": "H(EOh,{icon:\"dots-3-horizontal\",variant:\"default\",size:\"sm\",\"aria-label\":\"More actions\",onClick:AZ_,onKeyDown:xZ_})",
+    "target": "H(EOh,{icon:\"dots-3-horizontal\",variant:\"default\",size:\"sm\",\"aria-label\":\"更多操作\",onClick:AZ_,onKeyDown:xZ_})"
+  },
+  {
+    "id": "workbench.automations.more-actions.aria-label",
+    "source": "className:\"automations-detail-toolbar-icon-button\",\"aria-label\":\"More actions\",children:H(Vg,{name:\"ellipsis\",size:14})",
+    "target": "className:\"automations-detail-toolbar-icon-button\",\"aria-label\":\"更多操作\",children:H(Vg,{name:\"ellipsis\",size:14})"
+  },
+  {
+    "id": "workbench.more-actions.hint-with-style",
+    "source": "hintText:\"More actions\",style:{display:\"flex\",\"justify-content\":\"center\",\"align-items\":\"center\"}",
+    "target": "hintText:\"更多操作\",style:{display:\"flex\",\"justify-content\":\"center\",\"align-items\":\"center\"}"
+  },
+  {
+    "id": "workbench.composer.toolbar.more-actions.hint",
+    "source": "get codicon(){return lt.ellipsisTwo},onClick:Ht=>{Ht.stopPropagation();const rn=Ht.currentTarget;ht(_t(rn))},hintText:\"More actions\",class:\"[&>span]:!text-[14px]\"",
+    "target": "get codicon(){return lt.ellipsisTwo},onClick:Ht=>{Ht.stopPropagation();const rn=Ht.currentTarget;ht(_t(rn))},hintText:\"更多操作\",class:\"[&>span]:!text-[14px]\""
+  },
+  {
+    "id": "workbench.agent-tab.more-actions.hint",
+    "source": "class:\"agent-tab-action-button\",get codicon(){return lt.ellipsisTwo},iconClass:\"!text-[14px]\",hintText:\"More actions\",onClick:ne=>",
+    "target": "class:\"agent-tab-action-button\",get codicon(){return lt.ellipsisTwo},iconClass:\"!text-[14px]\",hintText:\"更多操作\",onClick:ne=>"
+  },
+  {
+    "id": "workbench.composer.context-menu.more-actions.hint",
+    "source": "contextKeyService:e.contextKeyService,domForShadowRoot:MC().body})},hintText:\"More actions\"})),Sn(se=>",
+    "target": "contextKeyService:e.contextKeyService,domForShadowRoot:MC().body})},hintText:\"更多操作\"})),Sn(se=>"
+  },
+  {
+    "id": "workbench.composer.context-menu.more-actions.hint-alt",
+    "source": "contextKeyService:i.contextKeyService,domForShadowRoot:MC().body})},hintText:\"More actions\"})),Sn(yw=>",
+    "target": "contextKeyService:i.contextKeyService,domForShadowRoot:MC().body})},hintText:\"更多操作\"})),Sn(yw=>"
+  },
+  {
+    "id": "workbench.unified-sidebar.agent.more-actions.hint",
+    "source": "re($cn,{name:\"more\",hintText:\"More actions\",size:16,onMouseDown:Ne,onClick:Se})",
+    "target": "re($cn,{name:\"more\",hintText:\"更多操作\",size:16,onMouseDown:Ne,onClick:Se})"
+  },
+  {
+    "id": "workbench.unified-sidebar.background-agent.more-actions.hint",
+    "source": "re($cn,{name:\"more\",hintText:\"More actions\",size:16,onMouseDown:M,onClick:I})",
+    "target": "re($cn,{name:\"more\",hintText:\"更多操作\",size:16,onMouseDown:M,onClick:I})"
+  },
+  {
+    "id": "workbench.plan.phase-more-actions.tooltip",
+    "source": "onMouseEnter:vn=>(t({content:\"More actions\",target:vn.currentTarget}),!1),onMouseLeave:()=>",
+    "target": "onMouseEnter:vn=>(t({content:\"更多操作\",target:vn.currentTarget}),!1),onMouseLeave:()=>"
+  },
+  {
+    "id": "workbench.composer.mode-description.chat-edit-plan-chain",
+    "source": "case\"chat\":return\"Ask Cursor questions about your codebase\";case\"edit\":return\"Manually decide what gets added to the context (no tools)\";case\"plan\":return\"Create detailed plans for accomplishing tasks\"",
+    "target": "case\"chat\":return\"向 Cursor 询问你的代码库相关问题\";case\"edit\":return\"手动决定添加到上下文的内容（不使用工具）\";case\"plan\":return\"创建用于完成任务的详细计划\""
+  },
+  {
+    "id": "workbench.composer.mode-description.spec-multitask-chain",
+    "source": "case\"spec\":return\"Create structured plans with implementation steps\";case\"multitask\":return\"Run and coordinate multiple tasks in parallel\";case\"triage\":return\"Coordinate long-horizon tasks with delegated subagents\"",
+    "target": "case\"spec\":return\"创建包含实施步骤的结构化计划\";case\"multitask\":return\"并行运行和协调多个任务\";case\"triage\":return\"协调由子智能体委派的长期任务\""
+  },
+  {
+    "id": "workbench.composer.mode-spec.inline-description",
+    "source": "id:\"spec\",name:\"Spec\",actionId:\"composerMode.spec\",icon:\"checklist\",description:\"Create structured plans with implementation steps\"",
+    "target": "id:\"spec\",name:\"Spec\",actionId:\"composerMode.spec\",icon:\"checklist\",description:\"创建包含实施步骤的结构化计划\""
+  },
+  {
+    "id": "workbench.composer.mode-multitask.inline-description",
+    "source": "id:\"multitask\",name:\"Multitask\",actionId:\"composerMode.multitask\",icon:\"circles\",description:\"Run and coordinate multiple tasks in parallel\"",
+    "target": "id:\"multitask\",name:\"Multitask\",actionId:\"composerMode.multitask\",icon:\"circles\",description:\"并行运行和协调多个任务\""
+  },
+  {
+    "id": "workbench.composer.mode-multitask.meta-description",
+    "source": "var vHi={id:\"multitask\",label:\"Multitask\",icon:\"circles\",color:\"purple\",placeholder:\"Coordinate parallel tasks...\",description:\"Run and coordinate multiple tasks in parallel\"}",
+    "target": "var vHi={id:\"multitask\",label:\"Multitask\",icon:\"circles\",color:\"purple\",placeholder:\"协调并行任务...\",description:\"并行运行和协调多个任务\"}"
+  },
+  {
+    "id": "workbench.composer.title-fallback.new-agent",
+    "source": "n.fallback||\"New Agent\"),I})()},get children(){var I=$dC()",
+    "target": "n.fallback||\"新建智能体\"),I})()},get children(){var I=$dC()"
+  },
+  {
+    "id": "workbench.composer.title-override.fallback-new-agent",
+    "source": "fallback:\"New Agent\",get hasWorktree(){return I()},get projectName(){return o()},onProjectClick:q,get isSpec(){return t().isSpec}",
+    "target": "fallback:\"新建智能体\",get hasWorktree(){return I()},get projectName(){return o()},onProjectClick:q,get isSpec(){return t().isSpec}"
+  },
+  {
+    "id": "workbench.composer.title-card.fallback-new-agent",
+    "source": "fallback:\"New Agent\",get hasWorktree(){return!!h().gitWorktree},get projectName(){return oT()},onProjectClick:qk",
+    "target": "fallback:\"新建智能体\",get hasWorktree(){return!!h().gitWorktree},get projectName(){return oT()},onProjectClick:qk"
+  },
+  {
+    "id": "workbench.composer.open-new-agent-chat.command-title",
+    "source": "title:{value:\"Open New Agent Chat\",original:\"Open New Agent Chat\"},f1:!0,keybinding:{primary:Plb",
+    "target": "title:{value:\"打开新智能体聊天\",original:\"打开新智能体聊天\"},f1:!0,keybinding:{primary:Plb"
+  },
+  {
+    "id": "workbench.agent-sidebar.new-agent-button.children",
+    "source": "class:\"agent-sidebar-new-agent-button\",get variant(){return n.isPrimary?\"primary\":\"outline\"},get hintText(){return i()},onClick:()=>{e.commandService.executeCommand(wme,{view:e.composerViewsService.getDefaultLocation(),source:\"sidebar\"})},children:\"New Agent\"",
+    "target": "class:\"agent-sidebar-new-agent-button\",get variant(){return n.isPrimary?\"primary\":\"outline\"},get hintText(){return i()},onClick:()=>{e.commandService.executeCommand(wme,{view:e.composerViewsService.getDefaultLocation(),source:\"sidebar\"})},children:\"新建智能体\""
+  },
+  {
+    "id": "workbench.agent-sidebar.view-title.new-agent",
+    "source": "us.appendMenuItem(Gt.ViewTitle,{command:{id:wme,title:\"New Agent\",icon:lt.addTwo},group:\"navigation\",order:0,when:je.equals(\"view\",QVi.ID)})",
+    "target": "us.appendMenuItem(Gt.ViewTitle,{command:{id:wme,title:\"新建智能体\",icon:lt.addTwo},group:\"navigation\",order:0,when:je.equals(\"view\",QVi.ID)})"
+  },
+  {
+    "id": "workbench.project-editor.breadcrumbs.new-agent",
+    "source": "variant:\"primary\",onClick:t,class:\"breadcrumbs-action-btn\",children:\"New Agent\"",
+    "target": "variant:\"primary\",onClick:t,class:\"breadcrumbs-action-btn\",children:\"新建智能体\""
+  },
+  {
+    "id": "workbench.glass-sidebar.header-default.new-agent",
+    "source": "h=t.name.value||\"New Agent\";let f;e[0]!==t||e[1]!==i||e[2]!==d?",
+    "target": "h=t.name.value||\"新建智能体\";let f;e[0]!==t||e[1]!==i||e[2]!==d?"
+  },
+  {
+    "id": "workbench.glass-sidebar.new-agent-pane-label",
+    "source": "\"new-agent\":{id:\"new-agent\",iconName:\"agent\",label:\"New Agent\",placeholderContent:\"\",showsAgentSelector:!0,editorPanelType:\"full\"}",
+    "target": "\"new-agent\":{id:\"new-agent\",iconName:\"agent\",label:\"新建智能体\",placeholderContent:\"\",showsAgentSelector:!0,editorPanelType:\"full\"}"
+  },
+  {
+    "id": "workbench.glass-palette.new-agent-cloud-project",
+    "source": "S?gs:`New Agent in ${gs}`]},Nr)}),h?.map(rr=>ct(Vv.Item",
+    "target": "S?gs:`在 ${gs} 中新建智能体`]},Nr)}),h?.map(rr=>ct(Vv.Item"
+  },
+  {
+    "id": "workbench.glass-palette.new-agent-workspace-project",
+    "source": "S?rr.name:`New Agent in ${rr.name}`]},rr.id))]})]}),Hi=()=>H(Vv.Group",
+    "target": "S?rr.name:`在 ${rr.name} 中新建智能体`]},rr.id))]})]}),Hi=()=>H(Vv.Group"
+  },
+  {
+    "id": "workbench.glass-palette.new-agent-with-model-heading",
+    "source": "Hi=()=>H(Vv.Group,{disabled:!cr,heading:\"New Agent with Model\",children:cr?Ct.map",
+    "target": "Hi=()=>H(Vv.Group,{disabled:!cr,heading:\"使用模型新建智能体\",children:cr?Ct.map"
+  },
+  {
+    "id": "workbench.glass-agent-panel.new-agent-in-project",
+    "source": "P(\"glass.agentPanel.newAgentInProject\",\"New Agent in Project\")",
+    "target": "P(\"glass.agentPanel.newAgentInProject\",\"在项目中新建智能体\")"
+  },
+  {
+    "id": "workbench.composer-list.loaded-composer-default-name",
+    "source": "const Hr=e.composerDataService.loadedComposers.byId[_o]?.name||\"New Agent\",Ys=e.composerDataService.selectedComposerId===_o",
+    "target": "const Hr=e.composerDataService.loadedComposers.byId[_o]?.name||\"新建智能体\",Ys=e.composerDataService.selectedComposerId===_o"
+  },
+  {
+    "id": "workbench.agent-headers.default-name-list",
+    "source": "return{id:Le.id,name:Le.name.value||\"New Agent\",lastUpdatedAt:Le.lastUpdatedAt.value??Le.createdAt",
+    "target": "return{id:Le.id,name:Le.name.value||\"新建智能体\",lastUpdatedAt:Le.lastUpdatedAt.value??Le.createdAt"
+  },
+  {
+    "id": "workbench.agent-layout.new-agent.command-title",
+    "source": "Vl({id:\"newAgent\",title:\"New Agent\",icon:\"agent\",glassCategory:\"Agent\",f1:!0,run:(n,...e)=>",
+    "target": "Vl({id:\"newAgent\",title:\"新建智能体\",icon:\"agent\",glassCategory:\"Agent\",f1:!0,run:(n,...e)=>"
+  },
+  {
+    "id": "workbench.agent-layout.new-agent-file-menu-title",
+    "source": "Vl({id:L1p,title:\"New Agent\",icon:\"agent\",f1:!1,keybindingCategory:Mh.GENERAL,keybinding:{weight:RI,primary:2092},menu:{column:Gt.MenubarFileMenu,group:\"1_new\",order:0,title:\"New Agent\"}",
+    "target": "Vl({id:L1p,title:\"新建智能体\",icon:\"agent\",f1:!1,keybindingCategory:Mh.GENERAL,keybinding:{weight:RI,primary:2092},menu:{column:Gt.MenubarFileMenu,group:\"1_new\",order:0,title:\"新建智能体\"}"
+  },
+  {
+    "id": "workbench.agent-layout.new-agent-cmdt-title",
+    "source": "Vl({id:\"newAgentFromCmdT\",title:\"New Agent\",icon:\"agent\",f1:!1,keybindingCategory:Mh.GENERAL,keybindingDescription:\"when editor panel hidden\"",
+    "target": "Vl({id:\"newAgentFromCmdT\",title:\"新建智能体\",icon:\"agent\",f1:!1,keybindingCategory:Mh.GENERAL,keybindingDescription:\"when editor panel hidden\""
+  },
+  {
+    "id": "workbench.agent-layout.new-agent-with-model.command-title",
+    "source": "Vl({id:\"newAgentWithModel\",title:\"New Agent with Model\",icon:\"sparkle\",glassCategory:\"Agent\",run:(n,e)=>",
+    "target": "Vl({id:\"newAgentWithModel\",title:\"使用模型新建智能体\",icon:\"sparkle\",glassCategory:\"Agent\",run:(n,e)=>"
+  },
+  {
+    "id": "workbench.agent-layout.new-agent-with-query.command-title",
+    "source": "Vl({id:\"newAgentWithQuery\",title:\"New Agent with Query\",icon:\"plus\",glassCategory:\"Agent\",run:(n,e)=>",
+    "target": "Vl({id:\"newAgentWithQuery\",title:\"使用查询新建智能体\",icon:\"plus\",glassCategory:\"Agent\",run:(n,e)=>"
+  },
+  {
+    "id": "workbench.agent-layout.new-agent-with-context.command-title",
+    "source": "Vl({id:eqp,title:\"New Agent with Context\",icon:\"sparkle\",f1:!1,hidden:!0,scope:gf.AGENT_WORKSPACE",
+    "target": "Vl({id:eqp,title:\"带上下文新建智能体\",icon:\"sparkle\",f1:!1,hidden:!0,scope:gf.AGENT_WORKSPACE"
+  },
+  {
+    "id": "workbench.agent-project.register-local-agent.default-name",
+    "source": "registerLocalAgent({composerId:r,workspaceIdentifier:t.environment,projectId:u,name:\"New Agent\",location:s,locationHistory:o})",
+    "target": "registerLocalAgent({composerId:r,workspaceIdentifier:t.environment,projectId:u,name:\"新建智能体\",location:s,locationHistory:o})"
+  },
+  {
+    "id": "workbench.agent-project.register-local-agent.default-name-alt",
+    "source": "registerLocalAgent({composerId:h,workspaceIdentifier:v.environment,projectId:E,name:\"New Agent\",location:f.location,locationHistory:f.locationHistory})",
+    "target": "registerLocalAgent({composerId:h,workspaceIdentifier:v.environment,projectId:E,name:\"新建智能体\",location:f.location,locationHistory:f.locationHistory})"
+  },
+  {
+    "id": "workbench.glass.new-agents-window.command-title",
+    "source": "command:{id:gbe,title:jt(4807,\"New Agents Window\"),category:Os.View,metadata:{description:\"New Agents Window (Glass)\"}",
+    "target": "command:{id:gbe,title:jt(4807,\"新智能体窗口\"),category:Os.View,metadata:{description:\"新智能体窗口 (Glass)\"}"
+  },
+  {
+    "id": "workbench.glass.new-agents-window.action-title",
+    "source": "constructor(){super({id:$0S.ID,title:jt(4811,\"New Agents Window\"),category:Os.View,metadata:{description:\"New Agents Window (Glass)\"}",
+    "target": "constructor(){super({id:$0S.ID,title:jt(4811,\"新智能体窗口\"),category:Os.View,metadata:{description:\"新智能体窗口 (Glass)\"}"
+  },
+  {
+    "id": "workbench.agent-layout.empty-panel.new-agent-title",
+    "source": "At.kind===\"loading\"?Yt=H(Y3f,{title:\"Forking...\"}):At.kind===\"empty\"?Yt=H(Y3f,{title:\"New Agent\"})",
+    "target": "At.kind===\"loading\"?Yt=H(Y3f,{title:\"正在 Fork...\"}):At.kind===\"empty\"?Yt=H(Y3f,{title:\"新建智能体\"})"
+  },
+  {
+    "id": "workbench.agent-layout.empty-panel.new-agent-title-alt",
+    "source": ":Yt=en?H(rnS,{activeAgentRef:rn?y:void 0,header:en,isActive:rn,onClick:rn?void 0:()=>a(At.agentId),onCopyToClipboard:E,onCopyMessages:I,onDuplicateAgent:R,onExportChat:L,onOpenExternal:V,onOpenInNewWindow:F,onSelectAgent:a,onShareChat:M,openInNewWindowEnabled:W,showDevOptions:Y}):H(Y3f,{onClick:rn?void 0:()=>a(At.agentId),title:\"New Agent\"})",
+    "target": ":Yt=en?H(rnS,{activeAgentRef:rn?y:void 0,header:en,isActive:rn,onClick:rn?void 0:()=>a(At.agentId),onCopyToClipboard:E,onCopyMessages:I,onDuplicateAgent:R,onExportChat:L,onOpenExternal:V,onOpenInNewWindow:F,onSelectAgent:a,onShareChat:M,openInNewWindowEnabled:W,showDevOptions:Y}):H(Y3f,{onClick:rn?void 0:()=>a(At.agentId),title:\"新建智能体\"})"
+  },
+  {
+    "id": "workbench.agent-layout.new-agent-plus-tooltip-lg",
+    "source": "e[0]!==i?(r=H(wm,{shortcut:i,title:\"New Agent\"}),e[0]=i,e[1]=r):r=e[1];let s;e[2]!==t?(s=H(ch,{\"aria-label\":\"New Agent\",icon:\"plus\",onClick:t,size:\"lg\"})",
+    "target": "e[0]!==i?(r=H(wm,{shortcut:i,title:\"新建智能体\"}),e[0]=i,e[1]=r):r=e[1];let s;e[2]!==t?(s=H(ch,{\"aria-label\":\"新建智能体\",icon:\"plus\",onClick:t,size:\"lg\"})"
+  },
+  {
+    "id": "workbench.agent-actions.new-agent-in-project-menu-item",
+    "source": "children:[J&&n.source!==\"draft\"&&H(Hd.Section,{children:H(Hd.Item,{leftSection:H(Ns,{name:\"plus\",size:\"xs\"}),onSelect:fn,children:\"New Agent in Project\"})}),ct(Hd.Section",
+    "target": "children:[J&&n.source!==\"draft\"&&H(Hd.Section,{children:H(Hd.Item,{leftSection:H(Ns,{name:\"plus\",size:\"xs\"}),onSelect:fn,children:\"在项目中新建智能体\"})}),ct(Hd.Section"
+  },
+  {
+    "id": "workbench.agent-list.project-new-agent-plus-tooltip",
+    "source": "pn=An?H(Sh,{content:H(wm,{title:`New Agent in ${t.displayName}`}),offset:6,children:H(ch,{\"aria-label\":\"New Agent\",color:\"tertiary\",icon:\"plus\",onClick:Kt,onPointerDown:Se?rt:void 0})}):vt?H(Sh,{content:H(wm,{title:\"New Agent\"}),offset:6,children:H(ch,{\"aria-label\":\"New Agent\",color:\"tertiary\",icon:\"plus\",onClick:bn,onPointerDown:Se?rt:void 0})}):null",
+    "target": "pn=An?H(Sh,{content:H(wm,{title:`在 ${t.displayName} 中新建智能体`}),offset:6,children:H(ch,{\"aria-label\":\"新建智能体\",color:\"tertiary\",icon:\"plus\",onClick:Kt,onPointerDown:Se?rt:void 0})}):vt?H(Sh,{content:H(wm,{title:\"新建智能体\"}),offset:6,children:H(ch,{\"aria-label\":\"新建智能体\",color:\"tertiary\",icon:\"plus\",onClick:bn,onPointerDown:Se?rt:void 0})}):null"
   }
 ]

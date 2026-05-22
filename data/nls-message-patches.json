@@ -1,0 +1,65 @@
+[
+  {
+    "id": "auxiliarybar.chat-history",
+    "module": "vs/workbench/browser/parts/auxiliarybar/auxiliaryBarPart",
+    "key": "auxiliaryBarChatHistory",
+    "source": "Chat History",
+    "target": "聊天历史"
+  },
+  {
+    "id": "titlebar.chat-history-maximized",
+    "module": "vs/workbench/browser/parts/titlebar/titlebarPart",
+    "key": "chatHistoryTitlebarMaximized",
+    "source": "Chat History",
+    "target": "聊天历史"
+  },
+  {
+    "id": "base.button.more-actions-dropdown",
+    "module": "vs/base/browser/ui/button/button",
+    "key": "button dropdown more actions",
+    "source": "More Actions...",
+    "target": "更多操作..."
+  },
+  {
+    "id": "base.dropdown.more-actions",
+    "module": "vs/base/browser/ui/dropdown/dropdownActionViewItem",
+    "key": "moreActions",
+    "source": "More Actions...",
+    "target": "更多操作..."
+  },
+  {
+    "id": "base.toolbar.more-actions",
+    "module": "vs/base/browser/ui/toolbar/toolbar",
+    "key": "moreActions",
+    "source": "More Actions...",
+    "target": "更多操作..."
+  },
+  {
+    "id": "agent-layout.more-actions",
+    "module": "vs/workbench/browser/actions/agentLayoutQuickMenu/agentLayoutQuickMenuComponents",
+    "key": "agentLayoutMenu.moreActions",
+    "source": "More actions",
+    "target": "更多操作"
+  },
+  {
+    "id": "auxiliarybar.more-actions",
+    "module": "vs/workbench/browser/parts/auxiliarybar/auxiliaryBarPart",
+    "key": "auxiliaryBarMoreActions",
+    "source": "More Actions",
+    "target": "更多操作"
+  },
+  {
+    "id": "titlebar.more-actions-maximized",
+    "module": "vs/workbench/browser/parts/titlebar/titlebarPart",
+    "key": "moreActionsTitlebarMaximized",
+    "source": "More Actions",
+    "target": "更多操作"
+  },
+  {
+    "id": "pane-composite.more-actions",
+    "module": "vs/workbench/browser/parts/paneCompositePart",
+    "key": "moreActions",
+    "source": "More Actions...",
+    "target": "更多操作..."
+  }
+]

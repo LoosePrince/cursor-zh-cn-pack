@@ -1,6 +1,8 @@
 # Cursor 简体中文语言包
 
-这是一个面向 Windows 本机 Cursor 安装的补充语言包扩展：本插件只处理 Cursor 专用扩展和 Cursor 私有硬编码界面；VS Code 基础翻译交给官方 `MS-CEINTL.vscode-language-pack-zh-hans`。
+这是一个面向 Windows 版本 Cursor 的补充语言包扩展：
+本插件只处理 Cursor 专用扩展和 Cursor 私有硬编码界面；
+VS Code 基础翻译请使用官方的 `MS-CEINTL.vscode-language-pack-zh-hans`。
 
 ## 覆盖范围
 
@@ -9,7 +11,7 @@
 - 不生成、不打包 `translations/main.i18n.json`。
 - 不生成、不打包 `vscode.*`、`ms-vscode.*` 等官方/通用内置扩展翻译。
 
-标准语言包资源不会修改 Cursor 安装目录。只有在命令面板中打开 `Cursor 汉化管理器` 并点击 `应用补丁` 时，才会修改 Cursor 安装目录下的 `workbench.desktop.main.js`。补丁会先生成备份，并支持从管理器恢复。
+标准语言包资源不会修改 Cursor 安装目录的文件。只有在命令面板中打开 `Cursor 汉化管理器` 并点击 `应用补丁` 时，才会修改 Cursor 安装目录下的 `workbench.desktop.main.js`。补丁会先生成备份，并支持从管理器恢复。
 
 ## 基础中文语言包
 
@@ -23,7 +25,7 @@ cursor --install-extension MS-CEINTL.vscode-language-pack-zh-hans
 
 ## 生成翻译
 
-默认扫描 `D:\cursor`：
+默认扫描 `D:\cursor`
 
 ```powershell
 npm run extract
@@ -109,7 +111,9 @@ cursor --install-extension .\cursor-zh-cn-pack-0.0.1.vsix
 
 ## 补丁说明
 
-补丁目标是 Cursor 私有设置页中没有进入 NLS 表的硬编码文案，例如 `Plan & Usage`、`Agents`、`Models`、`Tools & MCPs`、`Cursor Account` 等。
+补丁目标是 Cursor 私有设置页和常用界面中没有进入 NLS 表的硬编码文案，例如 `Plan & Usage`、`Agents`、`Models`、`Tools & MCPs`、`Cursor Account`、聊天标题栏、Agent 菜单、Composer 文案和编辑应用按钮等。
+
+这些硬编码文本是本项目最主要的麻烦来源：同一个界面里有的词走标准语言包，有的词直接写死在压缩后的主 bundle 里，短词还会混在命令、状态、配置键和值里。结果就是用户看到一半中文一半英文，维护者还不能简单全局替换，只能逐个确认结构上下文后补丁处理。尤其是 `Agent`、`Apply`、`Accept`、`Reject`、`Composer` 这类高频界面词，本该走统一本地化资源，却散落在菜单、按钮、tooltip、aria-label 和运行时对象里，升级一次就可能换一批位置，维护体验很差。这种实现方式对本地化非常不友好，也让后续 Cursor 升级后的维护成本明显变高。
 
 补丁策略：
 
