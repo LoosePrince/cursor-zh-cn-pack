@@ -120,6 +120,11 @@
     "target": "label:\"键盘快捷键\""
   },
   {
+    "id": "settings.keybindings.description",
+    "source": "description:\"Configure keyboard shortcuts\"",
+    "target": "description:\"配置键盘快捷键\""
+  },
+  {
     "id": "settings.import-vscode.label",
     "source": "label:\"Import Settings from VS Code\"",
     "target": "label:\"从 VS Code 导入设置\""
@@ -128,6 +133,11 @@
     "id": "settings.import-vscode.description",
     "source": "description:\"Import settings, extensions, and keybindings from VS Code\"",
     "target": "description:\"从 VS Code 导入设置、扩展和键盘绑定\""
+  },
+  {
+    "id": "settings.reset-dont-ask-again.label",
+    "source": "label:'Reset \"Don\\u2019t Ask Again\" Dialogs'",
+    "target": "label:'重置“不再询问”对话框'"
   },
   {
     "id": "settings.reset-dont-ask-again.description",
@@ -290,6 +300,16 @@
     "target": "description:\"智能体完成响应时播放声音\""
   },
   {
+    "id": "settings.notifications.system-tray.label",
+    "source": "label:qa?\"Menu Bar Icon\":\"System Tray Icon\"",
+    "target": "label:qa?\"菜单栏图标\":\"系统托盘图标\""
+  },
+  {
+    "id": "settings.notifications.system-tray.description",
+    "source": "description:qa?\"Show Cursor in menu bar\":\"Show Cursor in system tray\"",
+    "target": "description:qa?\"在菜单栏显示 Cursor\":\"在系统托盘显示 Cursor\""
+  },
+  {
     "id": "settings.privacy.section-title",
     "source": "title:\"Privacy\"",
     "target": "title:\"隐私\""
@@ -298,6 +318,21 @@
     "id": "settings.privacy.no-training-description.text",
     "source": "get fallback(){return\"Your code data will not be trained on or used to improve the product. We will not store your code.\"}",
     "target": "get fallback(){return\"你的代码数据不会用于训练或改进产品。我们不会存储你的代码。\"}"
+  },
+  {
+    "id": "settings.privacy.legacy-label.fallback",
+    "source": "get fallback(){return\"Privacy Mode (Legacy)\"}",
+    "target": "get fallback(){return\"隐私模式（旧版）\"}"
+  },
+  {
+    "id": "settings.privacy.legacy-dropdown.label",
+    "source": "label:\"Privacy Mode (Legacy)\"",
+    "target": "label:\"隐私模式（旧版）\""
+  },
+  {
+    "id": "settings.privacy.legacy-dropdown.html",
+    "source": "<div><div>Privacy Mode (Legacy)</div><div>No training and no storage. Background Agent and other features that require code storage will be disabled.</div>",
+    "target": "<div><div>隐私模式（旧版）</div><div>不训练且不存储。后台智能体和其他需要代码存储的功能将被禁用。</div>"
   },
   {
     "id": "settings.privacy.legacy-enabled-description.text",
@@ -973,6 +1008,141 @@
     "id": "workbench.plan-usage.enable-usage-based-pricing-premium.title",
     "source": "title:\"Enable usage-based pricing for premium models\"",
     "target": "title:\"为高级模型启用按用量计费\""
+  },
+  {
+    "id": "workbench.plan-usage.current-plan.literal",
+    "source": "\"Current Plan\"",
+    "target": "\"当前计划\""
+  },
+  {
+    "id": "workbench.plan-usage.page-title",
+    "source": "title:\"Plan & Usage\"",
+    "target": "title:\"计划与用量\""
+  },
+  {
+    "id": "workbench.plan-usage.upgrade-available.literal",
+    "source": "\"Upgrade Available\"",
+    "target": "\"可升级方案\""
+  },
+  {
+    "id": "workbench.plan-usage.plan-name.fallbacks",
+    "source": "case qu.ENTERPRISE:Ct=_t?\"Enterprise\":\"Team\",qt=0;break;case qu.ULTRA:Ct=\"Ultra\",qt=400;break;case qu.PRO_PLUS:Ct=Tt===\"trialing\"?\"Pro+ Trial\":\"Pro+\",qt=70,Vt=\"$60/mo\";break;case qu.PRO:Ct=Tt===\"trialing\"?\"Pro Trial\":\"Pro\",qt=20,Vt=\"$20/mo\";break;case qu.FREE_TRIAL:Ct=\"Pro Trial\",qt=20;break;case qu.FREE:Ct=\"Free\",qt=0;break;default:Ct=\"Unknown\",qt=0",
+    "target": "case qu.ENTERPRISE:Ct=_t?\"企业版\":\"团队版\",qt=0;break;case qu.ULTRA:Ct=\"Ultra\",qt=400;break;case qu.PRO_PLUS:Ct=Tt===\"trialing\"?\"Pro+ 试用版\":\"Pro+\",qt=70,Vt=\"$60/月\";break;case qu.PRO:Ct=Tt===\"trialing\"?\"Pro 试用版\":\"Pro\",qt=20,Vt=\"$20/月\";break;case qu.FREE_TRIAL:Ct=\"Pro 试用版\",qt=20;break;case qu.FREE:Ct=\"免费版\",qt=0;break;default:Ct=\"未知\",qt=0"
+  },
+  {
+    "id": "workbench.plan-usage.next-upgrade.fallbacks",
+    "source": "case qu.FREE:case qu.FREE_TRIAL:case qu.PRO:return{tier:\"pro_plus\",name:\"Get Pro+\",amount:70,price:\"$60/mo\",description:\"Unlock 3x more usage on Agent & more\"};case qu.PRO_PLUS:return{tier:\"ultra\",name:\"Get Ultra\",amount:400,price:\"$200/mo\",description:\"\"};default:return null",
+    "target": "case qu.FREE:case qu.FREE_TRIAL:case qu.PRO:return{tier:\"pro_plus\",name:\"获取 Pro+\",amount:70,price:\"$60/月\",description:\"解锁 3 倍 Agent 用量等更多权益\"};case qu.PRO_PLUS:return{tier:\"ultra\",name:\"获取 Ultra\",amount:400,price:\"$200/月\",description:\"\"};default:return null"
+  },
+  {
+    "id": "workbench.plan-usage.resets-on.prefix",
+    "source": "\"Resets on \"",
+    "target": "\"重置于 \""
+  },
+  {
+    "id": "workbench.plan-usage.billing-cycle-end.format",
+    "source": "ye=St=>{const Tt=new Date(St).toLocaleDateString(void 0,{month:\"short\",day:\"numeric\"}),_t=Date.now(),Ct=St-_t,qt=Math.ceil(Ct/(1e3*60*60*24));return qt>0?`${Tt} (${qt} days)`:Tt}",
+    "target": "ye=St=>{const Tt=new Date(St).toLocaleDateString(void 0,{month:\"short\",day:\"numeric\"}),_t=Date.now(),Ct=St-_t,qt=Math.ceil(Ct/(1e3*60*60*24));return qt>0?`${Tt}（${qt} 天）`:Tt}"
+  },
+  {
+    "id": "workbench.plan-usage.days-left.suffix",
+    "source": "\" day<!> left\"",
+    "target": "\" 天后重置\""
+  },
+  {
+    "id": "workbench.plan-usage.included-title.dynamic",
+    "source": "return Pe(xt,()=>`Included in ${Ne().planName}`)",
+    "target": "return Pe(xt,()=>`已包含在 ${Ne().planName} 中`)"
+  },
+  {
+    "id": "workbench.plan-usage.total.label",
+    "source": "label:\"Total\"",
+    "target": "label:\"总计\""
+  },
+  {
+    "id": "workbench.plan-usage.total-usage.summary",
+    "source": "\"% Auto and\",\" \",ss(()=>Math.round(dt())),\"% API used\"",
+    "target": "\"% 自动用量，\",\" \",ss(()=>Math.round(dt())),\"% API 已使用\""
+  },
+  {
+    "id": "workbench.plan-usage.total-usage.free-summary",
+    "source": "\"% Auto used\"",
+    "target": "\"% 自动用量已使用\""
+  },
+  {
+    "id": "workbench.plan-usage.api-included-note",
+    "source": "\"Your plan includes at least $\",ss(()=>Ne().includedAmount),\" of API usage.\"",
+    "target": "\"你的计划至少包含 $\",ss(()=>Ne().includedAmount),\" 的 API 用量。\""
+  },
+  {
+    "id": "workbench.plan-usage.on-demand-usage.description-paid",
+    "source": "description:\"Enable on-demand usage to go beyond your plan's included usage. Requires a paid plan.\"",
+    "target": "description:\"启用按需用量后，可超出当前计划的包含用量继续使用。需要付费计划。\""
+  },
+  {
+    "id": "workbench.plan-usage.on-demand.label",
+    "source": "label:\"On-Demand\"",
+    "target": "label:\"按需额度\""
+  },
+  {
+    "id": "workbench.plan-usage.on-demand-usage.arrears-description",
+    "source": "children:\"On-Demand usage is consumed after a usage limit is reached, and is billed in arrears.\"",
+    "target": "children:\"达到包含用量上限后将开始消耗按需用量，并在事后结算。\""
+  },
+  {
+    "id": "workbench.plan-usage.on-demand-spending.disabled-description",
+    "source": "description:\"On-demand spending is currently disabled\"",
+    "target": "description:\"当前已禁用按需支出\""
+  },
+  {
+    "id": "workbench.plan-usage.monthly-limit.description",
+    "source": "description:\"Set a fixed amount or make it unlimited.\"",
+    "target": "description:\"设置固定金额，或设为不限额。\""
+  },
+  {
+    "id": "workbench.plan-usage.monthly-limit.selector-values",
+    "source": "get origLabel(){return ss(()=>se()===\"fixed\")()?\"Fixed\":se()===\"unlimited\"?\"Unlimited\":\"Disabled\"},items:[{id:\"fixed\",label:\"Fixed\"},{id:\"unlimited\",label:\"Unlimited\"},{id:\"disabled\",label:\"Disabled\"}]",
+    "target": "get origLabel(){return ss(()=>se()===\"fixed\")()?\"固定\":se()===\"unlimited\"?\"不限额\":\"已禁用\"},items:[{id:\"fixed\",label:\"固定\"},{id:\"unlimited\",label:\"不限额\"},{id:\"disabled\",label:\"已禁用\"}]"
+  },
+  {
+    "id": "workbench.plan-usage.disabled.value-label",
+    "source": "return()=>xt()?`$${Ae(we()?.used??0)}`:\"Disabled\"",
+    "target": "return()=>xt()?`$${Ae(we()?.used??0)}`:\"已禁用\""
+  },
+  {
+    "id": "workbench.plan-usage.limit-validation.empty",
+    "source": "n.notificationService.error(\"Please enter a limit amount\")",
+    "target": "n.notificationService.error(\"请输入限额金额\")"
+  },
+  {
+    "id": "workbench.plan-usage.limit-validation.positive",
+    "source": "n.notificationService.error(\"Limit must be a positive number\")",
+    "target": "n.notificationService.error(\"限额必须为正数\")"
+  },
+  {
+    "id": "workbench.plan-usage.limit-save.success",
+    "source": "n.notificationService.info(\"On-demand limit saved successfully\")",
+    "target": "n.notificationService.info(\"按需限额已成功保存\")"
+  },
+  {
+    "id": "workbench.plan-usage.limit-save.failure",
+    "source": "n.notificationService.error(\"Failed to save on-demand limit\")",
+    "target": "n.notificationService.error(\"保存按需限额失败\")"
+  },
+  {
+    "id": "workbench.plan-usage.manage.button",
+    "source": "title:\"Manage\",size:\"small\",type:\"tertiary\",onClick:Ke",
+    "target": "title:\"管理\",size:\"small\",type:\"tertiary\",onClick:Ke"
+  },
+  {
+    "id": "workbench.plan-usage.upgrade.button",
+    "source": "title:\"Upgrade\",size:\"small\",type:\"primary\",onClick:()=>Oe(Le().tier)",
+    "target": "title:\"升级\",size:\"small\",type:\"primary\",onClick:()=>Oe(Le().tier)"
+  },
+  {
+    "id": "workbench.plan-usage.personal-usage.title",
+    "source": "title:\"Personal Usage\"",
+    "target": "title:\"个人用量\""
   },
   {
     "id": "workbench.rules.add-skills.children",
