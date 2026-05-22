@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { shutdownCursorProcesses, restartCursorProcesses } from './cursorProcessManager';
 import { CursorInstall, locateCursorInstall, validateCursorRoot } from './cursorLocator';
 import { applyNlsMessagePatch, NlsMessagePatchScanResult, restoreNlsMessageBackup, scanNlsMessagePatch, unapplyNlsMessagePatch } from './nlsMessagePatcher';
 import { createScopedProgress, ProgressCallback, ProgressUpdate, reportProgress } from './progress';
@@ -19,7 +20,7 @@ interface ManagerState {
 }
 
 interface WebviewMessage {
-  readonly command: 'autoLocate' | 'chooseRoot' | 'rescan' | 'applyPatch' | 'unapplyPatch' | 'restoreWorkbenchBackup' | 'restoreNlsBackup' | 'openReport';
+  readonly command: 'autoLocate' | 'chooseRoot' | 'rescan' | 'applyPatch' | 'unapplyPatch' | 'restoreWorkbenchBackup' | 'restoreNlsBackup' | 'shutdownCursor' | 'restartCursor' | 'openReport';
   readonly backupPath?: string;
 }
 
@@ -120,6 +121,12 @@ export class ManagerPanel {
           break;
         case 'restoreNlsBackup':
           await this.restoreNlsBackup(message.backupPath);
+          break;
+        case 'shutdownCursor':
+          await this.shutdownCursor();
+          break;
+        case 'restartCursor':
+          await this.restartCursor();
           break;
         case 'openReport':
           await this.openReport();
@@ -305,6 +312,52 @@ export class ManagerPanel {
     }
   }
 
+  private async shutdownCursor(): Promise<void> {
+    const confirmed = await vscode.window.showWarningMessage(
+      '将关闭当前识别到的 Cursor 安装对应的所有 Cursor.exe 进程。未保存的编辑器内容可能丢失，请先保存重要内容。',
+      { modal: true },
+      '强制关闭 Cursor'
+    );
+    if (confirmed !== '强制关闭 Cursor') {
+      return;
+    }
+
+    await this.runOperation('强制关闭 Cursor', async progress => {
+      const install = this.state.install;
+      if (!install?.valid) {
+        throw new Error('请先识别或选择有效的 Cursor 安装目录。');
+      }
+
+      const result = await shutdownCursorProcesses(install.root, progress);
+      this.log(`强制关闭 Cursor: 发现 ${result.before.length} 个进程，已关闭 ${result.closedCount} 个，强制结束 ${result.forcedCount} 个，剩余 ${result.after.length} 个。`);
+      if (result.after.length > 0) {
+        this.log(`仍未关闭的进程: ${result.after.map(item => item.id).join(', ')}`);
+      }
+    });
+  }
+
+  private async restartCursor(): Promise<void> {
+    const confirmed = await vscode.window.showWarningMessage(
+      '将关闭当前识别到的 Cursor 安装对应的所有 Cursor.exe 进程，并在关闭后自动重新启动。未保存的编辑器内容可能丢失，请先保存重要内容。',
+      { modal: true },
+      '强制重启 Cursor'
+    );
+    if (confirmed !== '强制重启 Cursor') {
+      return;
+    }
+
+    await this.runOperation('强制重启 Cursor', async progress => {
+      const install = this.state.install;
+      if (!install?.valid) {
+        throw new Error('请先识别或选择有效的 Cursor 安装目录。');
+      }
+
+      const result = await restartCursorProcesses(install.root, progress);
+      this.log(`强制重启 Cursor: 发现 ${result.before.length} 个进程，已关闭 ${result.closedCount} 个，强制结束 ${result.forcedCount} 个。`);
+      this.log(`已安排重新启动: ${result.executablePath}`);
+    });
+  }
+
   private async loadRoot(root: string, source: string, progress?: ProgressCallback): Promise<void> {
     const install = await validateCursorRoot(root, source, createScopedProgress(progress, 0, 30, '校验安装目录'));
     await this.loadInstall(install, createScopedProgress(progress, 30, 100, '加载安装数据'));
@@ -354,7 +407,7 @@ export class ManagerPanel {
       return;
     }
 
-    this.panel.webview.html = getHtml(this.panel.webview, this.context, this.state);
+    this.panel.webview.html = getHtml(this.panel.webview, this.state);
   }
 }
 
@@ -364,7 +417,7 @@ async function saveCursorRoot(root: string): Promise<void> {
 
 type PatchLikeScanResult = PatchScanResult | NlsMessagePatchScanResult;
 
-function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, state: ManagerState): string {
+function getHtml(webview: vscode.Webview, state: ManagerState): string {
   const nonce = getNonce();
   const cspSource = webview.cspSource;
   const install = state.install;
@@ -497,6 +550,8 @@ function getHtml(webview: vscode.Webview, context: vscode.ExtensionContext, stat
           <button data-command="autoLocate"${busyAttribute}>一键识别 Cursor</button>
           <button data-command="rescan" class="secondary"${busyAttribute}>重新扫描状态</button>
           <button data-command="applyPatch"${busyAttribute}>应用汉化补丁</button>
+          <button data-command="restartCursor" class="danger"${busyAttribute}>一键强制重启 Cursor</button>
+          <button data-command="shutdownCursor" class="ghost"${busyAttribute}>强制关闭 Cursor</button>
           <button data-command="chooseRoot" class="ghost"${busyAttribute}>手动选择目录</button>
         </div>
       </div>
@@ -702,7 +757,7 @@ function getNextAction(state: ManagerState, patchStatusText: Record<string, stri
     return `当前 Workbench 为「${patchStatusText[state.patch.state]}」，NLS 为「${patchStatusText[state.nlsPatch.state]}」。建议点击「应用汉化补丁」，完成后重启 Cursor。`;
   }
 
-  return '补丁已应用。若界面还显示旧文本，请完全退出并重启 Cursor；如需回退，在右侧选择对应目标的备份恢复。';
+  return '补丁已应用。若界面还显示旧文本，请点击「一键强制重启 Cursor」确保后台进程退出并重新加载补丁文件；如需回退，在右侧选择对应目标的备份恢复。';
 }
 
 function renderStepGuide(state: ManagerState): string {
@@ -714,7 +769,7 @@ function renderStepGuide(state: ManagerState): string {
     { id: 'locate', title: '识别目录', done: hasInstall, active: !hasInstall, desc: '自动识别 Cursor 安装位置；失败时再手动选择。' },
     { id: 'scan', title: '扫描状态', done: hasScan, active: hasInstall && !hasScan, desc: '确认两个目标文件当前是原始、已汉化还是部分汉化。' },
     { id: 'apply', title: '应用补丁', done: bothApplied, active: hasScan && !bothApplied, desc: '写入前自动备份，只修改 Cursor 安装目录内的目标文件。' },
-    { id: 'restart', title: '重启 Cursor', done: bothApplied, active: bothApplied, desc: 'Cursor 需要重新加载安装目录文件，界面文本才会刷新。' },
+    { id: 'restart', title: '重启 Cursor', done: bothApplied, active: bothApplied, desc: '可一键强制重启，确保后台进程退出并重新加载补丁文件。' },
     { id: 'restore', title: '需要时恢复', done: hasBackup, active: false, desc: '恢复时按目标选择备份：Workbench 与 NLS 不混用。' }
   ];
 
@@ -782,7 +837,7 @@ function renderSafetyList(): string {
     <li>只修改 Cursor 安装目录内的目标文件，不会修改你的项目源码。</li>
     <li>规则按稳定上下文匹配，不做裸词全局替换，不翻译用户输入或配置值。</li>
     <li>Workbench 备份和 NLS 备份必须分开恢复，界面已经按目标隔离。</li>
-    <li>应用、卸载或恢复后，需要重启 Cursor 才能看到完整效果。</li>
+    <li>应用、卸载或恢复后，需要重启 Cursor 才能看到完整效果；可使用顶部的一键强制重启。</li>
   </ul>`;
 }
 
@@ -826,7 +881,7 @@ function getHelpItems(): Record<string, { title: string; lead: string; points: r
     'step-locate': { title: '步骤 1：识别目录', lead: '确认补丁要作用在哪个 Cursor 安装。', points: ['推荐先点一键识别。', '如果电脑里有多个 Cursor 或识别失败，再手动选择。', '目录无效时会显示具体问题。'] },
     'step-scan': { title: '步骤 2：扫描状态', lead: '扫描不会写入文件，只读取状态。', points: ['会同时检查 Workbench 主界面和 NLS 消息表。', '会统计英文源、中文目标和可用备份。', '扫描结果用于判断下一步是否需要应用或恢复。'] },
     'step-apply': { title: '步骤 3：应用补丁', lead: '真正写入汉化内容的步骤。', points: ['写入前会备份目标文件。', '规则按模块和上下文匹配，不做裸词替换。', '如果已经应用过，会尽量保持幂等，不重复破坏文件。'] },
-    'step-restart': { title: '步骤 4：重启 Cursor', lead: 'Cursor 已加载的界面资源不会自动刷新。', points: ['应用、卸载、恢复后都建议完全退出 Cursor 再打开。', '如果只是关闭窗口但后台进程仍在，可能仍看到旧界面。', '重启后再检查残留英文更准确。'] },
+    'step-restart': { title: '步骤 4：重启 Cursor', lead: 'Cursor 已加载的界面资源不会自动刷新。', points: ['应用、卸载、恢复后都建议完全退出 Cursor 再打开。', '如果只是关闭窗口但后台进程仍在，可能仍看到旧界面。', '一键强制重启会先关闭当前识别安装对应的 Cursor.exe，再重新启动同一个 Cursor.exe。'] },
     'step-restore': { title: '步骤 5：恢复备份', lead: '需要回退时再使用。', points: ['Workbench 备份只恢复 Workbench。', 'NLS 备份只恢复 NLS 消息表。', '恢复前也会生成安全快照，方便再次回退。'] },
     'workbench-patch': {
       title: 'Workbench 主界面补丁',
@@ -841,7 +896,7 @@ function getHelpItems(): Record<string, { title: string; lead: string; points: r
     safety: {
       title: '安全策略',
       lead: '这个扩展按可回退、可扫描、可解释的方式工作。',
-      points: ['所有写入动作都会尽量先生成备份或安全快照。', '只处理 Cursor 安装目录内明确目标文件。', '不会翻译聊天内容、项目文件、配置值、命令 ID 或内部标识。', '如果 Cursor 升级后文件结构变化，应先扫描再决定是否应用。']
+      points: ['所有写入动作都会尽量先生成备份或安全快照。', '只处理 Cursor 安装目录内明确目标文件。', '不会翻译聊天内容、项目文件、配置值、命令 ID 或内部标识。', '一键关闭/重启只针对当前识别到的 Cursor.exe 路径，会先弹出确认。', '如果 Cursor 升级后文件结构变化，应先扫描再决定是否应用。']
     },
     'workbench-backup': {
       title: 'Workbench 备份恢复',

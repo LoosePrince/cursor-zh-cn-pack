@@ -61,5 +61,40 @@
     "key": "moreActions",
     "source": "More Actions...",
     "target": "更多操作..."
+  },
+  {
+    "id": "auxiliarybar.show-agents-sidebar",
+    "module": "vs/workbench/browser/parts/auxiliarybar/auxiliaryBarPart",
+    "key": "auxiliaryBarShowAgentsSidebar",
+    "source": "Show Agents Side Bar",
+    "target": "显示智能体侧边栏"
+  },
+  {
+    "id": "auxiliarybar.new-agent",
+    "module": "vs/workbench/browser/parts/auxiliarybar/auxiliaryBarPart",
+    "key": "auxiliaryBarNewAgent",
+    "source": "New Agent",
+    "target": "新建智能体"
+  },
+  {
+    "id": "titlebar.new-agent-short",
+    "module": "vs/workbench/browser/parts/titlebar/titlebarPart",
+    "key": "newAgentShort",
+    "source": "New Agent",
+    "target": "新建智能体"
+  },
+  {
+    "id": "editor-watermark.open-chat-new-agent",
+    "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+    "key": "watermark.openChat",
+    "source": "New Agent",
+    "target": "新建智能体"
+  },
+  {
+    "id": "platform-buttonbar.more-actions",
+    "module": "vs/platform/actions/browser/buttonbar",
+    "key": "moreActions",
+    "source": "More Actions",
+    "target": "更多操作"
   }
 ]

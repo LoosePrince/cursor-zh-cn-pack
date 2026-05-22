@@ -1420,6 +1420,21 @@
     "target": "case\"chat\":return\"向 Cursor 询问你的代码库相关问题\";case\"edit\":return\"手动决定添加到上下文的内容（不使用工具）\";case\"plan\":return\"创建用于完成任务的详细计划\""
   },
   {
+    "id": "workbench.composer.mode-description.agent-inline",
+    "source": "case\"agent\":return\"Plan, search, build anything\";case\"chat\":return\"向 Cursor 询问你的代码库相关问题\"",
+    "target": "case\"agent\":return\"规划、搜索、构建任何内容\";case\"chat\":return\"向 Cursor 询问你的代码库相关问题\""
+  },
+  {
+    "id": "workbench.agent-sidebar.cell-name-fallback",
+    "source": "n.isDraft?`Draft: ${n.composer.subtitle||\"\"}`:n.composer.name||\"New Agent\"",
+    "target": "n.isDraft?`Draft: ${n.composer.subtitle||\"\"}`:n.composer.name||\"新建智能体\""
+  },
+  {
+    "id": "workbench.agent-state.name-value-fallback",
+    "source": "return{name:n.name.value||\"New Agent\",branchName:t||void 0,status:n.status.value",
+    "target": "return{name:n.name.value||\"新建智能体\",branchName:t||void 0,status:n.status.value"
+  },
+  {
     "id": "workbench.composer.mode-description.spec-multitask-chain",
     "source": "case\"spec\":return\"Create structured plans with implementation steps\";case\"multitask\":return\"Run and coordinate multiple tasks in parallel\";case\"triage\":return\"Coordinate long-horizon tasks with delegated subagents\"",
     "target": "case\"spec\":return\"创建包含实施步骤的结构化计划\";case\"multitask\":return\"并行运行和协调多个任务\";case\"triage\":return\"协调由子智能体委派的长期任务\""
