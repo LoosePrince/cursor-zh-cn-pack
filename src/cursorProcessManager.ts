@@ -1,6 +1,7 @@
 import { execFile, spawn } from 'child_process';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import * as vscode from 'vscode';
 import { promisify } from 'util';
 import { ProgressCallback, reportProgress } from './progress';
 
@@ -23,6 +24,66 @@ export interface CursorShutdownResult {
 export interface CursorRestartResult extends CursorShutdownResult {
   readonly executablePath: string;
   readonly launchScheduled: boolean;
+}
+
+export interface CursorRestartHelperResult {
+  readonly executablePath: string;
+  readonly helperScriptPath: string;
+  readonly logPath: string;
+  readonly launched: boolean;
+}
+
+export interface CursorRestartHelperOptions {
+  readonly cleanRuntimeState: boolean;
+}
+
+export async function launchCursorRestartHelper(
+  cursorRoot: string,
+  context: vscode.ExtensionContext,
+  options: CursorRestartHelperOptions,
+  progress?: ProgressCallback
+): Promise<CursorRestartHelperResult> {
+  if (process.platform !== 'win32') {
+    throw new Error('当前一键重启只支持 Windows 版 Cursor。');
+  }
+
+  await reportProgress(progress, { message: '准备独立重启助手', percent: 10 });
+  const executablePath = await resolveCursorExecutablePath(cursorRoot);
+  const helperScriptPath = context.asAbsolutePath(path.join('out', 'runtimeStateRestartHelper.js'));
+  await assertFileExists(helperScriptPath, '未找到独立重启助手脚本');
+
+  const logPath = path.join(context.globalStorageUri.fsPath, `cursor-restart-helper-${formatTimestamp(new Date())}.log`);
+  await fs.mkdir(path.dirname(logPath), { recursive: true });
+
+  await reportProgress(progress, { message: '启动独立重启助手', percent: 70 });
+  const args = [
+    helperScriptPath,
+    '--cursor-exe', executablePath,
+    '--log', logPath
+  ];
+
+  if (options.cleanRuntimeState) {
+    args.push('--clean-runtime-state');
+  }
+
+  const child = spawn(executablePath, args, {
+    detached: true,
+    windowsHide: true,
+    stdio: 'ignore',
+    env: {
+      ...process.env,
+      ELECTRON_RUN_AS_NODE: '1'
+    }
+  });
+  child.unref();
+
+  await reportProgress(progress, { message: '独立助手已接管，Cursor 即将关闭并重启', percent: 100, current: 1, total: 1 });
+  return {
+    executablePath,
+    helperScriptPath,
+    logPath,
+    launched: true
+  };
 }
 
 export async function shutdownCursorProcesses(cursorRoot: string, progress?: ProgressCallback): Promise<CursorShutdownResult> {
@@ -101,6 +162,11 @@ export async function resolveCursorExecutablePath(cursorRoot: string): Promise<s
   }
 
   throw new Error(`未找到 Cursor.exe: ${candidate}`);
+}
+
+export async function listCursorProcesses(cursorRoot: string): Promise<CursorProcessInfo[]> {
+  const executablePath = await resolveCursorExecutablePath(cursorRoot);
+  return listTargetCursorProcesses(executablePath);
 }
 
 async function listTargetCursorProcesses(executablePath: string): Promise<CursorProcessInfo[]> {
@@ -206,4 +272,30 @@ async function runPowerShell(command: string, timeout: number): Promise<string> 
     maxBuffer: 1024 * 1024
   });
   return stdout;
+}
+
+async function assertFileExists(filePath: string, message: string): Promise<void> {
+  try {
+    const stat = await fs.stat(filePath);
+    if (stat.isFile()) {
+      return;
+    }
+  } catch {
+    // 继续抛出更明确的错误。
+  }
+
+  throw new Error(`${message}: ${filePath}`);
+}
+
+function formatTimestamp(date: Date): string {
+  const pad = (value: number) => String(value).padStart(2, '0');
+  return [
+    date.getFullYear(),
+    pad(date.getMonth() + 1),
+    pad(date.getDate()),
+    '-',
+    pad(date.getHours()),
+    pad(date.getMinutes()),
+    pad(date.getSeconds())
+  ].join('');
 }

@@ -1,4 +1,10 @@
-node_modules
+node_modules/*
+!node_modules/sql.js
+node_modules/sql.js/*
+!node_modules/sql.js/package.json
+!node_modules/sql.js/dist
+node_modules/sql.js/dist/*
+!node_modules/sql.js/dist/sql-asm.js
 *.vsix
 .vscode-test
 .DS_Store
