@@ -40,10 +40,9 @@ node .\scripts\extract-cursor-nls.mjs D:\cursor
 生成结果：
 
 - `translations/extensions/anysphere.cursor-*.i18n.json`
-- `reports/coverage-report.md`
 - `reports/untranslated-extensions.json`
 
-运行生成脚本时会清理旧的完整主包和官方/通用内置扩展翻译产物，包括 `translations/main.i18n.json` 和 `translations/extensions/vscode*.i18n.json` 等。覆盖率报告只统计本插件负责的 Cursor 专用扩展。硬编码在 Cursor 主 bundle 中的文案不会被写入语言包资源，只能通过管理器中的补丁功能处理。
+运行生成脚本时会清理旧的完整主包和官方/通用内置扩展翻译产物，包括 `translations/main.i18n.json` 和 `translations/extensions/vscode*.i18n.json` 等，也会移除旧的静态 `reports/coverage-report.md`，避免把过期覆盖率结果一并打包。覆盖率报告改为在 Cursor 汉化管理器中基于当前 Cursor 安装和当前扩展实际打包内容实时生成。硬编码在 Cursor 主 bundle 中的文案不会被写入语言包资源，只能通过管理器中的补丁功能处理。
 
 ## 检索 workbench 未汉化硬编码文案
 
@@ -101,7 +100,7 @@ cursor --install-extension .\cursor-zh-cn-pack-0.0.1.vsix
 - 显示语言包状态、补丁状态、备份路径、当前文件哈希和操作日志。
 - 对 `workbench.desktop.main.js` 应用补丁式汉化。
 - 从备份恢复补丁前文件；恢复前会再次备份当前文件，避免覆盖手动修改。
-- 打开覆盖率报告。
+- 实时生成并打开当前 Cursor 安装的覆盖率报告。
 
 自动识别会优先使用 `cursorZhCn.cursorRoot` 配置，然后检查正在运行的 `Cursor.exe`、`PATH`、常见安装路径和注册表卸载项。有效 Cursor 根目录必须包含：
 

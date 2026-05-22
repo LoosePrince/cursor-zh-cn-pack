@@ -274,40 +274,9 @@ async function writeReports({ appDir, extensionStats, hardcodedCandidates }) {
   const reportsDir = path.join(projectRoot, 'reports');
   await fs.mkdir(reportsDir, { recursive: true });
 
+  await deleteIfExists(path.join(reportsDir, 'coverage-report.md'));
   await deleteIfExists(path.join(reportsDir, 'untranslated-main.json'));
   await writeJson(path.join(reportsDir, 'untranslated-extensions.json'), extensionStats.untranslated.slice(0, 2000));
-
-  const lines = [
-    '# Cursor 汉化覆盖率报告',
-    '',
-    `- Cursor 应用目录：\`${appDir}\``,
-    '- 处理范围：仅 Cursor 专用语言包资源和可选 workbench 补丁。',
-    '- VS Code 基础翻译不由本插件生成或打包，应交给 `MS-CEINTL.vscode-language-pack-zh-hans`。',
-    `- Cursor 专用扩展字符串：${extensionStats.translated}/${extensionStats.total}，覆盖率 ${percentage(extensionStats.translated, extensionStats.total)}`,
-    `  - 项目本地词表：${extensionStats.localTranslated}`,
-    `- 生成 Cursor 专用扩展翻译文件：${extensionStats.generated.length} 个`,
-    `- 跳过官方/通用内置扩展翻译文件：${extensionStats.skipped.length} 个`,
-    '',
-    '## Cursor 专用扩展',
-    '',
-    '| 扩展 ID | 已翻译 / 总数 |',
-    '| --- | ---: |',
-    ...extensionStats.generated.map((item) => `| \`${item.id}\` | ${item.translated}/${item.total} |`),
-    '',
-    '## 疑似硬编码 Cursor 文案',
-    '',
-    '这些候选词出现在主 bundle 中，不保证能被标准语言包覆盖；可通过 Cursor 汉化管理器中的补丁功能处理高置信度硬编码文案。',
-    '',
-    '| 片段 | 出现次数 |',
-    '| --- | ---: |',
-    ...hardcodedCandidates.map((item) => `| \`${item.needle}\` | ${item.occurrences} |`),
-    '',
-    '## 后续翻译输入',
-    '',
-    '- Cursor 专用扩展未翻译样本：`reports/untranslated-extensions.json`'
-  ];
-
-  await fs.writeFile(path.join(reportsDir, 'coverage-report.md'), `${lines.join('\n')}\n`, 'utf8');
 }
 
 async function main() {

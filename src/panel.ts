@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { launchCursorRestartHelper, shutdownCursorProcesses } from './cursorProcessManager';
+import { generateCoverageReport } from './coverageReport';
 import { CursorInstall, locateCursorInstall, validateCursorRoot } from './cursorLocator';
 import { applyNlsMessagePatch, NlsMessagePatchScanResult, restoreNlsMessageBackup, scanNlsMessagePatch, unapplyNlsMessagePatch } from './nlsMessagePatcher';
 import { createScopedProgress, ProgressCallback, ProgressUpdate, reportProgress } from './progress';
@@ -336,12 +337,17 @@ export class ManagerPanel {
   }
 
   private async openReport(): Promise<void> {
-    const report = vscode.Uri.joinPath(this.context.extensionUri, 'reports', 'coverage-report.md');
-    try {
-      await vscode.commands.executeCommand('vscode.open', report);
-    } catch {
-      void vscode.window.showWarningMessage('未找到覆盖率报告，请先运行 npm run extract 生成。');
-    }
+    await this.runOperation('生成实时覆盖报告', async progress => {
+      const install = this.state.install;
+      if (!install?.valid) {
+        throw new Error('请先识别或选择有效的 Cursor 安装目录。');
+      }
+
+      const reportPath = await generateCoverageReport(install.root, this.context, progress);
+      const reportUri = vscode.Uri.file(reportPath);
+      await vscode.commands.executeCommand('vscode.open', reportUri);
+      this.log(`已生成实时覆盖报告: ${reportPath}`);
+    });
   }
 
   private async shutdownCursor(): Promise<void> {
@@ -625,7 +631,7 @@ function getHtml(webview: vscode.Webview, state: ManagerState): string {
     <section class="guide">
       <div class="section-head">
         <div class="section-title"><h2>新手引导：按 5 步完成</h2>${renderHelpButton('guide')}</div>
-        <button data-command="openReport" class="ghost">查看覆盖报告</button>
+        <button data-command="openReport" class="ghost">生成实时覆盖报告</button>
       </div>
       ${renderStepGuide(state)}
     </section>
