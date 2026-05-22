@@ -1,12 +1,11 @@
+import { DatabaseSync } from 'node:sqlite';
 import * as fs from 'fs/promises';
 import * as os from 'os';
 import * as path from 'path';
-import initSqlJs from 'sql.js/dist/sql-asm.js';
 import { listCursorProcesses } from './cursorProcessManager';
 import { ProgressCallback, reportProgress } from './progress';
 
 export const runtimeStateFileName = 'state.vscdb';
-export const backupSuffixPrefix = '.cursor-zh-cn-runtime-backup-';
 export const applicationUserKey = 'src.vs.platform.reactivestorage.browser.reactiveStorageServiceImpl.persistentStorage.applicationUser';
 export const uiTextNeedles = [
   'Plan, search, make edits, run commands',
@@ -65,7 +64,13 @@ interface RuntimeStateMatch {
   readonly hasModeCache: boolean;
 }
 
-let sqlJsPromise: ReturnType<typeof initSqlJs> | undefined;
+export interface RuntimeStateDatabase {
+  prepare(sql: string): RuntimeStateStatement;
+}
+
+interface RuntimeStateStatement {
+  run(...params: readonly unknown[]): unknown;
+}
 
 export function resolveRuntimeStatePath(): string {
   if (process.platform === 'win32') {
@@ -164,30 +169,8 @@ export async function cleanRuntimeState(cursorRoot: string, progress?: ProgressC
     };
   }
 
-  await reportProgress(progress, { message: '检查 Cursor 是否仍在运行', percent: 8 });
-  const runningProcesses = await listCursorProcesses(cursorRoot);
-  if (runningProcesses.length > 0) {
-    await reportProgress(progress, {
-      message: `Cursor 仍在运行，已跳过 state.vscdb 清理`,
-      percent: 100,
-      current: runningProcesses.length,
-      total: runningProcesses.length
-    });
-    return {
-      state: 'cursor-running',
-      filePath,
-      changed: false,
-      matchedRecords: 0,
-      cleanedFields: [],
-      deletedRecords: 0,
-      matchedNeedles: [],
-      matchedKeys: [],
-      runningProcessIds: runningProcesses.map(process => process.id),
-      message: 'Cursor 仍在运行。请完全关闭 Cursor 后再清理 state.vscdb。'
-    };
-  }
-
   const matches = await findRuntimeStateMatches(filePath, progress);
+  const runningProcesses = await listCursorProcesses(cursorRoot);
   if (matches.length === 0) {
     await reportProgress(progress, { message: '没有需要清理的运行时 UI 缓存', percent: 100, current: 0, total: 1 });
     return {
@@ -199,21 +182,18 @@ export async function cleanRuntimeState(cursorRoot: string, progress?: ProgressC
       deletedRecords: 0,
       matchedNeedles: [],
       matchedKeys: [],
-      runningProcessIds: [],
+      runningProcessIds: runningProcesses.map(process => process.id),
       message: '未发现需要清理的运行时 UI 文本缓存。'
     };
   }
 
-  await reportProgress(progress, { message: '备份 state.vscdb', percent: 42, current: 0, total: matches.length });
-  const backupPath = await backupRuntimeState(filePath);
-  const databaseBytes = await fs.readFile(filePath);
-  const SQL = await loadSqlJs();
-  const db = new SQL.Database(databaseBytes);
+  await reportProgress(progress, { message: '清理 state.vscdb', percent: 42, current: 0, total: matches.length });
+  const db = openRuntimeStateDatabase(filePath, false);
   const cleanedFields: string[] = [];
   let deletedRecords = 0;
 
   try {
-    db.run('BEGIN TRANSACTION');
+    db.exec('BEGIN TRANSACTION');
     const applicationUserMatch = matches.find(match => match.key === applicationUserKey && match.hasModeCache);
     if (applicationUserMatch) {
       const changed = clearComposerModeCache(db, applicationUserMatch.value);
@@ -226,13 +206,13 @@ export async function cleanRuntimeState(cursorRoot: string, progress?: ProgressC
       .filter(match => match.key !== applicationUserKey)
       .map(match => match.key);
     for (const key of removableKeys) {
-      db.run('DELETE FROM ItemTable WHERE key = ?', [key]);
+      db.prepare('DELETE FROM ItemTable WHERE key = ?').run(key);
       deletedRecords += 1;
     }
-    db.run('COMMIT');
+    db.exec('COMMIT');
   } catch (error) {
     try {
-      db.run('ROLLBACK');
+      db.exec('ROLLBACK');
     } catch {
       // 忽略回滚失败，继续抛出原始错误。
     }
@@ -245,36 +225,34 @@ export async function cleanRuntimeState(cursorRoot: string, progress?: ProgressC
     return {
       state: 'clean',
       filePath,
-      backupPath,
       changed: false,
       matchedRecords: matches.length,
       cleanedFields,
       deletedRecords,
       matchedNeedles: unique(matches.flatMap(match => match.needles)),
       matchedKeys: unique(matches.map(match => match.key)),
-      runningProcessIds: [],
+      runningProcessIds: runningProcesses.map(process => process.id),
       message: '发现命中项，但没有可安全删除的 UI 缓存字段。'
     };
   }
 
   await reportProgress(progress, { message: '写回清理后的 state.vscdb', percent: 82, current: cleanedFields.length + deletedRecords, total: matches.length });
-  const exported = db.export();
   db.close();
-  await fs.writeFile(filePath, Buffer.from(exported));
   await reportProgress(progress, { message: '运行时 UI 状态清理完成', percent: 100, current: cleanedFields.length + deletedRecords, total: matches.length });
 
   return {
     state: 'cleaned',
     filePath,
-    backupPath,
     changed: true,
     matchedRecords: matches.length,
     cleanedFields,
     deletedRecords,
     matchedNeedles: unique(matches.flatMap(match => match.needles)),
     matchedKeys: unique(matches.map(match => match.key)),
-    runningProcessIds: [],
-    message: '已删除持久化 UI 文本缓存，下次启动 Cursor 会从已补丁的默认配置重新生成。'
+    runningProcessIds: runningProcesses.map(process => process.id),
+    message: runningProcesses.length > 0
+      ? '已清理持久化 UI 文本缓存；Cursor 正在运行，当前窗口可能需要重载或重启后完全生效。'
+      : '已删除持久化 UI 文本缓存，下次启动 Cursor 会从已补丁的默认配置重新生成。'
   };
 }
 
@@ -340,31 +318,41 @@ export async function cleanLanguagePackCache(progress?: ProgressCallback): Promi
 }
 
 async function findRuntimeStateMatches(filePath: string, progress?: ProgressCallback): Promise<RuntimeStateMatch[]> {
-  await reportProgress(progress, { message: '读取 state.vscdb', percent: 18 });
-  const databaseBytes = await fs.readFile(filePath);
-  const SQL = await loadSqlJs();
-  const db = new SQL.Database(databaseBytes);
+  await reportProgress(progress, { message: '按需查询 state.vscdb', percent: 18 });
+  const db = openRuntimeStateDatabase(filePath, true);
 
   try {
-    const rows = db.exec('SELECT key, value FROM ItemTable WHERE key = ?', [applicationUserKey]);
-    const values = rows[0]?.values ?? [];
-    const matches: RuntimeStateMatch[] = [];
-    for (const row of values) {
-      const key = String(row[0]);
-      const value = valueToText(row[1]);
-      const needles = uiTextNeedles.filter(needle => value.includes(needle));
-      const hasModeCache = value.includes('"modes4"') && modeActionNeedles.some(needle => value.includes(needle));
-      if (needles.length > 0 && hasModeCache) {
-        matches.push({ key, value, needles, hasModeCache });
-      }
+    const row = db.prepare('SELECT key, value FROM ItemTable WHERE key = ?').get(applicationUserKey) as RuntimeStateRow | undefined;
+    if (!row) {
+      return [];
     }
-    return matches;
+
+    const key = String(row.key);
+    const value = valueToText(row.value);
+    const needles = uiTextNeedles.filter(needle => value.includes(needle));
+    const hasModeCache = value.includes('"modes4"') && modeActionNeedles.some(needle => value.includes(needle));
+    return needles.length > 0 && hasModeCache
+      ? [{ key, value, needles, hasModeCache }]
+      : [];
   } finally {
     db.close();
   }
 }
 
-export function clearComposerModeCache(db: import('sql.js').Database, rawValue: string): boolean {
+interface RuntimeStateRow {
+  readonly key: unknown;
+  readonly value: unknown;
+}
+
+export function openRuntimeStateDatabase(filePath: string, readOnly: boolean): DatabaseSync {
+  if (readOnly) {
+    return new DatabaseSync(filePath, { readOnly: true });
+  }
+
+  return new DatabaseSync(filePath);
+}
+
+export function clearComposerModeCache(db: RuntimeStateDatabase, rawValue: string): boolean {
   const parsed = JSON.parse(rawValue) as unknown;
   if (!parsed || typeof parsed !== 'object') {
     return false;
@@ -387,19 +375,8 @@ export function clearComposerModeCache(db: import('sql.js').Database, rawValue: 
   }
 
   delete composerRecord.modes4;
-  db.run('UPDATE ItemTable SET value = ? WHERE key = ?', [JSON.stringify(root), applicationUserKey]);
+  db.prepare('UPDATE ItemTable SET value = ? WHERE key = ?').run(JSON.stringify(root), applicationUserKey);
   return true;
-}
-
-async function backupRuntimeState(filePath: string): Promise<string> {
-  const backupPath = `${filePath}${backupSuffixPrefix}${formatTimestamp(new Date())}`;
-  await fs.copyFile(filePath, backupPath);
-  return backupPath;
-}
-
-async function loadSqlJs() {
-  sqlJsPromise ??= initSqlJs();
-  return sqlJsPromise;
 }
 
 async function fileExists(filePath: string): Promise<boolean> {

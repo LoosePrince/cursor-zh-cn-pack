@@ -2,8 +2,7 @@ import { execFile, spawn } from 'child_process';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { promisify } from 'util';
-import initSqlJs from 'sql.js/dist/sql-asm.js';
-import { applicationUserKey, cleanLanguagePackCache, clearComposerModeCache, uiTextNeedles, valueToText } from './runtimeStateCleaner';
+import { applicationUserKey, cleanLanguagePackCache, clearComposerModeCache, openRuntimeStateDatabase, uiTextNeedles, valueToText } from './runtimeStateCleaner';
 
 const execFileAsync = promisify(execFile);
 const gracefulTimeoutMs = 5000;
@@ -28,12 +27,20 @@ async function main(): Promise<void> {
   await closeCursor(options.cursorExe, options.logPath);
 
   if (options.cleanRuntimeState) {
-    await cleanRuntimeStateAfterExit(options.logPath);
-    await cleanLanguagePackCacheAfterExit(options.logPath);
+    await runHelperStep('clean runtime state', options.logPath, () => cleanRuntimeStateAfterExit(options.logPath));
+    await runHelperStep('clean language pack cache', options.logPath, () => cleanLanguagePackCacheAfterExit(options.logPath));
   }
 
   await launchCursor(options.cursorExe, options.logPath);
   await appendLog(options.logPath, 'helper finished');
+}
+
+async function runHelperStep(name: string, logPath: string, step: () => Promise<void>): Promise<void> {
+  try {
+    await step();
+  } catch (error) {
+    await appendLog(logPath, `${name} failed but restart will continue: ${error instanceof Error ? error.stack ?? error.message : String(error)}`);
+  }
 }
 
 function parseArgs(args: readonly string[]): HelperOptions {
@@ -86,35 +93,29 @@ async function cleanRuntimeStateAfterExit(logPath: string): Promise<void> {
     return;
   }
 
-  const SQL = await initSqlJs();
-  const db = new SQL.Database(await fs.readFile(statePath));
+  const db = openRuntimeStateDatabase(statePath, false);
   try {
-    const rows = db.exec('SELECT value FROM ItemTable WHERE key = ?', [applicationUserKey]);
-    const rawValue = rows[0]?.values[0]?.[0];
-    const value = valueToText(rawValue);
+    const row = db.prepare('SELECT value FROM ItemTable WHERE key = ?').get(applicationUserKey) as RuntimeStateValueRow | undefined;
+    const value = valueToText(row?.value);
     const hasNeedle = uiTextNeedles.some(needle => value.includes(needle));
     if (!hasNeedle) {
       await appendLog(logPath, 'runtime state has no target UI text cache');
       return;
     }
 
-    const backupPath = `${statePath}.cursor-zh-cn-runtime-backup-${formatTimestamp(new Date())}`;
-    await fs.copyFile(statePath, backupPath);
-    db.run('BEGIN TRANSACTION');
+    db.exec('BEGIN TRANSACTION');
     const changed = clearComposerModeCache(db, value);
-    db.run('COMMIT');
+    db.exec('COMMIT');
 
     if (!changed) {
-      await appendLog(logPath, `runtime state matched text but no safe field changed; backup=${backupPath}`);
+      await appendLog(logPath, 'runtime state matched text but no safe field changed');
       return;
     }
 
-    const exported = db.export();
-    await fs.writeFile(statePath, Buffer.from(exported));
-    await appendLog(logPath, `runtime state cleaned; backup=${backupPath}`);
+    await appendLog(logPath, 'runtime state cleaned');
   } catch (error) {
     try {
-      db.run('ROLLBACK');
+      db.exec('ROLLBACK');
     } catch {
       // 忽略回滚失败，继续记录原始错误。
     }
@@ -122,6 +123,10 @@ async function cleanRuntimeStateAfterExit(logPath: string): Promise<void> {
   } finally {
     db.close();
   }
+}
+
+interface RuntimeStateValueRow {
+  readonly value: unknown;
 }
 
 async function cleanLanguagePackCacheAfterExit(logPath: string): Promise<void> {

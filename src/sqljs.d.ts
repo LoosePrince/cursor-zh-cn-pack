@@ -1,3 +1,21 @@
+declare module 'node:sqlite' {
+  export interface DatabaseSyncOptions {
+    readonly readOnly?: boolean;
+  }
+
+  export class DatabaseSync {
+    constructor(path: string, options?: DatabaseSyncOptions);
+    exec(sql: string): void;
+    prepare(sql: string): StatementSync;
+    close(): void;
+  }
+
+  export interface StatementSync {
+    get(...params: readonly unknown[]): unknown;
+    run(...params: readonly unknown[]): unknown;
+  }
+}
+
 declare module 'sql.js' {
   export interface SqlJsStatic {
     Database: new (data?: Uint8Array) => Database;

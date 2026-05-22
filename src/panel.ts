@@ -995,7 +995,7 @@ function getHelpItems(): Record<string, { title: string; lead: string; points: r
     'runtime-state': {
       title: '运行时 UI 状态清理',
       lead: '处理 Cursor 写入 state.vscdb 的 UI 文本缓存。',
-      points: ['不会把数据库里的英文替换成中文。', '会先备份 state.vscdb。', '只删除或清空命中完整英文 UI 文案的缓存字段，让 Cursor 下次从已补丁的默认配置重新生成。', '推荐使用「一键重启并清理 Cursor」；独立助手会在 Cursor 退出后再写入数据库，避免扩展宿主中断或运行时覆盖。']
+      points: ['不会把数据库里的英文替换成中文。', '不再额外创建 state.vscdb 副本，回退依赖 Cursor 自带的 state.vscdb.backup。', '只删除或清空命中完整英文 UI 文案的缓存字段，让 Cursor 下次从已补丁的默认配置重新生成。', '推荐使用「一键重启并清理 Cursor」；独立助手会在 Cursor 退出后再写入数据库，避免扩展宿主中断或运行时覆盖。']
     },
     'workbench-backup': {
       title: 'Workbench 备份恢复',
@@ -1099,12 +1099,8 @@ function formatBackupKind(backup: PatchBackupInfo): string {
 }
 
 function formatRuntimeCleanLog(result: Awaited<ReturnType<typeof cleanRuntimeState>>): string {
-  if (result.state === 'cursor-running') {
-    return `运行时 UI 状态未清理：Cursor 仍在运行，进程 ${result.runningProcessIds.join(', ')}。请关闭后重试。`;
-  }
-
   if (result.changed) {
-    return `运行时 UI 状态已清理：字段 ${result.cleanedFields.length} 个，删除记录 ${result.deletedRecords} 条，备份: ${result.backupPath}`;
+    return `运行时 UI 状态已清理：字段 ${result.cleanedFields.length} 个，删除记录 ${result.deletedRecords} 条。${result.runningProcessIds.length > 0 ? `Cursor 正在运行，进程 ${result.runningProcessIds.join(', ')}。` : ''}`;
   }
 
   return `运行时 UI 状态未写入：${result.message}`;

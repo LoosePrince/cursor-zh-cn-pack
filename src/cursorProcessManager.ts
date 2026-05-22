@@ -56,6 +56,7 @@ export async function launchCursorRestartHelper(
   await fs.mkdir(path.dirname(logPath), { recursive: true });
 
   await reportProgress(progress, { message: '启动独立重启助手', percent: 70 });
+  const helperHostPath = process.execPath;
   const args = [
     helperScriptPath,
     '--cursor-exe', executablePath,
@@ -66,7 +67,7 @@ export async function launchCursorRestartHelper(
     args.push('--clean-runtime-state');
   }
 
-  const child = spawn(executablePath, args, {
+  const child = spawn(helperHostPath, args, {
     detached: true,
     windowsHide: true,
     stdio: 'ignore',
