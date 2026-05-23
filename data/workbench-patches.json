@@ -195,6 +195,111 @@
     "target": "?\"索引\":\"索引与文档\""
   },
   {
+    "id": "settings.indexing.page-title",
+    "source": "title:\"Codebase\",get children(){return re(lQC,{})}",
+    "target": "title:\"代码库\",get children(){return re(lQC,{})}"
+  },
+  {
+    "id": "settings.indexing.main-item",
+    "source": "label:\"Codebase Indexing\",helpTooltipLabel:\"Learn about codebase indexing\",helpLink:\"https://cursor.com/docs/context/codebase-indexing\",get description(){return[\"Embed codebase for improved contextual understanding and knowledge. Embeddings and metadata are stored in the\",\" \",(()=>{var f=iQC();return f.addEventListener(\"click\",()=>{n.openerService.open(\"https://cursor.com/security#codebase-indexing\",{openExternal:!0})}),f.style.setProperty(\"cursor\",\"pointer\"),f.style.setProperty(\"text-decoration\",\"underline\"),f.style.setProperty(\"text-underline-offset\",\"2px\"),f})(),\", but all code is stored locally.\"]}",
+    "target": "label:\"代码库索引\",helpTooltipLabel:\"了解代码库索引\",helpLink:\"https://cursor.com/docs/context/codebase-indexing\",get description(){return[\"嵌入代码库以提升上下文理解和知识掌握。嵌入向量和元数据存储在\",\" \",(()=>{var f=iQC();return f.addEventListener(\"click\",()=>{n.openerService.open(\"https://cursor.com/security#codebase-indexing\",{openExternal:!0})}),f.style.setProperty(\"cursor\",\"pointer\"),f.style.setProperty(\"text-decoration\",\"underline\"),f.style.setProperty(\"text-underline-offset\",\"2px\"),f})(),\"，但所有代码都存储在本地。\"]}"
+  },
+  {
+    "id": "settings.indexing.cloud-link",
+    "source": "iQC=ot(\"\u003cspan\u003ecloud\")",
+    "target": "iQC=ot(\"\u003cspan\u003e云端\")"
+  },
+  {
+    "id": "settings.indexing.compute-index",
+    "source": "get children(){return[re(Pa,{get when(){return u()===\"not-indexed\"},get children(){return re(Km,{title:\"Compute index\",onClick:()=>{e.indexMainRepository()},type:\"primary\"})}}),re(Pa,{get when(){return u()===\"error\"}",
+    "target": "get children(){return[re(Pa,{get when(){return u()===\"not-indexed\"},get children(){return re(Km,{title:\"计算索引\",onClick:()=>{e.indexMainRepository()},type:\"primary\"})}}),re(Pa,{get when(){return u()===\"error\"}"
+  },
+  {
+    "id": "settings.indexing.progress-setting-up",
+    "source": "get children(){return[\"Setting up indexing \",re(v1e,{show:!0})]}",
+    "target": "get children(){return[\"正在设置索引 \",re(v1e,{show:!0})]}"
+  },
+  {
+    "id": "settings.indexing.auto-index-folders",
+    "source": "label:\"Index New Folders\",get description(){return[\"Automatically index any new folders with fewer than\",\" \",Er(()=>e.serverConfigService.cachedServerConfig?.indexingConfig?.autoIndexingMaxNumFiles.toLocaleString(\"en-US\",{useGrouping:!0})),\" \",\"files\"]},get value(){return e.reactiveStorageService.applicationUserPersistentStorage.indexRepository},onChange:i,hideTopDivider:!0",
+    "target": "label:\"为新文件夹建立索引\",get description(){return[\"自动为少于\",\" \",Er(()=>e.serverConfigService.cachedServerConfig?.indexingConfig?.autoIndexingMaxNumFiles.toLocaleString(\"en-US\",{useGrouping:!0})),\" \",\"个文件的新文件夹建立索引\"]},get value(){return e.reactiveStorageService.applicationUserPersistentStorage.indexRepository},onChange:i,hideTopDivider:!0"
+  },
+  {
+    "id": "settings.indexing.cursorignore-item",
+    "source": "label:\"Ignore Files in .cursorignore\",get description(){return[\"Files to exclude from indexing in addition to .gitignore.\",\" \",(()=>{var u=oQC();return u.addEventListener(\"click\",async()=>{const d=await e.repositoryService.getEmbeddableFilesPath();d&&e.openerService.open(d,{openToSide:!0})}),u.style.setProperty(\"cursor\",\"pointer\"),u})()]},get extra(){return re(Km,{title:\"Edit\",type:\"tertiary\",size:\"small\",codiconStyle:{color:\"var(--cursor-icon-secondary)\",\"font-size\":\"14px\"},renderCodiconOnRight:!0,onClick:()=>{n.openOrCreateFile()}})}}",
+    "target": "label:\"在 .cursorignore 中忽略文件\",get description(){return[\"除了 .gitignore 之外，还会从索引中排除这些文件。\",\" \",(()=>{var u=oQC();return u.addEventListener(\"click\",async()=>{const d=await e.repositoryService.getEmbeddableFilesPath();d&&e.openerService.open(d,{openToSide:!0})}),u.style.setProperty(\"cursor\",\"pointer\"),u})()]},get extra(){return re(Km,{title:\"编辑\",type:\"tertiary\",size:\"small\",codiconStyle:{color:\"var(--cursor-icon-secondary)\",\"font-size\":\"14px\"},renderCodiconOnRight:!0,onClick:()=>{n.openOrCreateFile()}})}}"
+  },
+  {
+    "id": "settings.indexing.cursorignore-link",
+    "source": "oQC=ot(\"\u003cspan class=settings__item_link\u003eView included files.\")",
+    "target": "oQC=ot(\"\u003cspan class=settings__item_link\u003e查看已纳入的文件。\")"
+  },
+  {
+    "id": "settings.docs.section-header",
+    "source": "title:\"Docs\",description:\"Crawl and index custom resources and developer docs\",get titleExtra(){return re(Zo,{onClick:()=>{(async()=>{n.uiOverlayService.newDoc=void 0,await n.commandService.executeCommand(\"cursor.newdocs\")})()},variant:\"secondary\",get codicon(){return lt.plus},children:\"Add Doc\"})",
+    "target": "title:\"文档\",description:\"抓取并索引自定义资源与开发者文档\",get titleExtra(){return re(Zo,{onClick:()=>{(async()=>{n.uiOverlayService.newDoc=void 0,await n.commandService.executeCommand(\"cursor.newdocs\")})()},variant:\"secondary\",get codicon(){return lt.plus},children:\"添加文档\"})"
+  },
+  {
+    "id": "settings.docs.empty-state",
+    "source": "title:\"No Docs Added\",description:\"Add documentation to use as context. You can also use @Add in Chat or while editing to add a doc.\",actionTitle:\"Add Doc\",action:()=>{(async()=>{n.uiOverlayService.newDoc=void 0,await n.commandService.executeCommand(\"cursor.newdocs\")})()}}",
+    "target": "title:\"尚未添加文档\",description:\"添加文档以用作上下文。你也可以在聊天中或编辑时使用 @Add 添加文档。\",actionTitle:\"添加文档\",action:()=>{(async()=>{n.uiOverlayService.newDoc=void 0,await n.commandService.executeCommand(\"cursor.newdocs\")})()}}"
+  },
+  {
+    "id": "settings.network.page-title",
+    "source": "title:\"Network\",get children(){return re(hE,{",
+    "target": "title:\"网络\",get children(){return re(hE,{"
+  },
+  {
+    "id": "settings.network.http-compatibility",
+    "source": "label:\"HTTP Compatibility Mode\",description:\"HTTP/2 is recommended for low-latency streaming. In some corporate proxy and VPN environments, the compatibility mode may need to be lowered.\",get value(){return Er(()=>!e())()?\"http2\":i()?\"http1.0\":\"http1.1\"},items:[{id:\"http2\",label:\"HTTP/2\"},{id:\"http1.1\",label:\"HTTP/1.1\"},{id:\"http1.0\",label:\"HTTP/1.0\"}],onChange:be=>{switch(be){case\"http2\":t(!1),r(!1);break;case\"http1.1\":t(!0),r(!1);break;case\"http1.0\":t(!0),r(!0);break}},hideTopDivider:!0",
+    "target": "label:\"HTTP 兼容模式\",description:\"HTTP/2 更适合低延迟流式传输。在某些企业代理和 VPN 环境中，可能需要降低兼容模式级别。\",get value(){return Er(()=>!e())()?\"http2\":i()?\"http1.0\":\"http1.1\"},items:[{id:\"http2\",label:\"HTTP/2\"},{id:\"http1.1\",label:\"HTTP/1.1\"},{id:\"http1.0\",label:\"HTTP/1.0\"}],onChange:be=>{switch(be){case\"http2\":t(!1),r(!1);break;case\"http1.1\":t(!0),r(!1);break;case\"http1.0\":t(!0),r(!0);break}},hideTopDivider:!0"
+  },
+  {
+    "id": "settings.network.required-domains",
+    "source": "label:\"Required Domains\",description:\"These domains must be accessible for Cursor to function. Add them to your firewall or proxy allowlist.\"",
+    "target": "label:\"必需域名\",description:\"这些域名必须可访问，Cursor 才能正常工作。请将它们加入你的防火墙或代理允许列表。\""
+  },
+  {
+    "id": "settings.network.copy-domains",
+    "source": "get title(){return u()?\"Copied\":\"Copy Domains\"}",
+    "target": "get title(){return u()?\"已复制\":\"复制域名\"}"
+  },
+  {
+    "id": "settings.network.diagnostics",
+    "source": "label:\"Network Diagnostics\",description:\"Check network connectivity to all Cursor services\",get extra(){return re(Km,{type:\"tertiary\",size:\"small\",get title(){return S()?\"Running Diagnostic\":\"Run Diagnostic\"},get isLoading(){return S()},onClick:V})},hideTopDivider:!0",
+    "target": "label:\"网络诊断\",description:\"检查到所有 Cursor 服务的网络连通性\",get extra(){return re(Km,{type:\"tertiary\",size:\"small\",get title(){return S()?\"正在运行诊断\":\"运行诊断\"},get isLoading(){return S()},onClick:V})},hideTopDivider:!0"
+  },
+  {
+    "id": "settings.beta.page-title",
+    "source": "title:\"Beta\",get children(){return[re(hE,{",
+    "target": "title:\"Beta 功能\",get children(){return[re(hE,{"
+  },
+  {
+    "id": "settings.beta.update-access",
+    "source": "label:\"Update Access\",get description(){return L()},get value(){return R()},get items(){return M()},onChange:ie=>{E()||n.configurationService.updateValue(g9n,ie)},hideTopDivider:!0,get dropdownProps(){return{cannotToggle:a()===\"enterprise\"||E(),tooltip:E()?\"Update Access is managed by internal release-track policy.\":a()===\"enterprise\"?\"Enterprise users can only be notified on stable updates.\":void 0}}",
+    "target": "label:\"更新通道\",get description(){return L()},get value(){return R()},get items(){return M()},onChange:ie=>{E()||n.configurationService.updateValue(g9n,ie)},hideTopDivider:!0,get dropdownProps(){return{cannotToggle:a()===\"enterprise\"||E(),tooltip:E()?\"更新通道受内部 release-track 策略管理。\":a()===\"enterprise\"?\"企业用户只能接收稳定版更新。\":void 0}}"
+  },
+  {
+    "id": "settings.beta.default-description",
+    "source": "return\"By default, get notifications for stable updates. In Early Access, pre-release builds may be unstable for production work.\"",
+    "target": "return\"默认情况下，你会收到稳定版更新通知。在提前体验通道中，预发布版本可能不适合生产环境工作。\""
+  },
+  {
+    "id": "settings.beta.release-track-policy",
+    "source": "WjC=ot(\"\u003cspan\u003eUpdate Access is managed by internal release-track policy.\"),HjC=ot(\"\u003ca class=settings-beta-release-track-policy-link target=_blank\u003eOpen Statsig config\")",
+    "target": "WjC=ot(\"\u003cspan\u003e更新通道受内部 release-track 策略管理。\"),HjC=ot(\"\u003ca class=settings-beta-release-track-policy-link target=_blank\u003e打开 Statsig 配置\")"
+  },
+  {
+    "id": "settings.beta.release-track-options",
+    "source": "ck_=[{label:\"Default\",id:\"stable\",allow:[\"enterprise\",\"self-serve\"]},{label:\"Early Access\",id:\"prerelease\",allow:[\"self-serve\"]},{label:\"Nightly\",id:\"dev\",allow:[\"self-serve\"]},{label:\"Dogfood\",id:\"dogfood\",allow:[]},{label:\"Candidate\",id:\"candidate\",allow:[]}]",
+    "target": "ck_=[{label:\"默认\",id:\"stable\",allow:[\"enterprise\",\"self-serve\"]},{label:\"提前体验\",id:\"prerelease\",allow:[\"self-serve\"]},{label:\"每夜版\",id:\"dev\",allow:[\"self-serve\"]},{label:\"内部自用\",id:\"dogfood\",allow:[]},{label:\"候选版\",id:\"candidate\",allow:[]}]"
+  },
+  {
+    "id": "settings.beta.extension-rpc-tracer",
+    "source": "label:\"Extension RPC Tracer\",description:\"Log extension host RPC messages to JSON files viewable in Perfetto for performance analysis. Requires a restart to take effect.\"",
+    "target": "label:\"扩展 RPC 跟踪器\",description:\"将扩展宿主的 RPC 消息记录为可在 Perfetto 中查看的 JSON 文件，用于性能分析。需要重启后生效。\""
+  },
+  {
     "id": "settings.tools.page-title",
     "source": "title:\"Tools\",get children(){return[re(kt,{get when(){return t&&F().length>0},get children(){return re(kt,{get when(){return W()},keyed:!0,get children(){return re(p8,{reactComponent:xNr,get reactProps(){return V()},get portalRoot(){return e.portalElement}})}})}}),re(kt,{get when(){return!z()},get children(){return re(HZC,{})}}),re(kt,{when:!t,get children(){return re(hE,{title:\"Installed MCP Servers\"",
     "target": "title:\"工具\",get children(){return[re(kt,{get when(){return t&&F().length>0},get children(){return re(kt,{get when(){return W()},keyed:!0,get children(){return re(p8,{reactComponent:xNr,get reactProps(){return V()},get portalRoot(){return e.portalElement}})}})}}),re(kt,{get when(){return!z()},get children(){return re(HZC,{})}}),re(kt,{when:!t,get children(){return re(hE,{title:\"Installed MCP Servers\""
