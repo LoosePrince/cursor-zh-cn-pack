@@ -90,6 +90,61 @@
     "target": "title:\"还没有命令\",description:\"创建命令以构建可复用工作流\",get actionTitle(){return n.canCreateUserContent||n.hasWorkspaceScopeSelected?\"新建命令\":void 0}"
   },
   {
+    "id": "settings.rules.empty.rules",
+    "source": "title:\"No Rules Yet\",description:\"Create rules to guide Agent behavior\",get actionTitle(){return n.canCreateUserContent?\"New User Rule\":n.hasWorkspaceScopeSelected?\"New Project Rule\":void 0}",
+    "target": "title:\"还没有规则\",description:\"创建规则来引导智能体行为\",get actionTitle(){return n.canCreateUserContent?\"新建用户规则\":n.hasWorkspaceScopeSelected?\"新建项目规则\":void 0}"
+  },
+  {
+    "id": "settings.rules.empty.skills",
+    "source": "title:\"No Skills Yet\",description:\"Skills help the agent accomplish specific tasks\",get actionTitle(){return n.canCreateContextualContent?\"New Skill\":void 0}",
+    "target": "title:\"还没有技能\",description:\"技能可帮助智能体完成特定任务\",get actionTitle(){return n.canCreateContextualContent?\"新建技能\":void 0}"
+  },
+  {
+    "id": "workbench.browser-favorites.item-menu.open-rename-remove",
+    "source": "id:ie,handleSelect:L,label:\"Open in New Tab\",section:\"primary\"},e[21]=L,e[22]=ie,e[23]=se):se=e[23];const ce=`${t.url}:rename`;let he;e[24]!==F||e[25]!==ce?(he={id:ce,handleSelect:F,label:\"Rename\",section:\"secondary\"},e[24]=F,e[25]=ce,e[26]=he):he=e[26];const fe=`${t.url}:remove`;let ye;e[27]!==J||e[28]!==fe?(ye={id:fe,handleSelect:J,label:\"Remove Favorite\",section:\"secondary\"},e[27]=J,e[28]=fe,e[29]=ye):ye=e[29]",
+    "target": "id:ie,handleSelect:L,label:\"在新标签页中打开\",section:\"primary\"},e[21]=L,e[22]=ie,e[23]=se):se=e[23];const ce=`${t.url}:rename`;let he;e[24]!==F||e[25]!==ce?(he={id:ce,handleSelect:F,label:\"重命名\",section:\"secondary\"},e[24]=F,e[25]=ce,e[26]=he):he=e[26];const fe=`${t.url}:remove`;let ye;e[27]!==J||e[28]!==fe?(ye={id:fe,handleSelect:J,label:\"取消收藏\",section:\"secondary\"},e[27]=J,e[28]=fe,e[29]=ye):ye=e[29]"
+  },
+  {
+    "id": "workbench.browser-favorites.item-menu.move-to",
+    "source": "children:\"Move to\"}),ct(Hd.SubMenuContent,{maxWidth:AI,minWidth:EP,size:\"md\",children:[i!==void 0&&H(Hd.Section,{children:H(Hd.Item,{onSelect:V,children:\"Favorites\"})}),_e.length>0&&H(Hd.Section,{children:Le.map(cSk)}),a&&H(Hd.Section,{children:H(Hd.Item,{onSelect:Y,children:\"New Folder\"})})]})",
+    "target": "children:\"移动到\"}),ct(Hd.SubMenuContent,{maxWidth:AI,minWidth:EP,size:\"md\",children:[i!==void 0&&H(Hd.Section,{children:H(Hd.Item,{onSelect:V,children:\"收藏夹\"})}),_e.length>0&&H(Hd.Section,{children:Le.map(cSk)}),a&&H(Hd.Section,{children:H(Hd.Item,{onSelect:Y,children:\"新建文件夹\"})})]})"
+  },
+  {
+    "id": "workbench.extensibility.delete-action",
+    "source": "n.deleteDisabled?n.deleteDisabledTooltip??\"Cannot delete\":\"Delete\"",
+    "target": "n.deleteDisabled?n.deleteDisabledTooltip??\"无法删除\":\"删除\""
+  },
+  {
+    "id": "workbench.extensibility.delete-disabled.commands",
+    "source": "deleteDisabledTooltip:\"Cannot delete team or third-party commands\"",
+    "target": "deleteDisabledTooltip:\"无法删除团队命令或第三方命令\""
+  },
+  {
+    "id": "workbench.extensibility.delete-disabled.rules",
+    "source": "deleteDisabledTooltip:\"Cannot delete team rules\"",
+    "target": "deleteDisabledTooltip:\"无法删除团队规则\""
+  },
+  {
+    "id": "workbench.extensibility.delete-disabled.skills",
+    "source": "deleteDisabledTooltip:\"Cannot delete third-party skills\"",
+    "target": "deleteDisabledTooltip:\"无法删除第三方技能\""
+  },
+  {
+    "id": "workbench.subagents.delete-action",
+    "source": "l=()=>a()?\"Delete\":\"Cannot delete third-party subagents\"",
+    "target": "l=()=>a()?\"删除\":\"无法删除第三方子智能体\""
+  },
+  {
+    "id": "workbench.skill.pin-toggle.title",
+    "source": "title:n.isPinned?\"Unpin\":\"Pin\"",
+    "target": "title:n.isPinned?\"取消固定\":\"固定\""
+  },
+  {
+    "id": "workbench.skill.pin-toggle.aria-label",
+    "source": "\"aria-label\":n.isPinned?`Unpin ${n.name}`:`Pin ${n.name}`",
+    "target": "\"aria-label\":n.isPinned?`取消固定 ${n.name}`:`固定 ${n.name}`"
+  },
+  {
     "id": "settings.nav.plugins",
     "source": "plugins:\"Plugins\"",
     "target": "plugins:\"插件\""
