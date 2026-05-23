@@ -40,6 +40,56 @@
     "target": "rules:\"规则、技能、子智能体\""
   },
   {
+    "id": "settings.rules.page-title.glass",
+    "source": "gAC=()=>\"Rules, Skills, Subagents\"",
+    "target": "gAC=()=>\"规则、技能、子智能体\""
+  },
+  {
+    "id": "settings.rules.page-title",
+    "source": "He=\"Rules, Skills, Subagents\"",
+    "target": "He=\"规则、技能、子智能体\""
+  },
+  {
+    "id": "settings.rules.page-description",
+    "source": "description:\"Provide domain-specific knowledge and workflows for the agent\"",
+    "target": "description:\"为智能体提供特定领域的知识和工作流\""
+  },
+  {
+    "id": "settings.rules.import-card",
+    "source": "label:\"Include third-party Plugins, Skills, and other configs\",description:\"Automatically import agent configs from other tools\"",
+    "target": "label:\"包含第三方插件、技能和其他配置\",description:\"自动从其他工具导入智能体配置\""
+  },
+  {
+    "id": "settings.rules.section.rules",
+    "source": "title:\"Rules\",helpTooltipLabel:\"Learn about Rules\",helpLink:\"https://cursor.com/docs/context/rules\",description:\"Use Rules to guide agent behavior, like enforcing best practices or coding standards. Rules can be applied always, by file path, or manually.\"",
+    "target": "title:\"规则\",helpTooltipLabel:\"了解规则\",helpLink:\"https://cursor.com/docs/context/rules\",description:\"使用规则来引导智能体行为，例如强制执行最佳实践或编码规范。规则可以始终应用、按文件路径应用，或手动应用。\""
+  },
+  {
+    "id": "settings.rules.section.skills",
+    "source": "title:\"Skills\",helpTooltipLabel:\"Learn about Skills\",helpLink:\"https://cursor.com/docs/context/skills\",description:\"Skills are specialized capabilities that help the agent accomplish specific tasks. Skills will be invoked by the agent when relevant or can be triggered manually with / in chat.\"",
+    "target": "title:\"技能\",helpTooltipLabel:\"了解技能\",helpLink:\"https://cursor.com/docs/context/skills\",description:\"技能是帮助智能体完成特定任务的专门能力。技能会在相关时由智能体调用，也可以在聊天中通过 / 手动触发。\""
+  },
+  {
+    "id": "settings.rules.section.subagents",
+    "source": "title:\"Subagents\",helpTooltipLabel:\"Learn about Subagents\",helpLink:\"https://cursor.com/docs/agent/subagents\",description:\"Create specialized agents for complex tasks. Subagents can be invoked by the agent to handle focused work in parallel.\"",
+    "target": "title:\"子智能体\",helpTooltipLabel:\"了解子智能体\",helpLink:\"https://cursor.com/docs/agent/subagents\",description:\"为复杂任务创建专门的智能体。子智能体可由主智能体调用，以并行处理聚焦工作。\""
+  },
+  {
+    "id": "settings.rules.section.commands",
+    "source": "idToScrollTo:YFw,title:\"Commands\",helpTooltipLabel:\"Learn about Commands\",helpLink:\"https://cursor.com/docs/agent/chat/commands\",description:\"Create reusable workflows triggered with / prefix in chat. Use commands to standardize processes and make common tasks more efficient.\"",
+    "target": "idToScrollTo:YFw,title:\"命令\",helpTooltipLabel:\"了解命令\",helpLink:\"https://cursor.com/docs/agent/chat/commands\",description:\"创建可在聊天中通过 / 前缀触发的可复用工作流。使用命令来标准化流程，并让常见任务更高效。\""
+  },
+  {
+    "id": "settings.rules.empty.subagents",
+    "source": "title:\"No Subagents Yet\",description:\"Create specialized agents to handle focused tasks\",get actionTitle(){return n.canCreateContextualContent?\"New Subagent\":void 0}",
+    "target": "title:\"还没有子智能体\",description:\"创建专门的智能体来处理聚焦任务\",get actionTitle(){return n.canCreateContextualContent?\"新建子智能体\":void 0}"
+  },
+  {
+    "id": "settings.rules.empty.commands",
+    "source": "title:\"No Commands Yet\",description:\"Create commands to build reusable workflows\",get actionTitle(){return n.canCreateUserContent||n.hasWorkspaceScopeSelected?\"New Command\":void 0}",
+    "target": "title:\"还没有命令\",description:\"创建命令以构建可复用工作流\",get actionTitle(){return n.canCreateUserContent||n.hasWorkspaceScopeSelected?\"新建命令\":void 0}"
+  },
+  {
     "id": "settings.nav.plugins",
     "source": "plugins:\"Plugins\"",
     "target": "plugins:\"插件\""
