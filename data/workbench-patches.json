@@ -965,6 +965,216 @@
     "target": "message:\"API 密钥无效或已过期。\",extraDetail:\"更新 API 密钥\""
   },
   {
+    "id": "settings.models.section-title",
+    "source": "return re(LIe,{title:\"Models\",get children(){return[re(hE,{get children(){return re($_,{get children(){return[",
+    "target": "return re(LIe,{title:\"模型\",get children(){return[re(hE,{get children(){return re($_,{get children(){return["
+  },
+  {
+    "id": "settings.models.search.placeholder",
+    "source": "placeholder:\"Add or search model\"",
+    "target": "placeholder:\"添加或搜索模型\""
+  },
+  {
+    "id": "settings.models.view-all-models.label",
+    "source": "fek=ot(\"\u003cdiv class=settings-menu-hoverable\u003eView All Models\")",
+    "target": "fek=ot(\"\u003cdiv class=settings-menu-hoverable\u003e查看全部模型\")"
+  },
+  {
+    "id": "settings.models.add-custom-model.label",
+    "source": "gek=ot(\"\u003cdiv class=settings-menu-hoverable\u003e\u003cspan\u003e\u003c/span\u003eAdd Custom Model\")",
+    "target": "gek=ot(\"\u003cdiv class=settings-menu-hoverable\u003e\u003cspan\u003e\u003c/span\u003e添加自定义模型\")"
+  },
+  {
+    "id": "settings.models.api-keys.section-title",
+    "source": "vek=ot(\"\u003cdiv class=settings-menu-hoverable\u003e\u003cdiv\u003e\u003c/div\u003e\u003cdiv\u003eAPI Keys\")",
+    "target": "vek=ot(\"\u003cdiv class=settings-menu-hoverable\u003e\u003cdiv\u003e\u003c/div\u003e\u003cdiv\u003eAPI 密钥\")"
+  },
+  {
+    "id": "settings.models.no-models-available",
+    "source": "yek=ot(\"\u003cdiv\u003eNo models available\")",
+    "target": "yek=ot(\"\u003cdiv\u003e没有可用模型\")"
+  },
+  {
+    "id": "settings.models.openai.title",
+    "source": "title:\"OpenAI API Key\"",
+    "target": "title:\"OpenAI API 密钥\""
+  },
+  {
+    "id": "settings.models.openai.link-text",
+    "source": "kek=ot(\"\u003cspan\u003eyour OpenAI key\")",
+    "target": "kek=ot(\"\u003cspan\u003e你的 OpenAI 密钥\")"
+  },
+  {
+    "id": "settings.models.openai.description",
+    "source": "get description(){return[\"You can put in\",\" \",(()=>{var et=kek();return et.addEventListener(\"click\",()=>{e.openerService.open(\"https://platform.openai.com/account/api-keys\")}),et.style.setProperty(\"display\",\"inline\"),et.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),et.style.setProperty(\"cursor\",\"pointer\"),et})(),\" \",\"to use OpenAI models at cost.\"]}",
+    "target": "get description(){return[\"你可以填入\",\" \",(()=>{var et=kek();return et.addEventListener(\"click\",()=>{e.openerService.open(\"https://platform.openai.com/account/api-keys\")}),et.style.setProperty(\"display\",\"inline\"),et.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),et.style.setProperty(\"cursor\",\"pointer\"),et})(),\"，以按量付费使用 OpenAI 模型。\"]}"
+  },
+  {
+    "id": "settings.models.openai.input.placeholder",
+    "source": "placeholder:\"Enter your OpenAI API Key\"",
+    "target": "placeholder:\"输入你的 OpenAI API 密钥\""
+  },
+  {
+    "id": "settings.models.openai.override-base-url.label",
+    "source": "label:\"Override OpenAI Base URL\"",
+    "target": "label:\"覆盖 OpenAI Base URL\""
+  },
+  {
+    "id": "settings.models.openai.override-base-url.description",
+    "source": "description:\"Change the base URL for OpenAI API requests.\"",
+    "target": "description:\"修改 OpenAI API 请求使用的基础 URL。\""
+  },
+  {
+    "id": "settings.models.anthropic.title",
+    "source": "title:\"Anthropic API Key\"",
+    "target": "title:\"Anthropic API 密钥\""
+  },
+  {
+    "id": "settings.models.anthropic.subscription-note",
+    "source": "dek=ot(\"\u003cdiv\u003eWith your Cursor \u003c!\u003esubscription, you do not need to use your own Anthropic key!\")",
+    "target": "dek=ot(\"\u003cdiv\u003e使用你的 Cursor \u003c!\u003e订阅时，无需使用你自己的 Anthropic 密钥！\")"
+  },
+  {
+    "id": "settings.models.anthropic.link-text",
+    "source": "hek=ot(\"\u003cspan\u003eyour Anthropic key\")",
+    "target": "hek=ot(\"\u003cspan\u003e你的 Anthropic 密钥\")"
+  },
+  {
+    "id": "settings.models.anthropic.description",
+    "source": "[\"You can put in\",\" \",(()=>{var y=hek();return y.addEventListener(\"click\",()=>{n.openerService.open(\"https://console.anthropic.com/settings/keys\")}),y.style.setProperty(\"display\",\"inline\"),y.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),y.style.setProperty(\"cursor\",\"pointer\"),y})(),\" \",'to use Claude at cost. When enabled, this key will be used for all models beginning with \"claude-\".']]",
+    "target": "[\"你可以填入\",\" \",(()=>{var y=hek();return y.addEventListener(\"click\",()=>{n.openerService.open(\"https://console.anthropic.com/settings/keys\")}),y.style.setProperty(\"display\",\"inline\"),y.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),y.style.setProperty(\"cursor\",\"pointer\"),y})(),\"，以按量付费使用 Claude。启用后，此密钥将用于所有以 \\\"claude-\\\" 开头的模型。\"]]"
+  },
+  {
+    "id": "settings.models.anthropic.input.placeholder",
+    "source": "placeholder:\"Enter your Anthropic API Key\"",
+    "target": "placeholder:\"输入你的 Anthropic API 密钥\""
+  },
+  {
+    "id": "settings.models.google.title",
+    "source": "title:\"Google API Key\"",
+    "target": "title:\"Google API 密钥\""
+  },
+  {
+    "id": "settings.models.google.subscription-note",
+    "source": "cek=ot(\"\u003cdiv\u003eWith your Cursor \u003c!\u003esubscription, you do not need to use your own Google key!\")",
+    "target": "cek=ot(\"\u003cdiv\u003e使用你的 Cursor \u003c!\u003e订阅时，无需使用你自己的 Google 密钥！\")"
+  },
+  {
+    "id": "settings.models.google.link-text",
+    "source": "uek=ot(\"\u003cspan\u003eyour Google AI Studio key\")",
+    "target": "uek=ot(\"\u003cspan\u003e你的 Google AI Studio 密钥\")"
+  },
+  {
+    "id": "settings.models.google.description",
+    "source": "[\"You can put in\",\" \",(()=>{var y=uek();return y.addEventListener(\"click\",()=>{n.openerService.open(\"https://aistudio.google.com/app/apikey\")}),y.style.setProperty(\"display\",\"inline\"),y.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),y.style.setProperty(\"cursor\",\"pointer\"),y})(),\" \",\"to use Google models at-cost.\"]]",
+    "target": "[\"你可以填入\",\" \",(()=>{var y=uek();return y.addEventListener(\"click\",()=>{n.openerService.open(\"https://aistudio.google.com/app/apikey\")}),y.style.setProperty(\"display\",\"inline\"),y.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),y.style.setProperty(\"cursor\",\"pointer\"),y})(),\"，以按量付费使用 Google 模型。\"]]"
+  },
+  {
+    "id": "settings.models.google.input.placeholder",
+    "source": "placeholder:\"Enter your Google AI Studio API Key\"",
+    "target": "placeholder:\"输入你的 Google AI Studio API 密钥\""
+  },
+  {
+    "id": "settings.models.azure.title",
+    "source": "title:\"Azure OpenAI\"",
+    "target": "title:\"Azure OpenAI\""
+  },
+  {
+    "id": "settings.models.azure.description",
+    "source": "get description(){return\"Configure Azure OpenAI to use OpenAI models through your Azure account.\"}",
+    "target": "get description(){return\"配置 Azure OpenAI，以通过你的 Azure 账户使用 OpenAI 模型。\"}"
+  },
+  {
+    "id": "settings.models.azure.base-url.label",
+    "source": "label:\"Base URL\",get extra(){return(()=>{var en=mie();return ke(en,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{placeholder:\"e.g. my-resource.openai.azure.com\"",
+    "target": "label:\"基础 URL\",get extra(){return(()=>{var en=mie();return ke(en,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{placeholder:\"e.g. my-resource.openai.azure.com\""
+  },
+  {
+    "id": "settings.models.azure.deployment-name.label",
+    "source": "label:\"Deployment Name\",get extra(){return(()=>{var en=mie();return ke(en,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{placeholder:\"e.g. gpt-35-turbo\"",
+    "target": "label:\"部署名称\",get extra(){return(()=>{var en=mie();return ke(en,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{placeholder:\"e.g. gpt-35-turbo\""
+  },
+  {
+    "id": "settings.models.azure.api-key.label",
+    "source": "label:\"API Key\",get extra(){return(()=>{var en=mie();return en.style.setProperty(\"display\",\"flex\"),en.style.setProperty(\"gap\",\"8px\"),en.style.setProperty(\"align-items\",\"center\"),ke(en,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{type:\"password\",placeholder:\"Enter your Azure OpenAI API Key\"",
+    "target": "label:\"API 密钥\",get extra(){return(()=>{var en=mie();return en.style.setProperty(\"display\",\"flex\"),en.style.setProperty(\"gap\",\"8px\"),en.style.setProperty(\"align-items\",\"center\"),ke(en,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{type:\"password\",placeholder:\"Enter your Azure OpenAI API Key\""
+  },
+  {
+    "id": "settings.models.azure.input.api-key.placeholder",
+    "source": "placeholder:\"Enter your Azure OpenAI API Key\"",
+    "target": "placeholder:\"输入你的 Azure OpenAI API 密钥\""
+  },
+  {
+    "id": "settings.models.azure.input.base-url.placeholder",
+    "source": "placeholder:\"e.g. my-resource.openai.azure.com\"",
+    "target": "placeholder:\"例如：my-resource.openai.azure.com\""
+  },
+  {
+    "id": "settings.models.azure.input.deployment-name.placeholder",
+    "source": "placeholder:\"e.g. gpt-35-turbo\"",
+    "target": "placeholder:\"例如：gpt-35-turbo\""
+  },
+  {
+    "id": "settings.models.bedrock.team-configured-note",
+    "source": "mek=ot(\"\u003cdiv\u003eYour team has configured AWS Bedrock access. You can use your teams Bedrock instance without any additional configuration.\")",
+    "target": "mek=ot(\"\u003cdiv\u003e你的团队已配置 AWS Bedrock 访问。无需额外配置即可使用团队的 Bedrock 实例。\")"
+  },
+  {
+    "id": "settings.models.bedrock.title",
+    "source": "title:\"AWS Bedrock\"",
+    "target": "title:\"AWS Bedrock\""
+  },
+  {
+    "id": "settings.models.bedrock.description",
+    "source": "get description(){return[\"Configure AWS Bedrock to use Anthropic Claude models through your AWS account.\",pek(),\"Cursor Enterprise teams can configure IAM roles to access Bedrock without any Access Keys.\"]}",
+    "target": "get description(){return[\"配置 AWS Bedrock，以通过你的 AWS 账户使用 Anthropic Claude 模型。\",pek(),\"Cursor Enterprise 团队可以配置 IAM 角色，在无需任何访问密钥的情况下访问 Bedrock。\"]}"
+  },
+  {
+    "id": "settings.models.bedrock.access-key-id.label",
+    "source": "hideTopDivider:!0,label:\"Access Key ID\",get extra(){return(()=>{var Ht=mie();return ke(Ht,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{type:\"password\",placeholder:\"AWS Access Key ID\"",
+    "target": "hideTopDivider:!0,label:\"访问密钥 ID\",get extra(){return(()=>{var Ht=mie();return ke(Ht,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{type:\"password\",placeholder:\"AWS Access Key ID\""
+  },
+  {
+    "id": "settings.models.bedrock.secret-access-key.label",
+    "source": "label:\"Secret Access Key\",get extra(){return(()=>{var Ht=mie();return ke(Ht,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{type:\"password\",placeholder:\"AWS Secret Access Key\"",
+    "target": "label:\"私有访问密钥\",get extra(){return(()=>{var Ht=mie();return ke(Ht,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{type:\"password\",placeholder:\"AWS Secret Access Key\""
+  },
+  {
+    "id": "settings.models.bedrock.region.label",
+    "source": "hideTopDivider:!0,label:\"Region\",get extra(){return(()=>{var Ht=mie();return ke(Ht,re(Xoe,{extraStyles:{\"font-size\":\"12px\",width:\"100%\"},size:\"small\",get extras(){return{placeholder:\"e.g. us-east-1\"",
+    "target": "hideTopDivider:!0,label:\"区域\",get extra(){return(()=>{var Ht=mie();return ke(Ht,re(Xoe,{extraStyles:{\"font-size\":\"12px\",width:\"100%\"},size:\"small\",get extras(){return{placeholder:\"e.g. us-east-1\""
+  },
+  {
+    "id": "settings.models.bedrock.region.label.enabled",
+    "source": "label:\"Region\",get extra(){return(()=>{var Ht=mie();return ke(Ht,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{placeholder:\"e.g. us-east-1\"",
+    "target": "label:\"区域\",get extra(){return(()=>{var Ht=mie();return ke(Ht,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{placeholder:\"e.g. us-east-1\""
+  },
+  {
+    "id": "settings.models.bedrock.test-model.label",
+    "source": "label:\"Test Model\",get extra(){return(()=>{var Ht=mie();return Ht.style.setProperty(\"display\",\"flex\"),Ht.style.setProperty(\"gap\",\"8px\"),Ht.style.setProperty(\"align-items\",\"center\"),ke(Ht,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{placeholder:\"e.g. anthropic.claude-3-sonnet-20240229-v1:0\"",
+    "target": "label:\"测试模型\",get extra(){return(()=>{var Ht=mie();return Ht.style.setProperty(\"display\",\"flex\"),Ht.style.setProperty(\"gap\",\"8px\"),Ht.style.setProperty(\"align-items\",\"center\"),ke(Ht,re(Xoe,{get extraStyles(){return{\"font-size\":\"12px\",width:\"100%\",opacity:Xe()?.5:1}},size:\"small\",get extras(){return{placeholder:\"e.g. anthropic.claude-3-sonnet-20240229-v1:0\""
+  },
+  {
+    "id": "settings.models.bedrock.input.access-key-id.placeholder",
+    "source": "placeholder:\"AWS Access Key ID\"",
+    "target": "placeholder:\"AWS 访问密钥 ID\""
+  },
+  {
+    "id": "settings.models.bedrock.input.secret-access-key.placeholder",
+    "source": "placeholder:\"AWS Secret Access Key\"",
+    "target": "placeholder:\"AWS 私有访问密钥\""
+  },
+  {
+    "id": "settings.models.bedrock.input.region.placeholder",
+    "source": "placeholder:\"e.g. us-east-1\"",
+    "target": "placeholder:\"例如：us-east-1\""
+  },
+  {
+    "id": "settings.models.bedrock.input.test-model.placeholder",
+    "source": "placeholder:\"e.g. anthropic.claude-3-sonnet-20240229-v1:0\"",
+    "target": "placeholder:\"例如：anthropic.claude-3-sonnet-20240229-v1:0\""
+  },
+  {
     "id": "settings.worktrees.empty-git-folder.message",
     "source": "return\"Open a folder with a Git repository to use worktrees.\"",
     "target": "return\"打开包含 Git 仓库的文件夹以使用工作树。\""
