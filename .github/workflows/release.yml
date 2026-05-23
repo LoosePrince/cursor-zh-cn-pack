@@ -77,15 +77,19 @@ jobs:
         run: npm run version:sync
 
       - name: Validate package version
+        id: validate_version
         shell: bash
         run: |
           PACKAGE_VERSION="$(node -p "require('./package.json').version")"
           if [ "$PACKAGE_VERSION" != "${{ steps.release_meta.outputs.version }}" ]; then
-            echo "package.json version $PACKAGE_VERSION does not match commit version ${{ steps.release_meta.outputs.version }}"
-            exit 1
+            echo "package.json version $PACKAGE_VERSION does not match commit version ${{ steps.release_meta.outputs.version }}, skipping release."
+            echo "version_matched=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "version_matched=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Check whether release already exists
+        if: steps.validate_version.outputs.version_matched == 'true'
         id: release_state
         shell: bash
         env:
@@ -105,6 +109,7 @@ jobs:
           exit 0
 
       - name: Build release assets
+        if: steps.validate_version.outputs.version_matched == 'true'
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
           RELEASE_TAG: ${{ steps.release_meta.outputs.tag }}
@@ -112,6 +117,7 @@ jobs:
         run: npm run release:build
 
       - name: Publish GitHub Release
+        if: steps.validate_version.outputs.version_matched == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release_meta.outputs.tag }}
