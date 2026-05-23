@@ -195,6 +195,76 @@
     "target": "?\"索引\":\"索引与文档\""
   },
   {
+    "id": "settings.tools.page-title",
+    "source": "title:\"Tools\",get children(){return[re(kt,{get when(){return t&&F().length>0},get children(){return re(kt,{get when(){return W()},keyed:!0,get children(){return re(p8,{reactComponent:xNr,get reactProps(){return V()},get portalRoot(){return e.portalElement}})}})}}),re(kt,{get when(){return!z()},get children(){return re(HZC,{})}}),re(kt,{when:!t,get children(){return re(hE,{title:\"Installed MCP Servers\"",
+    "target": "title:\"工具\",get children(){return[re(kt,{get when(){return t&&F().length>0},get children(){return re(kt,{get when(){return W()},keyed:!0,get children(){return re(p8,{reactComponent:xNr,get reactProps(){return V()},get portalRoot(){return e.portalElement}})}})}}),re(kt,{get when(){return!z()},get children(){return re(HZC,{})}}),re(kt,{when:!t,get children(){return re(hE,{title:\"Installed MCP Servers\""
+  },
+  {
+    "id": "settings.tools.browser.section-title",
+    "source": "title:\"Browser\",get children(){return re($_,{get children(){return[(()=>{var y=WZC(),S=y.firstChild,E=S.firstChild,I=E.firstChild,R=I.firstChild,L=R.nextSibling,M=I.nextSibling;return",
+    "target": "title:\"浏览器\",get children(){return re($_,{get children(){return[(()=>{var y=WZC(),S=y.firstChild,E=S.firstChild,I=E.firstChild,R=I.firstChild,L=R.nextSibling,M=I.nextSibling;return"
+  },
+  {
+    "id": "settings.tools.browser.automation-item",
+    "source": "WZC=ot(\"<div class=mcp-server-item-container><div class=mcp-server-list><div class=mcp-server-item><div class=mcp-server-item-main-content><div>Browser Automation</div><div class=mcp-server-item-subtext></div></div><div class=mcp-server-item-controls>\")",
+    "target": "WZC=ot(\"<div class=mcp-server-item-container><div class=mcp-server-list><div class=mcp-server-item><div class=mcp-server-item-main-content><div>浏览器自动化</div><div class=mcp-server-item-subtext></div></div><div class=mcp-server-item-controls>\")"
+  },
+  {
+    "id": "settings.tools.browser.disabled-status",
+    "source": "\"Browser automation disabled\"",
+    "target": "\"浏览器自动化已禁用\""
+  },
+  {
+    "id": "settings.tools.browser.disabled-status-admin",
+    "source": "\"Browser automation disabled by admin\"",
+    "target": "\"管理员已禁用浏览器自动化\""
+  },
+  {
+    "id": "settings.tools.browser.mode-items",
+    "source": "u=We(()=>[{id:\"none\",label:\"Off\"},{id:\"editor\",label:\"Browser Tab\"}])",
+    "target": "u=We(()=>[{id:\"none\",label:\"关闭\"},{id:\"editor\",label:\"浏览器标签页\"}])"
+  },
+  {
+    "id": "settings.tools.browser.localhost-links",
+    "source": "label:\"Show Localhost Links in Browser\",description:\"Automatically open localhost links in the Browser Tab\"",
+    "target": "label:\"在浏览器中显示 Localhost 链接\",description:\"自动在浏览器标签页中打开 localhost 链接\""
+  },
+  {
+    "id": "settings.tools.mcp.installed-section-title",
+    "source": "title:\"Installed MCP Servers\",get children(){return[re(oT_,{}),re(dT_,{}),re(aT_,{get toolNameIssues(){return Rt()},get unnamedServers(){return At()}}),re(kt,{get when(){return Ze().length>0},get fallback(){return re($_,{get children(){return re(kt,{get when(){return d()},get fallback(){return re(_un,{message:\"Loading installed MCP servers...\"})},get children(){return re(UH,{title:\"No MCP Tools\"",
+    "target": "title:\"已安装的 MCP 服务器\",get children(){return[re(oT_,{}),re(dT_,{}),re(aT_,{get toolNameIssues(){return Rt()},get unnamedServers(){return At()}}),re(kt,{get when(){return Ze().length>0},get fallback(){return re($_,{get children(){return re(kt,{get when(){return d()},get fallback(){return re(_un,{message:\"Loading installed MCP servers...\"})},get children(){return re(UH,{title:\"No MCP Tools\""
+  },
+  {
+    "id": "settings.tools.mcp.empty-state",
+    "source": "title:\"No MCP Tools\",get description(){return[\"Add a custom MCP tool here or configure project-specific tools in\",\" \",(()=>{var pn=XZC();return pn.style.setProperty(\"font-family\",\"var(--monaco-monospace-font)\"),pn})()]},actionTitle:\"Add Custom MCP\",action:()=>{Ht()}}",
+    "target": "title:\"没有 MCP 工具\",get description(){return[\"在此添加自定义 MCP 工具，或在以下位置配置项目专用工具\",\" \",(()=>{var pn=XZC();return pn.style.setProperty(\"font-family\",\"var(--monaco-monospace-font)\"),pn})()]},actionTitle:\"添加自定义 MCP\",action:()=>{Ht()}}"
+  },
+  {
+    "id": "settings.tools.hooks.page-title-description",
+    "source": "title:\"Hooks\",description:\"Hooks let you run custom scripts at specific points during the agent's execution to modify behavior, enforce policies, or add custom logging.\",helpLink:\"https://cursor.com/docs/agent/hooks\",helpTooltipLabel:\"Learn about Hooks\"",
+    "target": "title:\"钩子\",description:\"钩子让你能在智能体执行过程的特定节点运行自定义脚本，以修改行为、强制策略或添加自定义日志。\",helpLink:\"https://cursor.com/docs/agent/hooks\",helpTooltipLabel:\"了解钩子\""
+  },
+  {
+    "id": "settings.tools.hooks.configured-header",
+    "source": "CYC=ot(\"<div class=settings-hooks-section-header><span></span><span>Configured Hooks (<!>)\")",
+    "target": "CYC=ot(\"<div class=settings-hooks-section-header><span></span><span>已配置的钩子 (<!>)\")"
+  },
+  {
+    "id": "settings.tools.hooks.empty-configured",
+    "source": "TYC=ot(\"<div class=settings-hooks-empty-state>No hooks configured\")",
+    "target": "TYC=ot(\"<div class=settings-hooks-empty-state>未配置任何钩子\")"
+  },
+  {
+    "id": "settings.tools.hooks.execution-log-title",
+    "source": "title:\"Execution Log\",get titleExtra(){return re(Zo,{variant:\"secondary\",get codicon(){return lt.trash},get disabled(){return l().length===0},onClick:()=>n.cursorHooksService.clearHookExecutionLog(),children:\"Clear log\"})}",
+    "target": "title:\"执行日志\",get titleExtra(){return re(Zo,{variant:\"secondary\",get codicon(){return lt.trash},get disabled(){return l().length===0},onClick:()=>n.cursorHooksService.clearHookExecutionLog(),children:\"清空日志\"})}"
+  },
+  {
+    "id": "settings.tools.hooks.empty-execution-log",
+    "source": "RYC=ot(\"<div class=settings-hooks-empty-state>No hook executions yet\")",
+    "target": "RYC=ot(\"<div class=settings-hooks-empty-state>还没有钩子执行记录\")"
+  },
+  {
     "id": "settings.account.label",
     "source": "label:\"Cursor Account\"",
     "target": "label:\"Cursor 账户\""
