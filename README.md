@@ -72,15 +72,30 @@ node .\scripts\scan-workbench-untranslated.mjs D:\cursor
 npm install
 npm run compile
 npm run package
+npm run release:build
 ```
 
-产物为当前目录下的 `.vsix` 文件。`npm run package` 会在打包前自动执行 TypeScript 编译。
+产物说明：
+
+- `npm run package` 会生成当前版本的 `.vsix`。
+- `npm run release:build` 会在 `artifacts/release/` 生成 GitHub 发布所需的 4 个文件。
+- 打包前会自动执行版本同步，版本以 `package.json` 为准，并同步到 `package-lock.json`。
+- 推到 `main` / `master` 时，工作流会读取最新一次提交信息；只有命中发布格式才会自动创建或更新 GitHub Release。
+- 固定文件名版本描述文件为 `cursor-zh-cn-pack-release.json`，其中包含更新日志、4 个发布资产下载地址、文件大小、哈希和规则统计。
+
+提交信息格式：
+
+```text
+v1.0.0
+- 第一个正式版本发布
+- 第一个正式版仅覆盖了常规模式下的cursor的大部分英文UI文本
+```
 
 ## 安装和启用
 
 ```powershell
 cursor --install-extension MS-CEINTL.vscode-language-pack-zh-hans
-cursor --install-extension .\cursor-zh-cn-pack-0.0.1.vsix
+cursor --install-extension .\cursor-zh-cn-pack-1.0.0.vsix
 ```
 
 安装后在 Cursor 中执行：

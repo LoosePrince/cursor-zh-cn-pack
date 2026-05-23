@@ -1,0 +1,126 @@
+name: Release Extension
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Parse release commit message
+        id: release_meta
+        shell: bash
+        env:
+          EVENT_HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message || '' }}
+        run: |
+          mkdir -p artifacts
+          COMMIT_MESSAGE="$EVENT_HEAD_COMMIT_MESSAGE"
+          if [ -z "$COMMIT_MESSAGE" ]; then
+            COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
+          fi
+          export COMMIT_MESSAGE
+          node <<'NODE'
+          const fs = require('node:fs');
+
+          const message = String(process.env.COMMIT_MESSAGE || '').replace(/\r/g, '').trim();
+          const lines = message.split('\n').map((line) => line.trim()).filter(Boolean);
+          const versionLine = lines[0] || '';
+          const changelogLines = lines.slice(1);
+          const match = /^v(\d+\.\d+\.\d+(?:-[0-9A-Za-z-.]+)?(?:\+[0-9A-Za-z-.]+)?)$/.exec(versionLine);
+          const changelog = changelogLines.map((line) => line.slice(2).trim()).filter(Boolean);
+          const validBullets = changelogLines.length > 0
+            && changelogLines.every((line) => line.startsWith('- '))
+            && changelog.length === changelogLines.length;
+
+          if (!match || !validBullets) {
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, 'should_release=false\n');
+            process.exit(0);
+          }
+
+          const version = match[1];
+          const tag = versionLine;
+
+          fs.writeFileSync('artifacts/release-changelog.json', `${JSON.stringify(changelog, null, 2)}\n`);
+          fs.writeFileSync('artifacts/release-body.md', `${changelogLines.join('\n')}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `should_release=true\nversion=${version}\ntag=${tag}\n`);
+          NODE
+
+      - name: Skip non-release commit
+        if: steps.release_meta.outputs.should_release != 'true'
+        shell: bash
+        run: |
+          echo 'Latest commit message does not match release format. Skip publishing.'
+          exit 0
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync package-lock from package.json
+        run: npm run version:sync
+
+      - name: Validate package version
+        shell: bash
+        run: |
+          PACKAGE_VERSION="$(node -p "require('./package.json').version")"
+          if [ "$PACKAGE_VERSION" != "${{ steps.release_meta.outputs.version }}" ]; then
+            echo "package.json version $PACKAGE_VERSION does not match commit version ${{ steps.release_meta.outputs.version }}"
+            exit 1
+          fi
+
+      - name: Check whether release already exists
+        id: release_state
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${{ steps.release_meta.outputs.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip duplicate release on push
+        if: github.event_name == 'push' && steps.release_state.outputs.exists == 'true'
+        shell: bash
+        run: |
+          echo "Release ${{ steps.release_meta.outputs.tag }} already exists, skipping publish."
+          exit 0
+
+      - name: Build release assets
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          RELEASE_TAG: ${{ steps.release_meta.outputs.tag }}
+          RELEASE_CHANGELOG_FILE: artifacts/release-changelog.json
+        run: npm run release:build
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release_meta.outputs.tag }}
+          name: ${{ steps.release_meta.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          body_path: artifacts/release-body.md
+          overwrite_files: true
+          files: |
+            artifacts/release/*.vsix
+            artifacts/release/cursor-zh-cn-pack-release.json
+            artifacts/release/workbench-patch-runtime-policy.json
+            artifacts/release/workbench-patches.json

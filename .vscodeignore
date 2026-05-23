@@ -8,6 +8,8 @@ node_modules/sql.js/dist/*
 *.vsix
 .vscode-test
 .DS_Store
+.github
+artifacts
 baselines
 reports/untranslated-*.json
 reports/workbench-untranslated.*

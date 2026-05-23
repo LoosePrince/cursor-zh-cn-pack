@@ -2,7 +2,7 @@
   "name": "cursor-zh-cn-pack",
   "displayName": "Cursor 简体中文语言包",
   "description": "为 Cursor 专用扩展和私有界面提供简体中文补充翻译；VS Code 基础翻译由官方中文语言包处理。",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "publisher": "LoosePrince",
   "license": "MIT",
   "repository": {
@@ -61,13 +61,15 @@
     }
   },
   "scripts": {
+    "version:sync": "node ./scripts/sync-version.mjs",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run version:sync && npm run compile",
     "extract": "node ./scripts/extract-cursor-nls.mjs",
     "scan:workbench": "node ./scripts/scan-workbench-untranslated.mjs",
-    "package": "vsce package",
-    "build": "npm run extract && npm run compile"
+    "package": "npm run version:sync && vsce package",
+    "release:build": "npm run version:sync && npm run compile && node ./scripts/build-release-assets.mjs",
+    "build": "npm run version:sync && npm run extract && npm run compile"
   },
   "devDependencies": {
     "@types/node": "^25.9.0",
