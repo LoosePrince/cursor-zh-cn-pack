@@ -111,6 +111,8 @@
     "message:\"API key is invalid or expired.\"",
     "message:\"Your team admin can switch to 'Privacy Mode' to use cloud agents.\"",
     "message:\"Go to Cursor Settings -> General -> Privacy, and switch to 'Privacy Mode' to use cloud agents.\"",
+    "\"Log in to use Cloud Agents\"",
+    "\"Running in cloud\"",
     "View:Kt(",
     "Help:Kt(",
     "Test:Kt(",

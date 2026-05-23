@@ -1195,6 +1195,46 @@
     "target": "message:\"前往 Cursor 设置 -> 通用 -> 隐私，并切换到“隐私模式”以使用云端智能体。\""
   },
   {
+    "id": "settings.cloud-agents.section-title",
+    "source": "title:\"Cloud Agents\"",
+    "target": "title:\"云端智能体\""
+  },
+  {
+    "id": "settings.cloud-agents.unavailable.title",
+    "source": "title:\"Cloud Agents Unavailable\"",
+    "target": "title:\"云端智能体不可用\""
+  },
+  {
+    "id": "settings.cloud-agents.unavailable.description",
+    "source": "description:\"Cloud Agents require data storage to function.\"",
+    "target": "description:\"云端智能体需要启用数据存储才能运行。\""
+  },
+  {
+    "id": "settings.cloud-agents.privacy-disabled.title",
+    "source": "title:\"Privacy Mode Enabled\"",
+    "target": "title:\"已启用隐私模式\""
+  },
+  {
+    "id": "settings.cloud-agents.privacy-disabled.description",
+    "source": "description:\"Cloud Agents are not available when your privacy mode is set to disable data storage. To use Cloud Agents, please update your privacy settings to allow data storage.\"",
+    "target": "description:\"当你的隐私模式设为禁用数据存储时，云端智能体不可用。要使用云端智能体，请更新隐私设置以允许数据存储。\""
+  },
+  {
+    "id": "settings.cloud-agents.privacy-disabled.action",
+    "source": "actionTitle:\"Open Privacy Settings\"",
+    "target": "actionTitle:\"打开隐私设置\""
+  },
+  {
+    "id": "workbench.cloud-agents.login-hint",
+    "source": "\"Log in to use Cloud Agents\"",
+    "target": "\"登录以使用云端智能体\""
+  },
+  {
+    "id": "workbench.cloud-agents.running-status",
+    "source": "\"Running in cloud\"",
+    "target": "\"在云端运行\""
+  },
+  {
     "id": "workbench.composer.new-agent.fallback-title",
     "source": "a||\"New Agent\"",
     "target": "a||\"新建智能体\""
