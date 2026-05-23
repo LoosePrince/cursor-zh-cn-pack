@@ -242,5 +242,7 @@
   "Emmet support for VS Code": "VS Code 的 Emmet 支持",
   "Get completions from a code language model.": "从代码语言模型获取补全。",
   "Experimentation @ cursor.sh": "Cursor 实验性功能",
-  "Manages a hidden local window that AI agents can use to refine their code before showing it to you.": "管理一个隐藏的本地窗口，供 AI 智能体在向你展示代码前先细化修改。"
+  "Manages a hidden local window that AI agents can use to refine their code before showing it to you.": "管理一个隐藏的本地窗口，供 AI 智能体在向你展示代码前先细化修改。",
+  "Your Cursor installation appears to be corrupt.": "汉化管理器已经修改了你的Cursor文件，可以忽略本提示，但是如果遇到了意料之外的情况，可以恢复备份或再次安装cursor，这不会使你的数据丢失。",
+  "Please reinstall.": "汉化管理器已经修改了你的Cursor文件，可以忽略本提示，但是如果遇到了意料之外的情况，可以恢复备份或再次安装cursor，这不会使你的数据丢失。"
 }

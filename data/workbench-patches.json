@@ -155,6 +155,21 @@
     "target": "title=\"选择 Explore 子智能体模型\""
   },
   {
+    "id": "settings.subagents.section-title",
+    "source": "\u003cdiv\u003e\u003cspan\u003eSubagents",
+    "target": "\u003cdiv\u003e\u003cspan\u003e子智能体"
+  },
+  {
+    "id": "settings.subagents.explore-model.label",
+    "source": "label:\"Explore subagent model\"",
+    "target": "label:\"Explore 子智能体模型\""
+  },
+  {
+    "id": "settings.subagents.explore-model.description",
+    "source": "description:\"The Explore subagent is used to do initial research for the main agent\"",
+    "target": "description:\"Explore 子智能体用于为主智能体进行初步研究\""
+  },
+  {
     "id": "settings.chat.collapse-composer.tooltip",
     "source": "tooltip:\"Collapse Composer\"",
     "target": "tooltip:\"折叠编写器\""
@@ -301,13 +316,13 @@
   },
   {
     "id": "settings.notifications.system-tray.label",
-    "source": "label:qa?\"Menu Bar Icon\":\"System Tray Icon\"",
-    "target": "label:qa?\"菜单栏图标\":\"系统托盘图标\""
+    "source": "label:$o?\"Menu Bar Icon\":\"System Tray Icon\"",
+    "target": "label:$o?\"菜单栏图标\":\"系统托盘图标\""
   },
   {
     "id": "settings.notifications.system-tray.description",
-    "source": "description:qa?\"Show Cursor in menu bar\":\"Show Cursor in system tray\"",
-    "target": "description:qa?\"在菜单栏显示 Cursor\":\"在系统托盘显示 Cursor\""
+    "source": "description:$o?\"Show Cursor in menu bar\":\"Show Cursor in system tray\"",
+    "target": "description:$o?\"在菜单栏显示 Cursor\":\"在系统托盘显示 Cursor\""
   },
   {
     "id": "settings.privacy.section-title",
@@ -410,6 +425,11 @@
     "target": "description:\"Cursor Tab 不提供建议的文件 glob 模式\""
   },
   {
+    "id": "settings.agents.section-title",
+    "source": "title:\"Agents\"",
+    "target": "title:\"智能体\""
+  },
+  {
     "id": "settings.agents.text-size.label",
     "source": "label:\"Text Size\"",
     "target": "label:\"文本大小\""
@@ -420,14 +440,59 @@
     "target": "description:\"调整对话文本大小\""
   },
   {
+    "id": "settings.agents.submit-with-ctrl-enter.label",
+    "source": "label:`Submit with ${$o?\"\\u2318 + \":\"Ctrl + \"}Enter`",
+    "target": "label:`使用 ${$o?\"\\u2318 + \":\"Ctrl + \"}Enter 提交`"
+  },
+  {
+    "id": "settings.agents.submit-with-ctrl-enter.description",
+    "source": "description:`When enabled, ${$o?\"\\u2318 + \":\"Ctrl + \"}Enter submits chat and Enter inserts a newline`",
+    "target": "description:`启用后，${$o?\"\\u2318 + \":\"Ctrl + \"}Enter 提交聊天，Enter 插入换行`"
+  },
+  {
     "id": "settings.agents.max-tab-count.label",
     "source": "label:\"Max Tab Count\"",
     "target": "label:\"最大标签页数量\""
   },
   {
-    "id": "settings.agents.max-tab-count.description",
-    "source": "description:\"Limit how many chat tabs can be open at once\"",
-    "target": "description:\"限制可同时打开的聊天标签页数量\""
+    "id": "settings.agents.max-open-tabs.items",
+    "source": "items:[{id:\"5\",label:\"5\"},{id:\"10\",label:\"10\"},{id:\"unlimited\",label:\"Unlimited\"},{id:\"custom\",label:\"Custom\"}]",
+    "target": "items:[{id:\"5\",label:\"5\"},{id:\"10\",label:\"10\"},{id:\"unlimited\",label:\"不限额\"},{id:\"custom\",label:\"自定义\"}]"
+  },
+  {
+    "id": "settings.agents.text-size.items",
+    "source": "function bKC(n){switch(n){case .85:return\"Small\";case 1:return\"Default\";case 1.15:return\"Large\";case 1.3:return\"Extra Large\";default:return n}}",
+    "target": "function bKC(n){switch(n){case .85:return\"小\";case 1:return\"默认\";case 1.15:return\"大\";case 1.3:return\"超大\";default:return n}}"
+  },
+  {
+    "id": "settings.agents.select-model.label",
+    "source": "label:\"Select model\"",
+    "target": "label:\"选择模型\""
+  },
+  {
+    "id": "settings.agents.select-model.empty-state",
+    "source": "return\"Select model\";",
+    "target": "return\"选择模型\";"
+  },
+  {
+    "id": "settings.agents.search-models.placeholder",
+    "source": "placeholder:\"Search models\"",
+    "target": "placeholder:\"搜索模型\""
+  },
+  {
+    "id": "settings.agents.search-models.empty-state",
+    "source": "children:\"No models found\"",
+    "target": "children:\"未找到模型\""
+  },
+  {
+    "id": "settings.agents.search-models.title",
+    "source": "title:\"Search models\"",
+    "target": "title:\"搜索模型\""
+  },
+  {
+    "id": "settings.agents.select-model.title",
+    "source": "title:\"Select model\"",
+    "target": "title:\"选择模型\""
   },
   {
     "id": "settings.agents.queue-messages.label",
@@ -485,6 +550,16 @@
     "target": "description:\"为智能体建议后续提示\""
   },
   {
+    "id": "settings.agents.auto-approve-mode-transitions.label",
+    "source": "label:\"Auto-Approve Mode Transitions\"",
+    "target": "label:\"自动批准模式切换\""
+  },
+  {
+    "id": "settings.agents.auto-approve-mode-transitions.description",
+    "source": "description:\"Allow Agent to switch modes without asking first, such as Agent to Plan or Agent to Debug. When off, Cursor asks before switching.\"",
+    "target": "description:\"允许智能体切换模式时不先询问，例如从 Agent 切到 Plan 或 Debug。关闭后，Cursor 会在切换前询问。\""
+  },
+  {
     "id": "settings.agents.compact-terminal-tool-calls.label",
     "source": "label:\"Compact Terminal Tool Calls\"",
     "target": "label:\"紧凑显示终端工具调用\""
@@ -493,6 +568,16 @@
     "id": "settings.agents.compact-terminal-tool-calls.description",
     "source": "description:\"Show terminal commands in compact view by default\"",
     "target": "description:\"默认以紧凑视图显示终端命令\""
+  },
+  {
+    "id": "settings.context.section-title",
+    "source": "title:\"Context\"",
+    "target": "title:\"上下文\""
+  },
+  {
+    "id": "settings.agents.web-search-tool.label",
+    "source": "\u003cdiv\u003eWeb Search Tool",
+    "target": "\u003cdiv\u003e网页搜索工具"
   },
   {
     "id": "settings.agents.web-search-tool.description",
@@ -520,6 +605,31 @@
     "target": "get description(){return`防止智能体自动运行 MCP 工具${l().isAdminControlled?\"（由管理员控制）\":\"\"}`}"
   },
   {
+    "id": "settings.applying-changes.section-title",
+    "source": "re(hE,{title:\"Applying Changes\",get children(){return re($_,{get children(){return[re(Hg,{label:\"Inline Diffs\"",
+    "target": "re(hE,{title:\"应用更改\",get children(){return re($_,{get children(){return[re(Hg,{label:\"Inline Diffs\""
+  },
+  {
+    "id": "settings.applying-changes.inline-diffs.label",
+    "source": "label:\"Inline Diffs\"",
+    "target": "label:\"内联差异\""
+  },
+  {
+    "id": "settings.applying-changes.inline-diffs.description",
+    "source": "description:\"Show inline diff decorations in the editor instead of only showing changes in the review panel\"",
+    "target": "description:\"在编辑器中直接显示内联差异标记，而不只是仅在审阅面板中显示更改\""
+  },
+  {
+    "id": "settings.applying-changes.jump-next-diff.label",
+    "source": "label:\"Jump to Next Diff on Accept\"",
+    "target": "label:\"接受后跳转到下一处差异\""
+  },
+  {
+    "id": "settings.applying-changes.jump-next-diff.description",
+    "source": "description:`Automatically jump to the next diff when accepting changes with ${$o?\"\\u2318\":\"Ctrl+\"}Y`",
+    "target": "description:`使用 ${$o?\"\\u2318\":\"Ctrl+\"}Y 接受更改时，自动跳转到下一处差异`"
+  },
+  {
     "id": "settings.applying-changes.auto-format-on-agent-finish.label",
     "source": "label:\"Auto Format on Agent Finish\"",
     "target": "label:\"智能体完成后自动格式化\""
@@ -545,6 +655,26 @@
     "target": "description:\"在智能体模式中使用旧版终端工具，适用于不支持的 shell 配置系统\""
   },
   {
+    "id": "settings.inline-terminal.toolbar-on-selection.label",
+    "source": "label:\"Toolbar on Selection\"",
+    "target": "label:\"选中时显示工具栏\""
+  },
+  {
+    "id": "settings.inline-terminal.toolbar-on-selection.description",
+    "source": "description:\"Show Add to Chat & Quick Edit buttons when selecting code\"",
+    "target": "description:\"选中代码时显示“添加到聊天”和“快速编辑”按钮\""
+  },
+  {
+    "id": "settings.inline-terminal.auto-parse-links.label",
+    "source": "label:\"Auto-Parse Links\"",
+    "target": "label:\"自动解析链接\""
+  },
+  {
+    "id": "settings.inline-terminal.auto-parse-links.description",
+    "source": "description:`Automatically parse links when pasted into Quick Edit (${$o?\"\\u2318\":\"Ctrl+\"}K) input`",
+    "target": "description:`将链接粘贴到快速编辑（${$o?\"\\u2318\":\"Ctrl+\"}K）输入框时自动解析`"
+  },
+  {
     "id": "settings.inline-terminal.themed-diff-backgrounds.label",
     "source": "label:\"Themed Diff Backgrounds\"",
     "target": "label:\"主题化差异背景\""
@@ -558,6 +688,46 @@
     "id": "settings.inline-terminal.terminal-hint.label",
     "source": "label:\"Terminal Hint\"",
     "target": "label:\"终端提示\""
+  },
+  {
+    "id": "settings.inline-terminal.terminal-hint.description",
+    "source": "description:`Show a hint for ${$o?\"\\u2318\":\"Ctrl+\"}K in the Terminal`",
+    "target": "description:`在终端中显示 ${$o?\"\\u2318\":\"Ctrl+\"}K 提示`"
+  },
+  {
+    "id": "settings.inline-terminal.preview-box.label",
+    "source": "label:`Preview Box for Terminal ${$o?\"\\u2318\":\"Ctrl+\"}K`",
+    "target": "label:`终端 ${$o?\"\\u2318\":\"Ctrl+\"}K 预览框`"
+  },
+  {
+    "id": "settings.inline-terminal.preview-box.description",
+    "source": "description:\"Use a preview box instead of streaming responses directly into the shell\"",
+    "target": "description:\"使用预览框，而不是将响应直接流式写入 shell\""
+  },
+  {
+    "id": "settings.voice-mode.section-title",
+    "source": "re(hE,{title:\"Voice Mode\",get children(){return re($_,{get children(){return re(Hg,{label:\"Submit Keywords\"",
+    "target": "re(hE,{title:\"语音模式\",get children(){return re($_,{get children(){return re(Hg,{label:\"Submit Keywords\""
+  },
+  {
+    "id": "settings.voice-mode.submit-keywords.label",
+    "source": "label:\"Submit Keywords\"",
+    "target": "label:\"提交关键词\""
+  },
+  {
+    "id": "settings.voice-mode.submit-keywords.description",
+    "source": "description:\"Custom keywords that trigger auto-submit in voice mode. Only single words (no spaces) are allowed. Punctuation and capitalization are ignored.\"",
+    "target": "description:\"在语音模式下触发自动提交的自定义关键词。仅允许单个词语（不含空格）。会忽略标点和大小写。\""
+  },
+  {
+    "id": "settings.voice-mode.submit-keywords.placeholder",
+    "source": "placeholder:\"e.g., send, submit, cursor\"",
+    "target": "placeholder:\"例如：send、submit、cursor\""
+  },
+  {
+    "id": "settings.voice-mode.submit-keywords.warning",
+    "source": "n.notificationService.warn(\"Voice mode submit keywords must be single words without spaces or punctuation; duplicates, spaces, and empty entries are removed automatically\")",
+    "target": "n.notificationService.warn(\"语音模式的提交关键词必须是不含空格或标点的单个词；重复项、空格和空条目会被自动移除\")"
   },
   {
     "id": "settings.attribution.section-title",
@@ -628,6 +798,111 @@
     "id": "settings.agents.enable-run-everything.warning-allowlist",
     "source": "RUN_EVERYTHING_SANDBOX_UNAVAILABLE:\"This allows the agent to execute any tool or shell command without approval. A prompt injection or a malicious tool could delete files or exfiltrate secrets from your machine. We recommend using Allowlist.\"",
     "target": "RUN_EVERYTHING_SANDBOX_UNAVAILABLE:\"这会允许智能体无需批准即可执行任何工具或 shell 命令。提示注入或恶意工具可能会删除文件或从你的机器泄露机密。建议使用允许列表。\""
+  },
+  {
+    "id": "settings.context.hierarchical-cursor-ignore.label",
+    "source": "label:\"Hierarchical Cursor Ignore\"",
+    "target": "label:\"分层 Cursor Ignore\""
+  },
+  {
+    "id": "settings.context.hierarchical-cursor-ignore.description",
+    "source": "get description(){return`Apply .cursorignore files to all subdirectories${n.reactiveStorageService.applicationUserPersistentStorage.teamAdminSettings?.cursorIgnore?.hierarchicalEnabled?\" (controlled by admin)\":\"\"}. Changing this setting will require a restart of Cursor.`}",
+    "target": "get description(){return`将 .cursorignore 文件应用到所有子目录${n.reactiveStorageService.applicationUserPersistentStorage.teamAdminSettings?.cursorIgnore?.hierarchicalEnabled?\"（由管理员控制）\":\"\"}。更改此设置后需要重启 Cursor。`}"
+  },
+  {
+    "id": "settings.context.ignore-symlinks.label",
+    "source": "label:\"Ignore Symlinks in Cursor Ignore Search\"",
+    "target": "label:\"在 Cursor Ignore 搜索中忽略符号链接\""
+  },
+  {
+    "id": "settings.context.ignore-symlinks.description",
+    "source": "get description(){return`\u26A0\uFE0F Use with caution. Skip symlinks during .cursorignore file discovery. Only enable if your repository has many symlinks and all .cursorignore files are reachable without them${n.reactiveStorageService.applicationUserPersistentStorage.teamAdminSettings?.cursorIgnore?.ignoreSymlinks?\" (controlled by admin)\":\"\"}. Changing this setting will require a restart of Cursor.`}",
+    "target": "get description(){return`\u26A0\uFE0F 请谨慎使用。在发现 .cursorignore 文件时跳过符号链接。仅当你的仓库包含大量符号链接，且所有 .cursorignore 文件都无需通过它们即可访问时再启用${n.reactiveStorageService.applicationUserPersistentStorage.teamAdminSettings?.cursorIgnore?.ignoreSymlinks?\"（由管理员控制）\":\"\"}。更改此设置后需要重启 Cursor。`}"
+  },
+  {
+    "id": "settings.auto-run.section-title",
+    "source": "title:\"Auto-Run\"",
+    "target": "title:\"自动运行\""
+  },
+  {
+    "id": "settings.auto-run.mode.label",
+    "source": "se=We(()=>{const Ne=l();return Ne.isDisabledByAdmin?\"Auto-Run Mode Disabled by Team Admin\":Ne.isAdminControlled?Ne.sandboxingControls?.sandboxing===\"enabled\"&&y()?\"Auto-Run Mode Controlled by Team Admin (Sandbox Enabled)\":\"Auto-Run Mode Controlled by Team Admin\":!Ne.isAdminControlled&&e.composerEffectiveAllowlistService.shouldPermissionsFileConstrainUnrestrictedMode()?`Auto-Run Mode (enforced by ~/${e.productService.dataFolderName??\".cursor\"}/permissions.json)`:\"Auto-Run Mode\"})",
+    "target": "se=We(()=>{const Ne=l();return Ne.isDisabledByAdmin?\"团队管理员已禁用自动运行模式\":Ne.isAdminControlled?Ne.sandboxingControls?.sandboxing===\"enabled\"&&y()?\"团队管理员控制的自动运行模式（已启用沙箱）\":\"团队管理员控制的自动运行模式\":!Ne.isAdminControlled&&e.composerEffectiveAllowlistService.shouldPermissionsFileConstrainUnrestrictedMode()?`自动运行模式（由 ~/${e.productService.dataFolderName??\".cursor\"}/permissions.json 强制生效）`:\"自动运行模式\"})"
+  },
+  {
+    "id": "settings.auto-run.mode.description.permissions-file",
+    "source": "return!Ne.isAdminControlled&&e.composerEffectiveAllowlistService.shouldPermissionsFileConstrainUnrestrictedMode()?`Allowlist and approval behavior are set in ~/${e.productService.dataFolderName??\".cursor\"}/permissions.json. Run Everything is disabled while that file defines allowlists or a restrictive approvalMode.`",
+    "target": "return!Ne.isAdminControlled&&e.composerEffectiveAllowlistService.shouldPermissionsFileConstrainUnrestrictedMode()?`允许列表和批准行为由 ~/${e.productService.dataFolderName??\".cursor\"}/permissions.json 配置。当该文件定义了允许列表或限制性的 approvalMode 时，“运行所有内容”将被禁用。`"
+  },
+  {
+    "id": "settings.auto-run.mode.description.sandbox-admin",
+    "source": "\"Choose how Agent runs tools like command execution, MCP, and file writes. With admin-enabled sandboxing, commands auto-run in a secure sandbox. Commands not in the allowlist require approval but can run in sandbox.\"",
+    "target": "\"选择智能体如何运行命令执行、MCP、文件写入等工具。在管理员启用沙箱时，命令会在安全沙箱中自动运行。不在允许列表中的命令需要批准，但仍可在沙箱中运行。\""
+  },
+  {
+    "id": "settings.auto-run.mode.description.sandbox-available",
+    "source": "\"Choose how Agent runs tools like command execution, MCP, and file writes. Tools will auto-run in a sandbox if possible. If not, they will respect the allowlist or ask for approval.\"",
+    "target": "\"选择智能体如何运行命令执行、MCP、文件写入等工具。如果可能，工具会在沙箱中自动运行；否则将遵循允许列表或请求批准。\""
+  },
+  {
+    "id": "settings.auto-run.mode.description.admin-disabled",
+    "source": "\"Choose how Agent runs tools like command execution, MCP, and file writes. Sandboxing is disabled by your admin.\"",
+    "target": "\"选择智能体如何运行命令执行、MCP、文件写入等工具。沙箱已被你的管理员禁用。\""
+  },
+  {
+    "id": "settings.auto-run.mode.description.default",
+    "source": "\"Choose how Agent runs tools like command execution, MCP, and file writes.\"",
+    "target": "\"选择智能体如何运行命令执行、MCP、文件写入等工具。\""
+  },
+  {
+    "id": "settings.auto-run.mode.items",
+    "source": "ye=Ne=>{switch(Ne){case g3.ASK_EVERY_TIME:return\"Ask Every Time\";case g3.YOLO:return y()?\"Auto-Run in Sandbox\":\"Use Allowlist\";case g3.FULL_YOLO:return y()?\"Run Everything (Unsandboxed)\":\"Run Everything\";default:return\"Ask Every Time\"}}",
+    "target": "ye=Ne=>{switch(Ne){case g3.ASK_EVERY_TIME:return\"每次都询问\";case g3.YOLO:return y()?\"在沙箱中自动运行\":\"使用允许列表\";case g3.FULL_YOLO:return y()?\"运行所有内容（不使用沙箱）\":\"运行所有内容\";default:return\"每次都询问\"}}"
+  },
+  {
+    "id": "settings.auto-run.browser-protection.label",
+    "source": "label:\"Browser Protection\"",
+    "target": "label:\"浏览器保护\""
+  },
+  {
+    "id": "settings.auto-run.browser-protection.description",
+    "source": "get description(){return`Prevent Agent from automatically running Browser tools${l().isAdminControlled?\" (controlled by admin)\":\"\"}`}",
+    "target": "get description(){return`阻止智能体自动运行浏览器工具${l().isAdminControlled?\"（由管理员控制）\":\"\"}`}"
+  },
+  {
+    "id": "settings.auto-run.file-deletion-protection.label",
+    "source": "label:\"File-Deletion Protection\"",
+    "target": "label:\"文件删除保护\""
+  },
+  {
+    "id": "settings.auto-run.file-deletion-protection.description",
+    "source": "get description(){return`Prevent Agent from deleting files automatically${l().isAdminControlled?\" (controlled by admin)\":\"\"}`}",
+    "target": "get description(){return`阻止智能体自动删除文件${l().isAdminControlled?\"（由管理员控制）\":\"\"}`}"
+  },
+  {
+    "id": "settings.auto-run.external-file-protection.label",
+    "source": "label:\"External-File Protection\"",
+    "target": "label:\"外部文件保护\""
+  },
+  {
+    "id": "settings.auto-run.external-file-protection.description",
+    "source": "get description(){return`Prevent Agent from creating or modifying files outside of the workspace automatically${l().isAdminControlled?\" (controlled by admin)\":\"\"}`}",
+    "target": "get description(){return`阻止智能体自动创建或修改工作区外的文件${l().isAdminControlled?\"（由管理员控制）\":\"\"}`}"
+  },
+  {
+    "id": "settings.auto-run.command-allowlist.label",
+    "source": "label:\"Command Allowlist\"",
+    "target": "label:\"命令允许列表\""
+  },
+  {
+    "id": "settings.auto-run.command-allowlist.description",
+    "source": "get description(){return`Commands that can run automatically${l().isAdminControlled?\" (controlled by admin)\":q()?` \u2014 current setting is from ~/${e.productService.dataFolderName}/permissions.json`:\"\"}`}",
+    "target": "get description(){return`可自动运行的命令${l().isAdminControlled?\"（由管理员控制）\":q()?` —— 当前设置来自 ~/${e.productService.dataFolderName}/permissions.json`:\"\"}` }"
+  },
+  {
+    "id": "settings.auto-run.command-allowlist.placeholder",
+    "source": "placeholder:\"Add commands...\"",
+    "target": "placeholder:\"添加命令...\""
   },
   {
     "id": "settings.feedback.quick-pick.report-good-label",
