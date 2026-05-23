@@ -2,14 +2,19 @@
 node_modules/
 **/node_modules/
 
+# Build outputs
+out/
+*.tsbuildinfo
+
 # VS Code extension artifacts
 *.vsix
 .vscode-test/
 
-# Generated extraction artifacts
-cursor-zh-cn-pack/baselines/
-cursor-zh-cn-pack/reports/coverage-report.md
-cursor-zh-cn-pack/reports/untranslated-*.json
+# Generated artifacts
+baselines/
+reports/coverage-report.md
+reports/untranslated-*.json
+reports/workbench-untranslated.*
 
 # Logs
 *.log
