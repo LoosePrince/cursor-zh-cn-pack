@@ -4,6 +4,34 @@
   "maxSamplesPerCandidate": 5,
   "markdownCandidateLimit": 800,
   "surroundingChars": 90,
+  "scopeLookbackChars": 420,
+  "scopeLookaheadChars": 180,
+  "settingsScopePatterns": [
+    "cursor-settings",
+    "z\\(Wu,",
+    "z\\(gX,",
+    "z\\(Jf,",
+    "settings-sidebar",
+    "settings-search",
+    "function y5C",
+    "function aww",
+    "privacyMode",
+    "granularPrivacy",
+    "enable_web_fetch_tool",
+    "composerState",
+    "I4C\\(\\)",
+    "l5C\\(\\)",
+    "c5C\\(\\)",
+    "h5C\\(\\)"
+  ],
+  "settingsHtmlSymbols": [
+    "I4C",
+    "l5C",
+    "c5C",
+    "h5C",
+    "m5C",
+    "u5C"
+  ],
   "statusOrder": [
     "candidate",
     "tracked-needle",
@@ -18,6 +46,21 @@
     "cursor-settings",
     "settings-dom",
     "settings-route"
+  ],
+  "patchSourceKeys": [
+    "label",
+    "title",
+    "description",
+    "children",
+    "subtitle",
+    "placeholder",
+    "message",
+    "detail",
+    "actionTitle",
+    "helpTooltipLabel",
+    "tooltip",
+    "aria-label",
+    "ariaLabel"
   ],
   "contextTags": [
     {

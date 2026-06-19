@@ -67,6 +67,7 @@
     "vscode:prepublish": "npm run version:sync && npm run compile",
     "extract": "node ./scripts/extract-cursor-nls.mjs",
     "scan:workbench": "node ./scripts/scan-workbench-untranslated.mjs",
+    "scan:patch-sources": "node ./scripts/extract-workbench-patch-sources.mjs",
     "package": "npm run version:sync && vsce package",
     "release:build": "npm run version:sync && npm run compile && node ./scripts/build-release-assets.mjs",
     "build": "npm run version:sync && npm run extract && npm run compile"
