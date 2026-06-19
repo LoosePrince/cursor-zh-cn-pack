@@ -152,7 +152,9 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
     const rule = rules[index];
     const occurrences = countOccurrences(patchedContent, rule.source);
     if (occurrences > 0) {
+      const braceBalanceBefore = measureBraceBalance(patchedContent);
       patchedContent = replaceAll(patchedContent, rule.source, rule.target);
+      assertBraceBalanceUnchanged(braceBalanceBefore, measureBraceBalance(patchedContent), rule.id);
       appliedOccurrences += occurrences;
       appliedRuleIds.push(rule.id);
     }
@@ -601,11 +603,17 @@ async function assertRuntimePatchIsSafe(
     throw new Error(`补丁命中 ${appliedOccurrences} 处，超过运行时安全阈值 ${policy.maxRuntimePatchRuleHits}，已取消写入。`);
   }
 
-  await reportProgress(progress, { message: '计算变更行数', percent: 30, current: 1, total: 3 });
+  await reportProgress(progress, { message: '计算变更行数', percent: 30, current: 1, total: 4 });
   const changedLines = countChangedLines(originalContent, patchedContent);
   if (changedLines > policy.maxRuntimePatchChangedLines) {
     throw new Error(`补丁将修改 ${changedLines} 行，超过运行时安全阈值 ${policy.maxRuntimePatchChangedLines}，已取消写入。`);
   }
+
+  assertBraceBalanceUnchanged(
+    measureBraceBalance(originalContent),
+    measureBraceBalance(patchedContent),
+    '补丁汇总'
+  );
 
   for (let index = 0; index < policy.guardedRuntimeNeedles.length; index += 1) {
     const needle = policy.guardedRuntimeNeedles[index];
@@ -640,6 +648,83 @@ function countChangedLines(before: string, after: string): number {
   }
 
   return changed;
+}
+
+interface BraceBalance {
+  readonly curly: number;
+  readonly round: number;
+  readonly square: number;
+}
+
+function measureBraceBalance(value: string): BraceBalance {
+  let curly = 0;
+  let round = 0;
+  let square = 0;
+  let inString = false;
+  let quote = '';
+  let escaped = false;
+
+  for (let index = 0; index < value.length; index += 1) {
+    const char = value[index];
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+        continue;
+      }
+
+      if (char === '\\') {
+        escaped = true;
+        continue;
+      }
+
+      if (char === quote) {
+        inString = false;
+      }
+
+      continue;
+    }
+
+    if (char === '"' || char === '\'' || char === '`') {
+      inString = true;
+      quote = char;
+      continue;
+    }
+
+    switch (char) {
+      case '{':
+        curly += 1;
+        break;
+      case '}':
+        curly -= 1;
+        break;
+      case '(':
+        round += 1;
+        break;
+      case ')':
+        round -= 1;
+        break;
+      case '[':
+        square += 1;
+        break;
+      case ']':
+        square -= 1;
+        break;
+      default:
+        break;
+    }
+  }
+
+  return { curly, round, square };
+}
+
+function assertBraceBalanceUnchanged(before: BraceBalance, after: BraceBalance, ruleId: string): void {
+  if (before.curly === after.curly && before.round === after.round && before.square === after.square) {
+    return;
+  }
+
+  throw new Error(
+    `补丁规则 ${ruleId} 改变了括号平衡（{} ${before.curly}→${after.curly}，() ${before.round}→${after.round}，[] ${before.square}→${after.square}），已取消写入。`
+  );
 }
 
 function replaceAll(value: string, source: string, target: string): string {

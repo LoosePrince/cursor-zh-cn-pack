@@ -320,6 +320,7 @@
     "id:\"spec\",name:\"Spec\",actionId:\"composerMode.spec\",icon:\"checklist\",description:",
     "id:\"multitask\",name:\"Multitask\",actionId:\"composerMode.multitask\",icon:\"circles\"",
     "var vHi={id:\"multitask\",label:\"Multitask\",icon:\"circles\",color:\"purple\",placehol",
+    "var O4r={id:\"multitask\",label:\"Multitask\",icon:\"circles\",color:\"purple\",placehol",
     "n.fallback||\"New Agent\"),I})()},get children(){var I=$dC()",
     "fallback:\"New Agent\",get hasWorktree(){return I()},get projectName(){return o()}",
     "fallback:\"New Agent\",get hasWorktree(){return!!h().gitWorktree},get projectName(",
@@ -354,6 +355,23 @@
     "pn=An?H(Sh,{content:H(wm,{title:`New Agent in ${t.displayName}`}),offset:6,children:H(ch",
     "<div><span>Subagents",
     "function bKC(n){switch(n){case .85:return\"Small\";case 1:return\"Default\";case 1.15:return\"Large\";case 1.3:return\"Extra Large\";default:return n}}",
+    "function L4C(n){switch(n){case .85:return\"Small\";case 1:return\"Default\";case 1.15:return\"Large\";case 1.3:return\"Extra Large\";default:return n}}",
+    "function jCk(n,e){switch(n){case zR.ASK_EVERY_TIME:return\"Ask Every Time\"",
+    "function KCk(n,e){switch(n){case zR.ASK_EVERY_TIME:return\"Ask for permission before running each operation\"",
+    "he=me(()=>{const We=v();return We.isDisabledByAdmin?\"Run Mode Disabled by Team Admin\"",
+    "get description(){return Yn(",
+    "X4C=\"Choose where PR links open across web, the desktop app and IDE.\"",
+    "x5C=[{id:eLt,label:\"Compact\"},{id:tMn,label:\"Balanced\"},{id:Glt,label:\"Detailed\"}]",
+    "x4C=Re('<div class=cursor-settings-auto-run-description><p>Choose how Agents run tools like command execution, MCP, and file writes.</p><p><a class=cursor-settings-auto-run-docs-link href=https://cursor.com/docs/agent/tools/terminal#run-mode target=_blank rel=\"noopener noreferrer\">Learn more')",
+    "case Gp.FULL_YOLO:return\"All commands will run without approval, classification or sandboxing.\"",
+    "Allowlist and approval behavior are set by ${Dfh(Qe??\"userPermissionsFile\"",
+    "Allowlist controls are set by ${Dfh(Qe,e.productService.dataFolderName)}. Dashboard values apply for auto-run fields omitted by that file.`",
+    "Xe(\"Sandboxing is disabled by your admin.\")",
+    "children:\"Your code data will not be trained on or used to improve the product. Code may be stored to provide features such as Background Agent.\"",
+    "helpTooltipLabel:a,className:l}=n,c=a===void 0?\"Learn more\":a",
+    "title:\"Open\",type:\"tertiary\",size:\"small\"",
+    "get title(){return Yn(()=>!!S())()?\"Success!\":v()?\"Importing\":\"Import\"}",
+    "var O4r={id:\"multitask\",label:\"Multitask\",icon:\"circles\",color:\"purple\",placeholder:\"Coordinate parallel tasks...\"",
     "return\"Select model\";",
     "placeholder:\"Search models\"",
     "<div>Web Search Tool",
@@ -398,7 +416,14 @@
     "placeholder:\"e.g. anthropic.claude-3-sonnet-20240229-v1:0\"",
     "\" day<!> left\"",
     "\"% Auto and\",\" \",ss(()=\u003eMath.round(dt())),\"% API used\"",
-    "\"% Auto used\""
+    "\"% Auto used\"",
+    "label:Mr?",
+    "description:Mr?",
+    "z(gX,{title:",
+    "Jf,{title:",
+    "l5C=Re(",
+    "c5C=Re(",
+    "I4C=Re("
   ],
   "guardedRuntimeNeedles": [
     "globalStorage",
@@ -407,6 +432,6 @@
     "Storage Error",
     "Cursor was unable to open local storage"
   ],
-  "maxRuntimePatchRuleHits": 410,
-  "maxRuntimePatchChangedLines": 360
+  "maxRuntimePatchRuleHits": 600,
+  "maxRuntimePatchChangedLines": 420
 }

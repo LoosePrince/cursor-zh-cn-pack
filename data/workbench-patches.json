@@ -2422,12 +2422,12 @@
   {
     "id": "workbench.composer.mode-multitask.inline-description",
     "source": "id:\"multitask\",name:\"Multitask\",actionId:\"composerMode.multitask\",icon:\"circles\",description:\"Run and coordinate multiple tasks in parallel\"",
-    "target": "id:\"multitask\",name:\"Multitask\",actionId:\"composerMode.multitask\",icon:\"circles\",description:\"并行运行和协调多个任务\""
+    "target": "id:\"multitask\",name:\"多任务\",actionId:\"composerMode.multitask\",icon:\"circles\",description:\"并行运行和协调多个任务\""
   },
   {
     "id": "workbench.composer.mode-multitask.meta-description",
     "source": "var vHi={id:\"multitask\",label:\"Multitask\",icon:\"circles\",color:\"purple\",placeholder:\"Coordinate parallel tasks...\",description:\"Run and coordinate multiple tasks in parallel\"}",
-    "target": "var vHi={id:\"multitask\",label:\"Multitask\",icon:\"circles\",color:\"purple\",placeholder:\"协调并行任务...\",description:\"并行运行和协调多个任务\"}"
+    "target": "var vHi={id:\"multitask\",label:\"多任务\",icon:\"circles\",color:\"purple\",placeholder:\"协调并行任务...\",description:\"并行运行和协调多个任务\""
   },
   {
     "id": "workbench.composer.title-fallback.new-agent",
@@ -2578,5 +2578,285 @@
     "id": "workbench.agent-list.project-new-agent-plus-tooltip",
     "source": "pn=An?H(Sh,{content:H(wm,{title:`New Agent in ${t.displayName}`}),offset:6,children:H(ch,{\"aria-label\":\"New Agent\",color:\"tertiary\",icon:\"plus\",onClick:Kt,onPointerDown:Se?rt:void 0})}):vt?H(Sh,{content:H(wm,{title:\"New Agent\"}),offset:6,children:H(ch,{\"aria-label\":\"New Agent\",color:\"tertiary\",icon:\"plus\",onClick:bn,onPointerDown:Se?rt:void 0})}):null",
     "target": "pn=An?H(Sh,{content:H(wm,{title:`在 ${t.displayName} 中新建智能体`}),offset:6,children:H(ch,{\"aria-label\":\"新建智能体\",color:\"tertiary\",icon:\"plus\",onClick:Kt,onPointerDown:Se?rt:void 0})}):vt?H(Sh,{content:H(wm,{title:\"新建智能体\"}),offset:6,children:H(ch,{\"aria-label\":\"新建智能体\",color:\"tertiary\",icon:\"plus\",onClick:bn,onPointerDown:Se?rt:void 0})}):null"
+  },
+  {
+    "id": "settings.agents.conversation-density.label",
+    "source": "label:\"Conversation Density\",description:\"Choose how much detail Agent tool calls show in the conversation\"",
+    "target": "label:\"对话密度\",description:\"选择智能体工具调用在对话中的显示详细程度\""
+  },
+  {
+    "id": "settings.agents.conversation-density.items",
+    "source": "x5C=[{id:eLt,label:\"Compact\"},{id:tMn,label:\"Balanced\"},{id:Glt,label:\"Detailed\"}]",
+    "target": "x5C=[{id:eLt,label:\"紧凑\"},{id:tMn,label:\"均衡\"},{id:Glt,label:\"详细\"}]"
+  },
+  {
+    "id": "settings.pr-preferences.section-title",
+    "source": "title:\"PR Preferences\",idToScrollTo:\"pull-request-preferences\"",
+    "target": "title:\"PR 偏好设置\",idToScrollTo:\"pull-request-preferences\""
+  },
+  {
+    "id": "settings.pr-preferences.destination-description",
+    "source": "X4C=\"Choose where PR links open across web, the desktop app and IDE.\"",
+    "target": "X4C=\"选择 PR 链接在网页、桌面应用和 IDE 中的打开方式。\""
+  },
+  {
+    "id": "settings.pr-preferences.destination.label",
+    "source": "label:\"Preferred PR destination\",description:X4C",
+    "target": "label:\"首选 PR 打开方式\",description:X4C"
+  },
+  {
+    "id": "settings.pr-preferences.team-default.label",
+    "source": "label:\"Team default\"}",
+    "target": "label:\"团队默认\"}"
+  },
+  {
+    "id": "settings.pr-preferences.cursor-review.label",
+    "source": "label:\"Cursor Review\"}",
+    "target": "label:\"Cursor 审查\"}"
+  },
+  {
+    "id": "settings.agent-review.section-title",
+    "source": "title:\"Agent Review\",get children(){return z(Xm,{idToScrollTo:\"cursor-settings-agent-review\"",
+    "target": "title:\"智能体审查\",get children(){return z(Xm,{idToScrollTo:\"cursor-settings-agent-review\""
+  },
+  {
+    "id": "settings.agent-review.on-commit.label",
+    "source": "label:\"Start Agent Review on Commit\",description:\"Automatically review your changes for issues after each commit\"",
+    "target": "label:\"提交时启动智能体审查\",description:\"每次提交后自动审查更改中的问题\""
+  },
+  {
+    "id": "settings.agent-review.on-agent-finish.label",
+    "source": "label:\"Auto-Run On Agent Finish\",description:\"Automatically run Review when Agent finishes and has made file changes\"",
+    "target": "label:\"智能体完成时自动运行\",description:\"当智能体完成并已更改文件时自动运行审查\""
+  },
+  {
+    "id": "settings.agent-review.include-submodules.label",
+    "source": "label:\"Include Submodules in Agent Review\",description:\"Include changes from Git submodules in the review\"",
+    "target": "label:\"在智能体审查中包含子模块\",description:\"在审查中包含 Git 子模块的更改\""
+  },
+  {
+    "id": "settings.agent-review.include-untracked.label",
+    "source": "label:\"Include Untracked Files in Agent Review\",description:\"Include untracked files (new files not yet added to Git) in the review\"",
+    "target": "label:\"在智能体审查中包含未跟踪文件\",description:\"在审查中包含未跟踪文件（尚未添加到 Git 的新文件）\""
+  },
+  {
+    "id": "settings.agent-review.default-approach.label",
+    "source": "label:\"Default Approach\",description:\"Choose between quick or more thorough, higher-cost analysis\"",
+    "target": "label:\"默认方式\",description:\"在快速分析与更彻底、成本更高的分析之间选择\""
+  },
+  {
+    "id": "settings.agent-review.default-approach.items",
+    "source": "items:[{id:\"quick\",label:\"Quick\"},{id:\"deep\",label:\"Deep\"}]",
+    "target": "items:[{id:\"quick\",label:\"快速\"},{id:\"deep\",label:\"深度\"}]"
+  },
+  {
+    "id": "settings.privacy.mode-label",
+    "source": "label:\"Privacy Mode\",jsx:(()=>{var W=c5C(),K=W.firstChild,j=K.nextSibling",
+    "target": "label:\"隐私模式\",jsx:(()=>{var W=c5C(),K=W.firstChild,j=K.nextSibling"
+  },
+  {
+    "id": "settings.privacy.share-data-label",
+    "source": "label:\"Share Data\",jsx:(()=>{var W=l5C(),K=W.firstChild,j=K.nextSibling,Z=j.firstChild",
+    "target": "label:\"共享数据\",jsx:(()=>{var W=l5C(),K=W.firstChild,j=K.nextSibling,Z=j.firstChild"
+  },
+  {
+    "id": "settings.privacy.no-training-storage-description",
+    "source": "children:\"Your code data will not be trained on or used to improve the product. Code may be stored to provide features such as Background Agent.\"",
+    "target": "children:\"你的代码数据不会用于训练或改进产品。代码可能会被存储以提供后台智能体等功能。\""
+  },
+  {
+    "id": "settings.auto-run.approvals-section-title",
+    "source": "title:\"Approvals & Execution for commands, MCP and more\",idToScrollTo:\"auto-run-section\"",
+    "target": "title:\"命令、MCP 等的审批与执行\",idToScrollTo:\"auto-run-section\""
+  },
+  {
+    "id": "settings.auto-run.mode.label-v2",
+    "source": "he=me(()=>{const We=v();return We.isDisabledByAdmin?\"Run Mode Disabled by Team Admin\":We.isAdminControlled?We.sandboxingControls?.sandboxing===\"enabled\"&&P()?\"Run Mode Controlled by Team Admin (Sandbox Enabled)\":\"Run Mode Controlled by Team Admin\":!We.isAdminControlled&&e.composerEffectiveAllowlistService.shouldPermissionsFileConstrainUnrestrictedMode()?`Run Mode (enforced by ~/${e.productService.dataFolderName??\".cursor\"}/permissions.json)`:\"Run Mode\"})",
+    "target": "he=me(()=>{const We=v();return We.isDisabledByAdmin?\"团队管理员已禁用运行模式\":We.isAdminControlled?We.sandboxingControls?.sandboxing===\"enabled\"&&P()?\"团队管理员控制的运行模式（已启用沙箱）\":\"团队管理员控制的运行模式\":!We.isAdminControlled&&e.composerEffectiveAllowlistService.shouldPermissionsFileConstrainUnrestrictedMode()?`运行模式（由 ~/${e.productService.dataFolderName??\".cursor\"}/permissions.json 强制生效）`:\"运行模式\"})"
+  },
+  {
+    "id": "settings.auto-run.mode.description-html-v2",
+    "source": "x4C=Re('<div class=cursor-settings-auto-run-description><p>Choose how Agents run tools like command execution, MCP, and file writes.</p><p><a class=cursor-settings-auto-run-docs-link href=https://cursor.com/docs/agent/tools/terminal#run-mode target=_blank rel=\"noopener noreferrer\">Learn more')",
+    "target": "x4C=Re('<div class=cursor-settings-auto-run-description><p>选择智能体如何运行命令执行、MCP、文件写入等工具。</p><p><a class=cursor-settings-auto-run-docs-link href=https://cursor.com/docs/agent/tools/terminal#run-mode target=_blank rel=\"noopener noreferrer\">了解更多')"
+  },
+  {
+    "id": "settings.auto-run.mode.full-yolo-warning-v2",
+    "source": "case Gp.FULL_YOLO:return\"All commands will run without approval, classification or sandboxing.\"",
+    "target": "case Gp.FULL_YOLO:return\"所有命令都将无需批准、分类或沙箱即可运行。\""
+  },
+  {
+    "id": "settings.auto-run.mode.permissions-file-message-v2",
+    "source": "Allowlist and approval behavior are set by ${Dfh(Qe??\"userPermissionsFile\",e.productService.dataFolderName)}. Run Everything is disabled while that file defines allowlists or a restrictive approvalMode.`",
+    "target": "允许列表和批准行为由 ${Dfh(Qe??\"userPermissionsFile\",e.productService.dataFolderName)} 配置。当该文件定义了允许列表或限制性的 approvalMode 时，“运行所有内容”将被禁用。`"
+  },
+  {
+    "id": "settings.auto-run.mode.admin-allowlist-message-v2",
+    "source": "Allowlist controls are set by ${Dfh(Qe,e.productService.dataFolderName)}. Dashboard values apply for auto-run fields omitted by that file.`",
+    "target": "允许列表控制项由 ${Dfh(Qe,e.productService.dataFolderName)} 配置。仪表板中的值适用于该文件未指定的自动运行字段。`"
+  },
+  {
+    "id": "settings.auto-run.mode.sandbox-disabled-message-v2",
+    "source": "Xe(\"Sandboxing is disabled by your admin.\")",
+    "target": "Xe(\"沙箱已被你的管理员禁用。\")"
+  },
+  {
+    "id": "settings.auto-run.mode.items-labels-v2",
+    "source": "function jCk(n,e){switch(n){case zR.ASK_EVERY_TIME:return\"Ask Every Time\";case zR.USE_ALLOWLIST:return e?\"Allowlist (with Sandbox)\":\"Allowlist\";case zR.SMART_AUTO:return e?\"Auto-review (with Sandbox)\":\"Auto-review\";case zR.RUN_EVERYTHING:return e?\"Run Everything (Unsandboxed)\":\"Run Everything\";default:{const t=n;return\"Ask Every Time\"}}}",
+    "target": "function jCk(n,e){switch(n){case zR.ASK_EVERY_TIME:return\"每次都询问\";case zR.USE_ALLOWLIST:return e?\"允许列表（使用沙箱）\":\"允许列表\";case zR.SMART_AUTO:return e?\"自动审查（使用沙箱）\":\"自动审查\";case zR.RUN_EVERYTHING:return e?\"运行所有内容（不使用沙箱）\":\"运行所有内容\";default:{const t=n;return\"每次都询问\"}}}"
+  },
+  {
+    "id": "settings.auto-run.mode.items-descriptions-v2",
+    "source": "function KCk(n,e){switch(n){case zR.ASK_EVERY_TIME:return\"Ask for permission before running each operation\";case zR.USE_ALLOWLIST:return e?\"Tools will auto-run in a sandbox if possible, otherwise respect the allowlist or ask for approval\":\"Automatically run operations after you approve them once\";case zR.SMART_AUTO:return e?\"Automatically run operations that Auto-review classifies as safe, using sandboxing when possible\":\"Automatically run operations that Auto-review classifies as safe\";case zR.RUN_EVERYTHING:return\"Automatically run all operations without asking for permission\";default:{const t=n;return\"\"}}}",
+    "target": "function KCk(n,e){switch(n){case zR.ASK_EVERY_TIME:return\"运行每个操作前先请求许可\";case zR.USE_ALLOWLIST:return e?\"如果可能，工具会在沙箱中自动运行；否则遵循允许列表或请求批准\":\"在你批准一次后自动运行操作\";case zR.SMART_AUTO:return e?\"自动运行自动审查判定为安全的操作，并在可能时使用沙箱\":\"自动运行自动审查判定为安全的操作\";case zR.RUN_EVERYTHING:return\"无需询问即可自动运行所有操作\";default:{const t=n;return\"\"}}}"
+  },
+  {
+    "id": "settings.ui.learn-more-default",
+    "source": "helpTooltipLabel:a,className:l}=n,c=a===void 0?\"Learn more\":a",
+    "target": "helpTooltipLabel:a,className:l}=n,c=a===void 0?\"了解更多\":a"
+  },
+  {
+    "id": "settings.agents.text-size.items-v2",
+    "source": "function L4C(n){switch(n){case .85:return\"Small\";case 1:return\"Default\";case 1.15:return\"Large\";case 1.3:return\"Extra Large\";default:return n}}",
+    "target": "function L4C(n){switch(n){case .85:return\"小\";case 1:return\"默认\";case 1.15:return\"大\";case 1.3:return\"超大\";default:return n}}"
+  },
+  {
+    "id": "settings.agents.submit-with-ctrl-enter.label-v2",
+    "source": "label:`Submit with ${Mr?\"\\u2318 + \":\"Ctrl + \"}Enter`",
+    "target": "label:`使用 ${Mr?\"\\u2318 + \":\"Ctrl + \"}Enter 提交`"
+  },
+  {
+    "id": "settings.agents.submit-with-ctrl-enter.description-v2",
+    "source": "description:`When enabled, ${Mr?\"\\u2318 + \":\"Ctrl + \"}Enter submits chat and Enter inserts a newline`",
+    "target": "description:`启用后，${Mr?\"\\u2318 + \":\"Ctrl + \"}Enter 提交聊天，Enter 插入换行`"
+  },
+  {
+    "id": "settings.agents.max-tab-count.description",
+    "source": "description:\"Limit how many chat tabs can be open at once\"",
+    "target": "description:\"限制可同时打开的聊天标签页数量\""
+  },
+  {
+    "id": "settings.agents.auto-accept-web-search.description-v2",
+    "source": "get description(){return Yn(()=>!!s())()?\"Disabled by your team admin.\":r()?\"Enabled by Run Everything Auto-Run Mode: Agent bypasses approval prompts for tools including Web Search.\":\"Skip approval dialog; Agent may run web searches automatically\"}",
+    "target": "get description(){return Yn(()=>!!s())()?\"已被你的团队管理员禁用。\":r()?\"已由运行所有内容自动运行模式启用：智能体会绕过包括网页搜索在内的工具批准提示。\":\"跳过批准对话框；智能体可以自动运行网页搜索\"}"
+  },
+  {
+    "id": "settings.auto-run.browser-protection.description-v2",
+    "source": "get description(){return`Prevent Agent from automatically running Browser tools${v().isAdminControlled?\" (controlled by admin)\":\"\"}`}",
+    "target": "get description(){return`防止智能体自动运行浏览器工具${v().isAdminControlled?\"（由管理员控制）\":\"\"}`}"
+  },
+  {
+    "id": "settings.auto-run.mcp-tools-protection.description-v2",
+    "source": "get description(){return`Prevent Agent from automatically running MCP tools${v().isAdminControlled?\" (controlled by admin)\":\"\"}`}",
+    "target": "get description(){return`防止智能体自动运行 MCP 工具${v().isAdminControlled?\"（由管理员控制）\":\"\"}`}"
+  },
+  {
+    "id": "settings.inline-terminal.auto-parse-links.description-v2",
+    "source": "description:`Automatically parse links when pasted into Quick Edit (${Mr?\"\\u2318\":\"Ctrl+\"}K) input`",
+    "target": "description:`将链接粘贴到快速编辑（${Mr?\"\\u2318\":\"Ctrl+\"}K）输入框时自动解析`"
+  },
+  {
+    "id": "settings.inline-terminal.terminal-hint.description-v2",
+    "source": "description:`Show a hint for ${Mr?\"\\u2318\":\"Ctrl+\"}K in the Terminal`",
+    "target": "description:`在终端中显示 ${Mr?\"\\u2318\":\"Ctrl+\"}K 提示`"
+  },
+  {
+    "id": "settings.inline-terminal.preview-box.label-v2",
+    "source": "label:`Preview Box for Terminal ${Mr?\"\\u2318\":\"Ctrl+\"}K`",
+    "target": "label:`终端 ${Mr?\"\\u2318\":\"Ctrl+\"}K 预览框`"
+  },
+  {
+    "id": "settings.applying-changes.section-title-v2",
+    "source": "title:\"Applying Changes\",get children(){return z(Xm,{get children(){return[z(Wu,{label:\"内联差异\"",
+    "target": "title:\"应用更改\",get children(){return z(Xm,{get children(){return[z(Wu,{label:\"内联差异\""
+  },
+  {
+    "id": "settings.applying-changes.section-title-v2-en",
+    "source": "title:\"Applying Changes\",get children(){return z(Xm,{get children(){return[z(Wu,{label:\"Inline Diffs\"",
+    "target": "title:\"应用更改\",get children(){return z(Xm,{get children(){return[z(Wu,{label:\"内联差异\""
+  },
+  {
+    "id": "settings.voice-mode.section-title-v2",
+    "source": "title:\"Voice Mode\",get children(){return z(Xm,{get children(){return z(Wu,{label:\"提交关键词\"",
+    "target": "title:\"语音模式\",get children(){return z(Xm,{get children(){return z(Wu,{label:\"提交关键词\""
+  },
+  {
+    "id": "settings.voice-mode.section-title-v2-en",
+    "source": "title:\"Voice Mode\",get children(){return z(Xm,{get children(){return z(Wu,{label:\"Submit Keywords\"",
+    "target": "title:\"语音模式\",get children(){return z(Xm,{get children(){return z(Wu,{label:\"提交关键词\""
+  },
+  {
+    "id": "settings.general.open-button",
+    "source": "title:\"Open\",type:\"tertiary\",size:\"small\"",
+    "target": "title:\"打开\",type:\"tertiary\",size:\"small\""
+  },
+  {
+    "id": "settings.general.import-vscode-button",
+    "source": "get title(){return Yn(()=>!!S())()?\"Success!\":v()?\"Importing\":\"Import\"}",
+    "target": "get title(){return Yn(()=>!!S())()?\"成功！\":v()?\"正在导入...\":\"导入\"}"
+  },
+  {
+    "id": "settings.general.reset-dialogs-toggle",
+    "source": "get title(){return i()?\"Hide\":\"Show\"}",
+    "target": "get title(){return i()?\"隐藏\":\"显示\"}"
+  },
+  {
+    "id": "workbench.composer.mode-multitask.inline-name-only",
+    "source": "id:\"multitask\",name:\"Multitask\",actionId:\"composerMode.multitask\",icon:\"circles\",description:\"并行运行和协调多个任务\"",
+    "target": "id:\"multitask\",name:\"多任务\",actionId:\"composerMode.multitask\",icon:\"circles\",description:\"并行运行和协调多个任务\""
+  },
+  {
+    "id": "workbench.composer.mode-multitask.meta-description-v2",
+    "source": "var O4r={id:\"multitask\",label:\"Multitask\",icon:\"circles\",color:\"purple\",placeholder:\"Coordinate parallel tasks...\",description:\"Uses a fleet of subagents to parallelize requests, instead of adding them to a queue.\"}",
+    "target": "var O4r={id:\"multitask\",label:\"多任务\",icon:\"circles\",color:\"purple\",placeholder:\"协调并行任务...\",description:\"使用子智能体集群并行处理请求，而不是将它们加入队列。\"}"
+  },
+  {
+    "id": "settings.general.page-title-v2",
+    "source": "z(gX,{title:\"General\",get children(){return[z(Pe,{get when(){return x()}",
+    "target": "z(gX,{title:\"通用\",get children(){return[z(Pe,{get when(){return x()}"
+  },
+  {
+    "id": "settings.notifications.system-tray.label-v2",
+    "source": "label:Mr?\"Menu Bar Icon\":\"System Tray Icon\"",
+    "target": "label:Mr?\"菜单栏图标\":\"系统托盘图标\""
+  },
+  {
+    "id": "settings.notifications.system-tray.description-v2",
+    "source": "description:Mr?\"Show Cursor in menu bar\":\"Show Cursor in system tray\"",
+    "target": "description:Mr?\"在菜单栏显示 Cursor\":\"在系统托盘显示 Cursor\""
+  },
+  {
+    "id": "settings.privacy.section-title-v2",
+    "source": "Jf,{title:\"Privacy\",get children(){return z(Xm,{get trailingCaption",
+    "target": "Jf,{title:\"隐私\",get children(){return z(Xm,{get trailingCaption"
+  },
+  {
+    "id": "settings.privacy.share-data-html",
+    "source": "l5C=Re(\"<div><div>Share Data</div><div>Improve Cursor for everyone\")",
+    "target": "l5C=Re(\"<div><div>共享数据</div><div>帮助改进 Cursor，惠及每位用户\")"
+  },
+  {
+    "id": "settings.privacy.no-training-html",
+    "source": "c5C=Re(\"<div><div>Privacy Mode</div><div>No training. Code may be stored for Background Agent and other features.\")",
+    "target": "c5C=Re(\"<div><div>隐私模式</div><div>不用于训练。代码可能会存储以支持后台智能体和其他功能。\")"
+  },
+  {
+    "id": "settings.privacy.mode-dropdown-display",
+    "source": "get fallback(){return\"Privacy Mode (Legacy)\"},children:\"Privacy Mode\"}",
+    "target": "get fallback(){return\"隐私模式（旧版）\"},children:\"隐私模式\"}"
+  },
+  {
+    "id": "settings.privacy.mode-dropdown-display-v2",
+    "source": "children:\"Privacy Mode\"}),null),kt(()=>gn(O",
+    "target": "children:\"隐私模式\"}),null),kt(()=>gn(O"
+  },
+  {
+    "id": "settings.web-fetch.tool-html",
+    "source": "I4C=Re(\"<div>Web Fetch Tool\")",
+    "target": "I4C=Re(\"<div>网页抓取工具\")"
+  },
+  {
+    "id": "settings.web-fetch.tool-description",
+    "source": "description:\"Allow Agent to fetch content from URLs\"",
+    "target": "description:\"允许智能体从 URL 获取内容\""
   }
 ]
