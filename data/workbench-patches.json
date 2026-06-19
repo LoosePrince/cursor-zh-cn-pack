@@ -206,8 +206,8 @@
   },
   {
     "id": "settings.indexing.cloud-link",
-    "source": "iQC=ot(\"\u003cspan\u003ecloud\")",
-    "target": "iQC=ot(\"\u003cspan\u003e云端\")"
+    "source": "iQC=ot(\"<span>cloud\")",
+    "target": "iQC=ot(\"<span>云端\")"
   },
   {
     "id": "settings.indexing.compute-index",
@@ -231,8 +231,8 @@
   },
   {
     "id": "settings.indexing.cursorignore-link",
-    "source": "oQC=ot(\"\u003cspan class=settings__item_link\u003eView included files.\")",
-    "target": "oQC=ot(\"\u003cspan class=settings__item_link\u003e查看已纳入的文件。\")"
+    "source": "oQC=ot(\"<span class=settings__item_link>View included files.\")",
+    "target": "oQC=ot(\"<span class=settings__item_link>查看已纳入的文件。\")"
   },
   {
     "id": "settings.docs.section-header",
@@ -286,8 +286,8 @@
   },
   {
     "id": "settings.beta.release-track-policy",
-    "source": "WjC=ot(\"\u003cspan\u003eUpdate Access is managed by internal release-track policy.\"),HjC=ot(\"\u003ca class=settings-beta-release-track-policy-link target=_blank\u003eOpen Statsig config\")",
-    "target": "WjC=ot(\"\u003cspan\u003e更新通道受内部 release-track 策略管理。\"),HjC=ot(\"\u003ca class=settings-beta-release-track-policy-link target=_blank\u003e打开 Statsig 配置\")"
+    "source": "WjC=ot(\"<span>Update Access is managed by internal release-track policy.\"),HjC=ot(\"<a class=settings-beta-release-track-policy-link target=_blank>Open Statsig config\")",
+    "target": "WjC=ot(\"<span>更新通道受内部 release-track 策略管理。\"),HjC=ot(\"<a class=settings-beta-release-track-policy-link target=_blank>打开 Statsig 配置\")"
   },
   {
     "id": "settings.beta.release-track-options",
@@ -436,8 +436,8 @@
   },
   {
     "id": "settings.subagents.section-title",
-    "source": "\u003cdiv\u003e\u003cspan\u003eSubagents",
-    "target": "\u003cdiv\u003e\u003cspan\u003e子智能体"
+    "source": "<div><span>Subagents",
+    "target": "<div><span>子智能体"
   },
   {
     "id": "settings.subagents.explore-model.label",
@@ -856,8 +856,8 @@
   },
   {
     "id": "settings.agents.web-search-tool.label",
-    "source": "\u003cdiv\u003eWeb Search Tool",
-    "target": "\u003cdiv\u003e网页搜索工具"
+    "source": "<div>Web Search Tool",
+    "target": "<div>网页搜索工具"
   },
   {
     "id": "settings.agents.web-search-tool.description",
@@ -1096,8 +1096,8 @@
   },
   {
     "id": "settings.context.ignore-symlinks.description",
-    "source": "get description(){return`\u26A0\uFE0F Use with caution. Skip symlinks during .cursorignore file discovery. Only enable if your repository has many symlinks and all .cursorignore files are reachable without them${n.reactiveStorageService.applicationUserPersistentStorage.teamAdminSettings?.cursorIgnore?.ignoreSymlinks?\" (controlled by admin)\":\"\"}. Changing this setting will require a restart of Cursor.`}",
-    "target": "get description(){return`\u26A0\uFE0F 请谨慎使用。在发现 .cursorignore 文件时跳过符号链接。仅当你的仓库包含大量符号链接，且所有 .cursorignore 文件都无需通过它们即可访问时再启用${n.reactiveStorageService.applicationUserPersistentStorage.teamAdminSettings?.cursorIgnore?.ignoreSymlinks?\"（由管理员控制）\":\"\"}。更改此设置后需要重启 Cursor。`}"
+    "source": "get description(){return`⚠️ Use with caution. Skip symlinks during .cursorignore file discovery. Only enable if your repository has many symlinks and all .cursorignore files are reachable without them${n.reactiveStorageService.applicationUserPersistentStorage.teamAdminSettings?.cursorIgnore?.ignoreSymlinks?\" (controlled by admin)\":\"\"}. Changing this setting will require a restart of Cursor.`}",
+    "target": "get description(){return`⚠️ 请谨慎使用。在发现 .cursorignore 文件时跳过符号链接。仅当你的仓库包含大量符号链接，且所有 .cursorignore 文件都无需通过它们即可访问时再启用${n.reactiveStorageService.applicationUserPersistentStorage.teamAdminSettings?.cursorIgnore?.ignoreSymlinks?\"（由管理员控制）\":\"\"}。更改此设置后需要重启 Cursor。`}"
   },
   {
     "id": "settings.auto-run.section-title",
@@ -1176,7 +1176,7 @@
   },
   {
     "id": "settings.auto-run.command-allowlist.description",
-    "source": "get description(){return`Commands that can run automatically${l().isAdminControlled?\" (controlled by admin)\":q()?` \u2014 current setting is from ~/${e.productService.dataFolderName}/permissions.json`:\"\"}`}",
+    "source": "get description(){return`Commands that can run automatically${l().isAdminControlled?\" (controlled by admin)\":q()?` — current setting is from ~/${e.productService.dataFolderName}/permissions.json`:\"\"}`}",
     "target": "get description(){return`可自动运行的命令${l().isAdminControlled?\"（由管理员控制）\":q()?` —— 当前设置来自 ~/${e.productService.dataFolderName}/permissions.json`:\"\"}` }"
   },
   {
@@ -1256,23 +1256,23 @@
   },
   {
     "id": "settings.models.view-all-models.label",
-    "source": "fek=ot(\"\u003cdiv class=settings-menu-hoverable\u003eView All Models\")",
-    "target": "fek=ot(\"\u003cdiv class=settings-menu-hoverable\u003e查看全部模型\")"
+    "source": "fek=ot(\"<div class=settings-menu-hoverable>View All Models\")",
+    "target": "fek=ot(\"<div class=settings-menu-hoverable>查看全部模型\")"
   },
   {
     "id": "settings.models.add-custom-model.label",
-    "source": "gek=ot(\"\u003cdiv class=settings-menu-hoverable\u003e\u003cspan\u003e\u003c/span\u003eAdd Custom Model\")",
-    "target": "gek=ot(\"\u003cdiv class=settings-menu-hoverable\u003e\u003cspan\u003e\u003c/span\u003e添加自定义模型\")"
+    "source": "gek=ot(\"<div class=settings-menu-hoverable><span></span>Add Custom Model\")",
+    "target": "gek=ot(\"<div class=settings-menu-hoverable><span></span>添加自定义模型\")"
   },
   {
     "id": "settings.models.api-keys.section-title",
-    "source": "vek=ot(\"\u003cdiv class=settings-menu-hoverable\u003e\u003cdiv\u003e\u003c/div\u003e\u003cdiv\u003eAPI Keys\")",
-    "target": "vek=ot(\"\u003cdiv class=settings-menu-hoverable\u003e\u003cdiv\u003e\u003c/div\u003e\u003cdiv\u003eAPI 密钥\")"
+    "source": "vek=ot(\"<div class=settings-menu-hoverable><div></div><div>API Keys\")",
+    "target": "vek=ot(\"<div class=settings-menu-hoverable><div></div><div>API 密钥\")"
   },
   {
     "id": "settings.models.no-models-available",
-    "source": "yek=ot(\"\u003cdiv\u003eNo models available\")",
-    "target": "yek=ot(\"\u003cdiv\u003e没有可用模型\")"
+    "source": "yek=ot(\"<div>No models available\")",
+    "target": "yek=ot(\"<div>没有可用模型\")"
   },
   {
     "id": "settings.models.openai.title",
@@ -1281,8 +1281,8 @@
   },
   {
     "id": "settings.models.openai.link-text",
-    "source": "kek=ot(\"\u003cspan\u003eyour OpenAI key\")",
-    "target": "kek=ot(\"\u003cspan\u003e你的 OpenAI 密钥\")"
+    "source": "kek=ot(\"<span>your OpenAI key\")",
+    "target": "kek=ot(\"<span>你的 OpenAI 密钥\")"
   },
   {
     "id": "settings.models.openai.description",
@@ -1311,13 +1311,13 @@
   },
   {
     "id": "settings.models.anthropic.subscription-note",
-    "source": "dek=ot(\"\u003cdiv\u003eWith your Cursor \u003c!\u003esubscription, you do not need to use your own Anthropic key!\")",
-    "target": "dek=ot(\"\u003cdiv\u003e使用你的 Cursor \u003c!\u003e订阅时，无需使用你自己的 Anthropic 密钥！\")"
+    "source": "dek=ot(\"<div>With your Cursor <!>subscription, you do not need to use your own Anthropic key!\")",
+    "target": "dek=ot(\"<div>使用你的 Cursor <!>订阅时，无需使用你自己的 Anthropic 密钥！\")"
   },
   {
     "id": "settings.models.anthropic.link-text",
-    "source": "hek=ot(\"\u003cspan\u003eyour Anthropic key\")",
-    "target": "hek=ot(\"\u003cspan\u003e你的 Anthropic 密钥\")"
+    "source": "hek=ot(\"<span>your Anthropic key\")",
+    "target": "hek=ot(\"<span>你的 Anthropic 密钥\")"
   },
   {
     "id": "settings.models.anthropic.description",
@@ -1336,13 +1336,13 @@
   },
   {
     "id": "settings.models.google.subscription-note",
-    "source": "cek=ot(\"\u003cdiv\u003eWith your Cursor \u003c!\u003esubscription, you do not need to use your own Google key!\")",
-    "target": "cek=ot(\"\u003cdiv\u003e使用你的 Cursor \u003c!\u003e订阅时，无需使用你自己的 Google 密钥！\")"
+    "source": "cek=ot(\"<div>With your Cursor <!>subscription, you do not need to use your own Google key!\")",
+    "target": "cek=ot(\"<div>使用你的 Cursor <!>订阅时，无需使用你自己的 Google 密钥！\")"
   },
   {
     "id": "settings.models.google.link-text",
-    "source": "uek=ot(\"\u003cspan\u003eyour Google AI Studio key\")",
-    "target": "uek=ot(\"\u003cspan\u003e你的 Google AI Studio 密钥\")"
+    "source": "uek=ot(\"<span>your Google AI Studio key\")",
+    "target": "uek=ot(\"<span>你的 Google AI Studio 密钥\")"
   },
   {
     "id": "settings.models.google.description",
@@ -1396,8 +1396,8 @@
   },
   {
     "id": "settings.models.bedrock.team-configured-note",
-    "source": "mek=ot(\"\u003cdiv\u003eYour team has configured AWS Bedrock access. You can use your teams Bedrock instance without any additional configuration.\")",
-    "target": "mek=ot(\"\u003cdiv\u003e你的团队已配置 AWS Bedrock 访问。无需额外配置即可使用团队的 Bedrock 实例。\")"
+    "source": "mek=ot(\"<div>Your team has configured AWS Bedrock access. You can use your teams Bedrock instance without any additional configuration.\")",
+    "target": "mek=ot(\"<div>你的团队已配置 AWS Bedrock 访问。无需额外配置即可使用团队的 Bedrock 实例。\")"
   },
   {
     "id": "settings.models.bedrock.title",
@@ -2858,5 +2858,1355 @@
     "id": "settings.web-fetch.tool-description",
     "source": "description:\"Allow Agent to fetch content from URLs\"",
     "target": "description:\"允许智能体从 URL 获取内容\""
+  },
+  {
+    "id": "workbench.actionTitle.open-folder",
+    "source": "actionTitle:\"Open Folder\"",
+    "target": "actionTitle:\"打开文件夹\""
+  },
+  {
+    "id": "workbench.children.add-doc",
+    "source": "children:\"Add Doc\"",
+    "target": "children:\"添加文档\""
+  },
+  {
+    "id": "settings.children.add-suggestions",
+    "source": "children:\"Add Suggestions\"",
+    "target": "children:\"添加建议\""
+  },
+  {
+    "id": "workbench.children.auto-imports-are-temporarily-disabled",
+    "source": "children:\"Auto-imports are temporarily disabled\"",
+    "target": "children:\"自动导入功能暂时不可用\""
+  },
+  {
+    "id": "workbench.children.clear-log",
+    "source": "children:\"Clear log\"",
+    "target": "children:\"清除日志\""
+  },
+  {
+    "id": "workbench.children.cpp-and-auto-imports-are-temporarily-disabled",
+    "source": "children:\"CPP and auto-imports are temporarily disabled\"",
+    "target": "children:\"CPP 和自动导入功能暂时不可用\""
+  },
+  {
+    "id": "workbench.children.cpp-is-temporarily-disabled",
+    "source": "children:\"CPP is temporarily disabled\"",
+    "target": "children:\"CPP 功能暂时不可用\""
+  },
+  {
+    "id": "workbench.children.open-dashboard",
+    "source": "children:\"Open Dashboard\"",
+    "target": "children:\"打开控制台\""
+  },
+  {
+    "id": "workbench.children.open-enterprise-config",
+    "source": "children:\"Open enterprise config\"",
+    "target": "children:\"打开企业配置\""
+  },
+  {
+    "id": "workbench.children.privacy-mode",
+    "source": "children:\"Privacy Mode\"",
+    "target": "children:\"隐私模式\""
+  },
+  {
+    "id": "workbench.description.accelerate-development-shared-knowledge-and-cont",
+    "source": "description:\"Accelerate development, shared knowledge, and context across your team\"",
+    "target": "description:\"加速开发，在团队间共享知识与上下文\""
+  },
+  {
+    "id": "workbench.description.add-a-hooks-json-file-to-your-user-project-or-en",
+    "source": "description:\"Add a hooks.json file to your user, project, or enterprise config to start running custom scripts.\"",
+    "target": "description:\"在用户、项目或企业配置中添加 hooks.json 文件，以开始运行自定义脚本。\""
+  },
+  {
+    "id": "workbench.description.api-key-used-for-requests-to-your-gateway",
+    "source": "description:\"API key used for requests to your gateway.\"",
+    "target": "description:\"用于向网关发送请求的 API 密钥。\""
+  },
+  {
+    "id": "workbench.description.automatically-import-agent-configs-from-other-to",
+    "source": "description:\"Automatically import agent configs from other tools\"",
+    "target": "description:\"自动从其他工具导入智能体配置\""
+  },
+  {
+    "id": "workbench.description.automatically-open-http-and-https-links-in-the-b",
+    "source": "description:\"Automatically open http and https links in the Browser Tab\"",
+    "target": "description:\"自动在浏览器标签页中打开 http 和 https 链接\""
+  },
+  {
+    "id": "workbench.description.automatically-open-localhost-links-in-the-browse",
+    "source": "description:\"Automatically open localhost links in the Browser Tab\"",
+    "target": "description:\"自动在浏览器标签页中打开 localhost 链接\""
+  },
+  {
+    "id": "workbench.description.automatically-review-your-changes-for-issues-aft",
+    "source": "description:\"Automatically review your changes for issues after each commit\"",
+    "target": "description:\"每次提交后自动审查你的更改是否存在问题\""
+  },
+  {
+    "id": "workbench.description.automatically-run-review-when-agent-finishes-and",
+    "source": "description:\"Automatically run Review when Agent finishes and has made file changes\"",
+    "target": "description:\"当智能体完成并已修改文件时，自动运行审查\""
+  },
+  {
+    "id": "workbench.description.bring-your-claude-code-sessions-into-cursor",
+    "source": "description:\"Bring your Claude Code sessions into Cursor.\"",
+    "target": "description:\"将 Claude Code 会话导入 Cursor。\""
+  },
+  {
+    "id": "workbench.description.check-network-connectivity-to-all-cursor-service",
+    "source": "description:\"Check network connectivity to all Cursor services\"",
+    "target": "description:\"检查到所有 Cursor 服务的网络连通性\""
+  },
+  {
+    "id": "workbench.description.choose-between-quick-or-more-thorough-higher-cos",
+    "source": "description:\"Choose between quick or more thorough, higher-cost analysis\"",
+    "target": "description:\"在快速分析与更彻底、成本更高的分析之间选择\""
+  },
+  {
+    "id": "workbench.description.choose-how-much-detail-agent-tool-calls-show-in-",
+    "source": "description:\"Choose how much detail Agent tool calls show in the conversation\"",
+    "target": "description:\"选择智能体工具调用在对话中显示的详细程度\""
+  },
+  {
+    "id": "workbench.description.cloud-agents-require-a-git-repository-in-an-open",
+    "source": "description:\"Cloud Agents require a Git repository in an open folder.\"",
+    "target": "description:\"云智能体需要在已打开的文件夹中存在 Git 仓库。\""
+  },
+  {
+    "id": "workbench.description.cloud-mcp-servers-shared-by-your-team",
+    "source": "description:\"Cloud MCP servers shared by your team.\"",
+    "target": "description:\"由你的团队共享的云 MCP 服务器。\""
+  },
+  {
+    "id": "workbench.description.commands-that-always-require-approval-even-when-",
+    "source": "description:\"Commands that always require approval, even when Auto mode would run them automatically\"",
+    "target": "description:\"即使自动模式会自动运行，这些命令也始终需要审批\""
+  },
+  {
+    "id": "workbench.description.connect-github-gitlab-manage-team-and-user-setti",
+    "source": "description:\"Connect GitHub/GitLab, manage team and user settings, and configure environments\"",
+    "target": "description:\"连接 GitHub/GitLab，管理团队和用户设置，并配置环境\""
+  },
+  {
+    "id": "workbench.description.control-which-network-requests-are-allowed-when-",
+    "source": "description:\"Control which network requests are allowed when commands run in the sandbox. Edit allowed/denied domains in sandbox.json in your workspace.\"",
+    "target": "description:\"控制命令在沙箱中运行时允许哪些网络请求。在工作区的 sandbox.json 中编辑允许/拒绝的域名。\""
+  },
+  {
+    "id": "workbench.description.control-your-local-agents-remotely-from-mobile-a",
+    "source": "description:\"Control your local agents remotely from mobile and web\"",
+    "target": "description:\"通过移动端和网页远程控制本地智能体\""
+  },
+  {
+    "id": "settings.description.crawl-and-index-custom-resources-and-developer-d",
+    "source": "description:\"Crawl and index custom resources and developer docs\"",
+    "target": "description:\"爬取并索引自定义资源和开发者文档\""
+  },
+  {
+    "id": "workbench.description.create-reusable-workflows-triggered-with-prefix-",
+    "source": "description:\"Create reusable workflows triggered with / prefix in chat. Use commands to standardize processes and make common tasks more efficient.\"",
+    "target": "description:\"创建可在聊天中通过 / 前缀触发的可复用工作流。使用命令来标准化流程，并让常见任务更高效。\""
+  },
+  {
+    "id": "workbench.description.create-specialized-agents-for-complex-tasks-suba",
+    "source": "description:\"Create specialized agents for complex tasks. Subagents can be invoked by the agent to handle focused work in parallel.\"",
+    "target": "description:\"为复杂任务创建专门的智能体。子智能体可由主智能体调用，以并行处理聚焦工作。\""
+  },
+  {
+    "id": "workbench.description.disable-ai-features-in-specific-repositories-bas",
+    "source": "description:\"Disable AI features in specific repositories based on file pattern\"",
+    "target": "description:\"根据文件模式在特定仓库中禁用 AI 功能\""
+  },
+  {
+    "id": "workbench.description.domains-that-agent-can-fetch-from-automatically-",
+    "source": "description:\"Domains that Agent can fetch from automatically. Use '*' for all domains, '*.example.com' for wildcard subdomains.\"",
+    "target": "description:\"智能体可自动获取内容的域名。使用 '*' 表示所有域名，'*.example.com' 表示通配符子域名。\""
+  },
+  {
+    "id": "workbench.description.example-migration",
+    "source": "description:\"Example migration\"",
+    "target": "description:\"示例迁移\""
+  },
+  {
+    "id": "workbench.description.http-2-is-recommended-for-low-latency-streaming-",
+    "source": "description:\"HTTP/2 is recommended for low-latency streaming. In some corporate proxy and VPN environments, the compatibility mode may need to be lowered.\"",
+    "target": "description:\"HTTP/2 更适合低延迟流式传输。在某些企业代理和 VPN 环境中，可能需要降低兼容模式级别。\""
+  },
+  {
+    "id": "workbench.description.include-changes-from-git-submodules-in-the-revie",
+    "source": "description:\"Include changes from Git submodules in the review\"",
+    "target": "description:\"在审查中包含 Git 子模块的更改\""
+  },
+  {
+    "id": "workbench.description.include-untracked-files-new-files-not-yet-added-",
+    "source": "description:\"Include untracked files (new files not yet added to Git) in the review\"",
+    "target": "description:\"在审查中包含未跟踪文件（尚未添加到 Git 的新文件）\""
+  },
+  {
+    "id": "workbench.description.loading-cloud-agents-settings",
+    "source": "description:\"Loading Cloud Agents settings...\"",
+    "target": "description:\"正在加载云智能体设置...\""
+  },
+  {
+    "id": "workbench.description.maximum-number-of-cursor-managed-worktrees-to-ke",
+    "source": "description:\"Maximum number of Cursor-managed worktrees to keep across all workspaces. Older worktrees are removed first. Default is 25.\"",
+    "target": "description:\"在所有工作区中保留的 Cursor 管理工作树的最大数量。较旧的工作树会优先移除。默认值为 25。\""
+  },
+  {
+    "id": "workbench.description.maximum-total-size-in-gb-for-the-cursor-worktree",
+    "source": "description:\"Maximum total size in GB for the Cursor worktrees directory across all workspaces. Set to 0 to disable this limit.\"",
+    "target": "description:\"所有工作区中 Cursor 工作树目录的总大小上限（GB）。设为 0 可禁用此限制。\""
+  },
+  {
+    "id": "workbench.description.migrate-legacy-iswebsearchtoolenabled-and-iswebs",
+    "source": "description:\"Migrate legacy isWebSearchToolEnabled and isWebSearchToolEnabled2 to isWebSearchToolEnabled3\"",
+    "target": "description:\"将旧版 isWebSearchToolEnabled 和 isWebSearchToolEnabled2 迁移到 isWebSearchToolEnabled3\""
+  },
+  {
+    "id": "workbench.description.openai-compatible-api-base-url-for-the-local-age",
+    "source": "description:\"OpenAI-compatible API base URL for the local agent.\"",
+    "target": "description:\"本地智能体使用的 OpenAI 兼容 API 基础 URL。\""
+  },
+  {
+    "id": "settings.description.personal-usage-for-your-primary-enterprise-team",
+    "source": "description:\"Personal usage for your primary enterprise team.\"",
+    "target": "description:\"主企业团队的个人用量。\""
+  },
+  {
+    "id": "workbench.description.prevent-sleep-when-this-computer-is-plugged-in-a",
+    "source": "description:\"Prevent sleep when this computer is plugged in and Remote Control is enabled\"",
+    "target": "description:\"在接通电源且已启用远程控制时，防止此电脑进入睡眠\""
+  },
+  {
+    "id": "workbench.description.servers-available-from-home",
+    "source": "description:\"Servers available from Home.\"",
+    "target": "description:\"可从 Home 使用的服务器。\""
+  },
+  {
+    "id": "workbench.description.show-rotating-tips-on-the-empty-screen",
+    "source": "description:\"Show rotating tips on the empty screen\"",
+    "target": "description:\"在空白界面显示轮播提示\""
+  },
+  {
+    "id": "workbench.description.sign-in-to-get-started-with-cursor-s-ai-features",
+    "source": "description:\"Sign in to get started with Cursor's AI features\"",
+    "target": "description:\"登录以开始使用 Cursor 的 AI 功能\""
+  },
+  {
+    "id": "workbench.description.sign-in-to-load-cloud-user-and-team-mcp-servers-",
+    "source": "description:\"Sign in to load cloud user and team MCP servers from the dashboard and manage which servers are enabled for cloud agents.\"",
+    "target": "description:\"登录以从控制台加载云用户和团队 MCP 服务器，并管理哪些服务器对云智能体启用。\""
+  },
+  {
+    "id": "workbench.description.skills-are-specialized-capabilities-that-help-th",
+    "source": "description:\"Skills are specialized capabilities that help the agent accomplish specific tasks. Skills will be invoked by the agent when relevant or can be triggered manually with / in chat.\"",
+    "target": "description:\"技能是帮助智能体完成特定任务的专门能力。技能会在相关时由智能体调用，也可以在聊天中通过 / 手动触发。\""
+  },
+  {
+    "id": "workbench.description.team-admins-can-configure-shared-mcp-servers-in-",
+    "source": "description:\"Team admins can configure shared MCP servers in the dashboard.\"",
+    "target": "description:\"团队管理员可在控制台中配置共享 MCP 服务器。\""
+  },
+  {
+    "id": "workbench.description.use-ai-powered-command-classification-to-intelli",
+    "source": "description:\"Use AI-powered command classification to intelligently match commands against allowlist patterns and suggest sandbox modes\"",
+    "target": "description:\"使用 AI 驱动的命令分类，智能匹配允许列表模式并建议沙箱模式\""
+  },
+  {
+    "id": "workbench.description.use-rules-to-guide-agent-behavior-like-enforcing",
+    "source": "description:\"Use Rules to guide agent behavior, like enforcing best practices or coding standards. Rules can be applied always, by file path, or manually.\"",
+    "target": "description:\"使用规则来引导智能体行为，例如强制执行最佳实践或编码规范。规则可以始终应用、按文件路径应用，或手动应用。\""
+  },
+  {
+    "id": "workbench.description.wait-indefinitely-to-authenticate-when-prompted-",
+    "source": "description:\"Wait indefinitely to authenticate when prompted. When off, skip authentication prompts after 30 seconds.\"",
+    "target": "description:\"在提示时无限期等待身份验证。关闭后，30 秒后将跳过身份验证提示。\""
+  },
+  {
+    "id": "workbench.description.when-launching-cursor-open-agents-window-by-defa",
+    "source": "description:\"When launching Cursor, open Agents Window by default\"",
+    "target": "description:\"启动 Cursor 时默认打开智能体窗口\""
+  },
+  {
+    "id": "workbench.description.work-with-cloud-agents-from-slack",
+    "source": "description:\"Work with Cloud Agents from Slack\"",
+    "target": "description:\"通过 Slack 使用云智能体\""
+  },
+  {
+    "id": "workbench.description.your-personal-cloud-mcp-servers",
+    "source": "description:\"Your personal cloud MCP servers.\"",
+    "target": "description:\"你的个人云 MCP 服务器。\""
+  },
+  {
+    "id": "settings.title.agent-review",
+    "source": "Jf,{title:\"Agent Review\"",
+    "target": "Jf,{title:\"智能体审查\""
+  },
+  {
+    "id": "workbench.title.anthropic-api-key",
+    "source": "Jf,{title:\"Anthropic API Key\"",
+    "target": "Jf,{title:\"Anthropic API 密钥\""
+  },
+  {
+    "id": "workbench.title.applying-changes",
+    "source": "Jf,{title:\"Applying Changes\"",
+    "target": "Jf,{title:\"应用更改\""
+  },
+  {
+    "id": "workbench.title.azure-openai",
+    "source": "Jf,{title:\"Azure OpenAI\"",
+    "target": "Jf,{title:\"Azure OpenAI\""
+  },
+  {
+    "id": "workbench.title.configuration-errors",
+    "source": "Jf,{title:\"Configuration Errors\"",
+    "target": "Jf,{title:\"配置错误\""
+  },
+  {
+    "id": "workbench.title.execution-log",
+    "source": "Jf,{title:\"Execution Log\"",
+    "target": "Jf,{title:\"执行日志\""
+  },
+  {
+    "id": "workbench.title.extension-security",
+    "source": "Jf,{title:\"Extension Security\"",
+    "target": "Jf,{title:\"扩展安全\""
+  },
+  {
+    "id": "workbench.title.google-api-key",
+    "source": "Jf,{title:\"Google API Key\"",
+    "target": "Jf,{title:\"Google API 密钥\""
+  },
+  {
+    "id": "workbench.title.home-mcp-servers",
+    "source": "Jf,{title:\"Home MCP Servers\"",
+    "target": "Jf,{title:\"Home MCP 服务器\""
+  },
+  {
+    "id": "workbench.title.installed-mcp-servers",
+    "source": "Jf,{title:\"Installed MCP Servers\"",
+    "target": "Jf,{title:\"已安装的 MCP 服务器\""
+  },
+  {
+    "id": "workbench.title.openai-api-key",
+    "source": "Jf,{title:\"OpenAI API Key\"",
+    "target": "Jf,{title:\"OpenAI API 密钥\""
+  },
+  {
+    "id": "workbench.title.personal-usage",
+    "source": "Jf,{title:\"Personal Usage\"",
+    "target": "Jf,{title:\"个人用量\""
+  },
+  {
+    "id": "workbench.title.pr-preferences",
+    "source": "Jf,{title:\"PR Preferences\"",
+    "target": "Jf,{title:\"PR 偏好设置\""
+  },
+  {
+    "id": "workbench.title.remote-control",
+    "source": "Jf,{title:\"Remote Control\"",
+    "target": "Jf,{title:\"远程控制\""
+  },
+  {
+    "id": "workbench.title.user-mcp-servers",
+    "source": "Jf,{title:\"User MCP Servers\"",
+    "target": "Jf,{title:\"用户 MCP 服务器\""
+  },
+  {
+    "id": "workbench.title.voice-mode",
+    "source": "Jf,{title:\"Voice Mode\"",
+    "target": "Jf,{title:\"语音模式\""
+  },
+  {
+    "id": "workbench.title.workspace-mcp-servers",
+    "source": "Jf,{title:\"Workspace MCP Servers\"",
+    "target": "Jf,{title:\"工作区 MCP 服务器\""
+  },
+  {
+    "id": "workbench.label.about-allowlist",
+    "source": "label:\"About Allowlist\"",
+    "target": "label:\"关于允许列表\""
+  },
+  {
+    "id": "workbench.label.access-key-id",
+    "source": "label:\"Access Key ID\"",
+    "target": "label:\"访问密钥 ID\""
+  },
+  {
+    "id": "workbench.label.auto-run-on-agent-finish",
+    "source": "label:\"Auto-Run On Agent Finish\"",
+    "target": "label:\"智能体完成时自动运行\""
+  },
+  {
+    "id": "workbench.label.browser-tab",
+    "source": "label:\"Browser Tab\"",
+    "target": "label:\"浏览器标签页\""
+  },
+  {
+    "id": "workbench.label.candidate",
+    "source": "label:\"Candidate\"",
+    "target": "label:\"候选\""
+  },
+  {
+    "id": "workbench.label.codebase-indexing",
+    "source": "label:\"Codebase Indexing\"",
+    "target": "label:\"代码库索引\""
+  },
+  {
+    "id": "settings.label.collapse",
+    "source": "label:\"Collapse\"",
+    "target": "label:\"折叠\""
+  },
+  {
+    "id": "workbench.label.command-blocklist",
+    "source": "label:\"Command Blocklist\"",
+    "target": "label:\"命令黑名单\""
+  },
+  {
+    "id": "workbench.label.connect-slack",
+    "source": "label:\"Connect Slack\"",
+    "target": "label:\"连接 Slack\""
+  },
+  {
+    "id": "workbench.label.conversation-density",
+    "source": "label:\"Conversation Density\"",
+    "target": "label:\"对话密度\""
+  },
+  {
+    "id": "workbench.label.default-approach",
+    "source": "label:\"Default Approach\"",
+    "target": "label:\"默认方式\""
+  },
+  {
+    "id": "workbench.label.deployment-name",
+    "source": "label:\"Deployment Name\"",
+    "target": "label:\"部署名称\""
+  },
+  {
+    "id": "workbench.label.disable-privacy-mode",
+    "source": "label:\"Disable Privacy Mode\"",
+    "target": "label:\"禁用隐私模式\""
+  },
+  {
+    "id": "workbench.label.dogfood",
+    "source": "label:\"Dogfood\"",
+    "target": "label:\"内部测试\""
+  },
+  {
+    "id": "workbench.label.early-access",
+    "source": "label:\"Early Access\"",
+    "target": "label:\"抢先体验\""
+  },
+  {
+    "id": "workbench.label.enable-run-everything",
+    "source": "label:\"Enable Run Everything\"",
+    "target": "label:\"启用全部运行\""
+  },
+  {
+    "id": "workbench.label.enable-storage",
+    "source": "label:\"Enable Storage\"",
+    "target": "label:\"启用存储\""
+  },
+  {
+    "id": "workbench.label.fetch-domain-allowlist",
+    "source": "label:\"Fetch Domain Allowlist\"",
+    "target": "label:\"获取域名允许列表\""
+  },
+  {
+    "id": "workbench.label.http-compatibility-mode",
+    "source": "label:\"HTTP Compatibility Mode\"",
+    "target": "label:\"HTTP 兼容模式\""
+  },
+  {
+    "id": "workbench.label.ignore-files-in-cursorignore",
+    "source": "label:\"Ignore Files in .cursorignore\"",
+    "target": "label:\"在 .cursorignore 中忽略文件\""
+  },
+  {
+    "id": "workbench.label.import-claude-code-agents",
+    "source": "label:\"Import Claude Code agents\"",
+    "target": "label:\"导入 Claude Code 智能体\""
+  },
+  {
+    "id": "workbench.label.include-submodules-in-agent-review",
+    "source": "label:\"Include Submodules in Agent Review\"",
+    "target": "label:\"在智能体审查中包含子模块\""
+  },
+  {
+    "id": "workbench.label.include-third-party-plugins-skills-and-other-con",
+    "source": "label:\"Include third-party Plugins, Skills, and other configs\"",
+    "target": "label:\"包含第三方插件、技能和其他配置\""
+  },
+  {
+    "id": "workbench.label.include-untracked-files-in-agent-review",
+    "source": "label:\"Include Untracked Files in Agent Review\"",
+    "target": "label:\"在智能体审查中包含未跟踪文件\""
+  },
+  {
+    "id": "workbench.label.index-new-folders",
+    "source": "label:\"Index New Folders\"",
+    "target": "label:\"为新文件夹建立索引\""
+  },
+  {
+    "id": "workbench.label.index-repositories-for-instant-grep",
+    "source": "label:\"Index Repositories for Instant Grep\"",
+    "target": "label:\"为即时 Grep 建立仓库索引\""
+  },
+  {
+    "id": "workbench.label.invite-team-members",
+    "source": "label:\"Invite Team Members\"",
+    "target": "label:\"邀请团队成员\""
+  },
+  {
+    "id": "workbench.label.keep-this-computer-awake",
+    "source": "label:\"Keep this computer awake\"",
+    "target": "label:\"保持此电脑唤醒\""
+  },
+  {
+    "id": "settings.label.manage-settings",
+    "source": "label:\"Manage Settings\"",
+    "target": "label:\"管理设置\""
+  },
+  {
+    "id": "workbench.label.mcp-allowlist",
+    "source": "label:\"MCP Allowlist\"",
+    "target": "label:\"MCP 允许列表\""
+  },
+  {
+    "id": "workbench.label.monthly-limit",
+    "source": "label:\"Monthly Limit\"",
+    "target": "label:\"月度限额\""
+  },
+  {
+    "id": "workbench.label.network-diagnostics",
+    "source": "label:\"Network Diagnostics\"",
+    "target": "label:\"网络诊断\""
+  },
+  {
+    "id": "workbench.label.nightly",
+    "source": "label:\"Nightly\"",
+    "target": "label:\"每夜构建\""
+  },
+  {
+    "id": "workbench.label.off",
+    "source": "label:\"Off\"",
+    "target": "label:\"关闭\""
+  },
+  {
+    "id": "workbench.label.on-demand-spending",
+    "source": "label:\"On-Demand Spending\"",
+    "target": "label:\"按需消费\""
+  },
+  {
+    "id": "workbench.label.on-demand-usage",
+    "source": "label:\"On-Demand Usage\"",
+    "target": "label:\"按需用量\""
+  },
+  {
+    "id": "workbench.label.open-agents-window-on-startup",
+    "source": "label:\"Open Agents Window on startup\"",
+    "target": "label:\"启动时打开智能体窗口\""
+  },
+  {
+    "id": "workbench.label.open-composer-settings",
+    "source": "label:\"Open Composer Settings\"",
+    "target": "label:\"打开 Composer 设置\""
+  },
+  {
+    "id": "workbench.label.open-web-links-in-browser",
+    "source": "label:\"Open Web Links in Browser\"",
+    "target": "label:\"在浏览器中打开网页链接\""
+  },
+  {
+    "id": "workbench.label.preferred-pr-destination",
+    "source": "label:\"Preferred PR destination\"",
+    "target": "label:\"首选 PR 目标\""
+  },
+  {
+    "id": "workbench.label.remote-control",
+    "source": "label:\"Remote Control\"",
+    "target": "label:\"远程控制\""
+  },
+  {
+    "id": "workbench.label.required-domains",
+    "source": "label:\"Required Domains\"",
+    "target": "label:\"必需域名\""
+  },
+  {
+    "id": "workbench.label.reset",
+    "source": "label:\"Reset\"",
+    "target": "label:\"重置\""
+  },
+  {
+    "id": "workbench.label.secret-access-key",
+    "source": "label:\"Secret Access Key\"",
+    "target": "label:\"秘密访问密钥\""
+  },
+  {
+    "id": "workbench.label.shell-approval-auto-review-checkbox",
+    "source": "label:\"Shell Approval Auto-review Checkbox\"",
+    "target": "label:\"Shell 审批自动审查复选框\""
+  },
+  {
+    "id": "workbench.label.shell-approval-auto-review-nudge",
+    "source": "label:\"Shell Approval Auto-review Nudge\"",
+    "target": "label:\"Shell 审批自动审查提示\""
+  },
+  {
+    "id": "workbench.label.show-localhost-links-in-browser",
+    "source": "label:\"Show Localhost Links in Browser\"",
+    "target": "label:\"在浏览器中显示 Localhost 链接\""
+  },
+  {
+    "id": "workbench.label.sign-in",
+    "source": "label:\"Sign In\"",
+    "target": "label:\"登录\""
+  },
+  {
+    "id": "workbench.label.smart-allowlist",
+    "source": "label:\"Smart Allowlist\"",
+    "target": "label:\"智能允许列表\""
+  },
+  {
+    "id": "settings.label.start-agent-review-on-commit",
+    "source": "label:\"Start Agent Review on Commit\"",
+    "target": "label:\"提交时启动智能体审查\""
+  },
+  {
+    "id": "workbench.label.switch",
+    "source": "label:\"Switch\"",
+    "target": "label:\"切换\""
+  },
+  {
+    "id": "workbench.label.team-level-repository-control",
+    "source": "label:\"Team-Level Repository Control\"",
+    "target": "label:\"团队级仓库控制\""
+  },
+  {
+    "id": "workbench.label.test-model",
+    "source": "label:\"Test Model\"",
+    "target": "label:\"测试模型\""
+  },
+  {
+    "id": "workbench.label.tips",
+    "source": "label:\"Tips\"",
+    "target": "label:\"提示\""
+  },
+  {
+    "id": "workbench.label.update-access",
+    "source": "label:\"Update Access\"",
+    "target": "label:\"更新通道\""
+  },
+  {
+    "id": "workbench.label.verify-extension-signatures",
+    "source": "label:\"Verify Extension Signatures\"",
+    "target": "label:\"验证扩展签名\""
+  },
+  {
+    "id": "workbench.label.wait-for-mcp-authentication",
+    "source": "label:\"Wait for MCP Authentication\"",
+    "target": "label:\"等待 MCP 身份验证\""
+  },
+  {
+    "id": "workbench.message.are-you-sure-you-want-to-reset-the-chat-mode-to-",
+    "source": "message:\"Are you sure you want to reset the chat mode to default?\"",
+    "target": "message:\"确定要将聊天模式重置为默认吗？\""
+  },
+  {
+    "id": "workbench.message.composerstate",
+    "source": "message:\"composerState\"",
+    "target": "message:\"composerState\""
+  },
+  {
+    "id": "workbench.message.loading-cloud-mcp-servers",
+    "source": "message:\"Loading cloud MCP servers...\"",
+    "target": "message:\"正在加载云 MCP 服务器...\""
+  },
+  {
+    "id": "workbench.message.loading-home-mcp-servers",
+    "source": "message:\"Loading home MCP servers...\"",
+    "target": "message:\"正在加载 Home MCP 服务器...\""
+  },
+  {
+    "id": "workbench.message.loading-user-mcp-servers",
+    "source": "message:\"Loading user MCP servers...\"",
+    "target": "message:\"正在加载用户 MCP 服务器...\""
+  },
+  {
+    "id": "workbench.message.slowstartup",
+    "source": "message:\"SlowStartup\"",
+    "target": "message:\"SlowStartup\""
+  },
+  {
+    "id": "workbench.title.approvals-execution-for-commands-mcp-and-more",
+    "source": "title:\"Approvals & Execution for commands, MCP and more\"",
+    "target": "title:\"命令、MCP 等的审批与执行\""
+  },
+  {
+    "id": "workbench.title.authentication",
+    "source": "title:\"Authentication\"",
+    "target": "title:\"身份验证\""
+  },
+  {
+    "id": "workbench.title.beta",
+    "source": "title:\"Beta\"",
+    "target": "title:\"Beta\""
+  },
+  {
+    "id": "workbench.title.browser",
+    "source": "title:\"Browser\"",
+    "target": "title:\"浏览器\""
+  },
+  {
+    "id": "workbench.title.cloud-agent-requires-code-storage",
+    "source": "title:\"Cloud Agent requires code storage\"",
+    "target": "title:\"云智能体需要代码存储\""
+  },
+  {
+    "id": "settings.title.codebase",
+    "source": "title:\"Codebase\"",
+    "target": "title:\"代码库\""
+  },
+  {
+    "id": "workbench.title.commands",
+    "source": "title:\"Commands\"",
+    "target": "title:\"命令\""
+  },
+  {
+    "id": "workbench.title.configure-gateway",
+    "source": "title:\"Configure gateway\"",
+    "target": "title:\"配置网关\""
+  },
+  {
+    "id": "workbench.title.continue-here",
+    "source": "title:\"Continue here\"",
+    "target": "title:\"在此继续\""
+  },
+  {
+    "id": "workbench.title.could-not-load-cloud-mcp-servers",
+    "source": "title:\"Could Not Load Cloud MCP Servers\"",
+    "target": "title:\"无法加载云 MCP 服务器\""
+  },
+  {
+    "id": "workbench.title.failed-to-update-privacy-settings",
+    "source": "title:\"Failed to update privacy settings\"",
+    "target": "title:\"更新隐私设置失败\""
+  },
+  {
+    "id": "workbench.title.gateway",
+    "source": "title:\"Gateway\"",
+    "target": "title:\"网关\""
+  },
+  {
+    "id": "workbench.title.general",
+    "source": "title:\"General\"",
+    "target": "title:\"通用\""
+  },
+  {
+    "id": "workbench.title.get-started",
+    "source": "title:\"Get Started\"",
+    "target": "title:\"开始使用\""
+  },
+  {
+    "id": "workbench.title.git",
+    "source": "title:\"Git\"",
+    "target": "title:\"Git\""
+  },
+  {
+    "id": "workbench.title.hooks",
+    "source": "title:\"Hooks\"",
+    "target": "title:\"Hooks\""
+  },
+  {
+    "id": "workbench.title.invite",
+    "source": "title:\"Invite\"",
+    "target": "title:\"邀请\""
+  },
+  {
+    "id": "workbench.title.leave-ask-every-time",
+    "source": "title:\"Leave Ask Every Time?\"",
+    "target": "title:\"离开“每次询问”模式？\""
+  },
+  {
+    "id": "workbench.title.models",
+    "source": "title:\"Models\"",
+    "target": "title:\"模型\""
+  },
+  {
+    "id": "workbench.title.network",
+    "source": "title:\"Network\"",
+    "target": "title:\"网络\""
+  },
+  {
+    "id": "workbench.title.no-hook-executions-yet",
+    "source": "title:\"No hook executions yet\"",
+    "target": "title:\"尚无 Hook 执行记录\""
+  },
+  {
+    "id": "workbench.title.no-hooks-configured",
+    "source": "title:\"No hooks configured\"",
+    "target": "title:\"未配置 Hooks\""
+  },
+  {
+    "id": "workbench.title.open-a-git-repository",
+    "source": "title:\"Open a Git repository\"",
+    "target": "title:\"打开 Git 仓库\""
+  },
+  {
+    "id": "workbench.title.open-customize",
+    "source": "title:\"Open Customize\"",
+    "target": "title:\"打开自定义\""
+  },
+  {
+    "id": "workbench.title.rules",
+    "source": "title:\"Rules\"",
+    "target": "title:\"规则\""
+  },
+  {
+    "id": "workbench.title.sign-in-to-view-cloud-mcp-servers",
+    "source": "title:\"Sign In to View Cloud MCP Servers\"",
+    "target": "title:\"登录以查看云 MCP 服务器\""
+  },
+  {
+    "id": "workbench.title.sign-up",
+    "source": "title:\"Sign Up\"",
+    "target": "title:\"注册\""
+  },
+  {
+    "id": "workbench.title.skills",
+    "source": "title:\"Skills\"",
+    "target": "title:\"技能\""
+  },
+  {
+    "id": "workbench.title.subagents",
+    "source": "title:\"Subagents\"",
+    "target": "title:\"子智能体\""
+  },
+  {
+    "id": "workbench.title.switch-privacy-mode",
+    "source": "title:\"Switch Privacy Mode?\"",
+    "target": "title:\"切换隐私模式？\""
+  },
+  {
+    "id": "workbench.title.tab",
+    "source": "title:\"Tab\"",
+    "target": "title:\"Tab\""
+  },
+  {
+    "id": "workbench.title.tools",
+    "source": "title:\"Tools\"",
+    "target": "title:\"工具\""
+  },
+  {
+    "id": "workbench.tooltip.open-composer-settings",
+    "source": "tooltip:\"Open Composer Settings\"",
+    "target": "tooltip:\"打开 Composer 设置\""
+  },
+  {
+    "id": "workbench.tooltip.rename-cloud-agent",
+    "source": "tooltip:\"Rename cloud agent\"",
+    "target": "tooltip:\"重命名云智能体\""
+  },
+  {
+    "id": "workbench.tooltip.restore-chat",
+    "source": "tooltip:\"Restore chat\"",
+    "target": "tooltip:\"恢复聊天\""
+  },
+  {
+    "id": "workbench.title.cloud-agents",
+    "source": "z(gX,{title:\"Cloud Agents\"",
+    "target": "z(gX,{title:\"云智能体\""
+  },
+  {
+    "id": "workbench.description.servers-available-in-this-workspace",
+    "source": "description:\"Servers available in this workspace.\"",
+    "target": "description:\"此工作区中可用的服务器。\""
+  },
+  {
+    "id": "workbench.description.configured-in-the-dashboard",
+    "source": "description:\"Configured in the dashboard\"",
+    "target": "description:\"在控制台中配置\""
+  },
+  {
+    "id": "workbench.description.servers-available-to-cloud-agents",
+    "source": "description:\"Servers available to cloud agents.\"",
+    "target": "description:\"云智能体可用的服务器。\""
+  },
+  {
+    "id": "workbench.message.loading-workspace-mcp-servers",
+    "source": "message:\"Loading workspace MCP servers...\"",
+    "target": "message:\"正在加载工作区 MCP 服务器...\""
+  },
+  {
+    "id": "workbench.title.could-not-load-workspace-mcp-servers",
+    "source": "title:\"Could Not Load Workspace MCP Servers\"",
+    "target": "title:\"无法加载工作区 MCP 服务器\""
+  },
+  {
+    "id": "workbench.message.cloud-agent-repository-is-disabled-outside-glass",
+    "source": "message:\"Cloud agent repository is disabled outside Glass\"",
+    "target": "message:\"在 Glass 之外禁用云智能体仓库\""
+  },
+  {
+    "id": "workbench.message.loading-installed-mcp-servers",
+    "source": "message:\"Loading installed MCP servers...\"",
+    "target": "message:\"正在加载已安装的 MCP 服务器...\""
+  },
+  {
+    "id": "workbench._e.ask-every-time-allowlist-allowlist-with-sandbox-",
+    "source": "_e=We=>{switch(We){case Gp.ASK_EVERY_TIME:return\"Ask Every Time\";case Gp.YOLO:return\"Allowlist\";case Gp.YOLO_WITH_SANDBOX:return\"Allowlist (with Sandbox)\";case Gp.SMART_AUTO:return\"Auto-review\";case Gp.SMART_AUTO_WITH_SANDBOX:return\"Auto-review (with Sandbox)\";case Gp.FULL_YOLO:return P()?\"Run Everything (Unsandboxed)\":\"Run Everything\";default:return\"Ask Every Time\"}}",
+    "target": "_e=We=>{switch(We){case Gp.ASK_EVERY_TIME:return\"每次都询问\";case Gp.YOLO:return\"允许列表\";case Gp.YOLO_WITH_SANDBOX:return\"允许列表（使用沙箱）\";case Gp.SMART_AUTO:return\"自动审查\";case Gp.SMART_AUTO_WITH_SANDBOX:return\"自动审查（使用沙箱）\";case Gp.FULL_YOLO:return P()?\"运行所有内容（不使用沙箱）\":\"运行所有内容\";default:return\"每次都询问\"}}"
+  },
+  {
+    "id": "workbench.$.run-mcp-tool-edit-file-delete-file-asking-a-ques",
+    "source": "$=me(()=>{const Ye=M();if(Ye.length===0)return;const bt=Ye[0];switch(bt.clientSideTool){case lt.RUN_TERMINAL_COMMAND_V2:{const Rt=O(bt.toolCallId);return Rt?`Run ${Rt}`:\"Run terminal command\"}case lt.MCP:return\"Run MCP tool\";case lt.EDIT_FILE:case lt.EDIT_FILE_V2:return\"Edit file\";case lt.DELETE_FILE:return\"Delete file\";case lt.ASK_QUESTION:return\"Asking a question\";default:return\"Waiting for approval\"}}",
+    "target": "$=me(()=>{const Ye=M();if(Ye.length===0)return;const bt=Ye[0];switch(bt.clientSideTool){case lt.RUN_TERMINAL_COMMAND_V2:{const Rt=O(bt.toolCallId);return Rt?`运行 ${Rt}`:\"运行终端命令\"}case lt.MCP:return\"运行 MCP 工具\";case lt.EDIT_FILE:case lt.EDIT_FILE_V2:return\"编辑文件\";case lt.DELETE_FILE:return\"删除文件\";case lt.ASK_QUESTION:return\"正在提问\";default:return\"等待批准\"}})"
+  },
+  {
+    "id": "workbench.$.keep-all",
+    "source": "$=me(()=>{if(!M())return\"Keep All\";const et=O();if(et===1){const Ue=F();return gcn[Ue]?.accept??\"Keep\"}if(et===0&&n.pendingDecisionGroup.length===1){const Ue=F();return gcn[Ue]?.accept??\"Keep\"}return\"Keep All\"}",
+    "target": "$=me(()=>{if(!M())return\"全部保留\";const et=O();if(et===1){const Ue=F();return gcn[Ue]?.accept??\"保留\"}if(et===0&&n.pendingDecisionGroup.length===1){const Ue=F();return gcn[Ue]?.accept??\"保留\"}return\"全部保留\"})"
+  },
+  {
+    "id": "workbench.$Jd.plan-debug-ask-generates-a-robust-implementation",
+    "source": "$Jd=[{id:\"plan\",label:\"Plan\",icon:\"list-todo\",color:\"yellow\",placeholder:\"Plan and design before coding...\",description:\"Generates a robust implementation plan prior to writing code, asking clarifying questions when needed.\"},{id:\"debug\",label:\"Debug\",icon:\"bugbot\",color:\"red\",placeholder:\"Debug and troubleshoot issues...\",description:\"Pinpoints the root cause of an issue by generating hypotheses and gathering runtime evidence.\"},{id:\"chat\",label:\"Ask\",icon:\"chat-bubble-question\",color:\"green\",placeholder:\"Ask questions without making changes...\",description:\"Explores the codebase and answer questions without making  edits.\"}]",
+    "target": "$Jd=[{id:\"plan\",label:\"规划\",icon:\"list-todo\",color:\"yellow\",placeholder:\"编码前先规划与设计...\",description:\"在编写代码前生成稳健的实现计划，并在需要时提出澄清问题。\"},{id:\"debug\",label:\"调试\",icon:\"bugbot\",color:\"red\",placeholder:\"调试并排查问题...\",description:\"通过生成假设并收集运行时证据，定位问题的根本原因。\"},{id:\"chat\",label:\"询问\",icon:\"chat-bubble-question\",color:\"green\",placeholder:\"提问而不做更改...\",description:\"探索代码库并回答问题，不会进行编辑。\"}]"
+  },
+  {
+    "id": "settings.anh.general-agents-appearance",
+    "source": "anh={general:\"General\",profile:\"Profile\",\"vscode-settings\":\"VS Code Settings\",appearance:\"Appearance\",\"plan-usage\":\"Plan & Usage\",chat:\"Agents\",tab:\"Tab\",models:\"Models\",rules:\"Rules, Skills, Subagents\",plugins:\"Plugins\",indexing:\"Indexing & Docs\",mcp:\"Tools & MCPs\",hooks:\"Hooks\",beta:\"Beta\",network:\"Network\",\"background-composer\":\"Cloud Agents\",worktrees:\"Worktrees\",developer:\"Developer\"}",
+    "target": "anh={general:\"通用\",profile:\"个人资料\",\"vscode-settings\":\"VS Code 设置\",appearance:\"外观\",\"plan-usage\":\"计划与用量\",chat:\"智能体\",tab:\"Tab 补全\",models:\"模型\",rules:\"规则、技能、子智能体\",plugins:\"插件\",indexing:\"索引与文档\",mcp:\"工具与 MCP\",hooks:\"钩子\",beta:\"Beta 功能\",network:\"网络\",\"background-composer\":\"云端智能体\",worktrees:\"工作树\",developer:\"开发者\"}"
+  },
+  {
+    "id": "workbench.ct.cancelled-stopped",
+    "source": "ct=me(()=>{if(j())return je();if(te())return\"Cancelled\";if(ke())return je();if(re()||oe())return\"Stopped\";if(ae()){const Dt=je().trim();return Dt&&Dt!==\"Completed\"?Dt:VIm}const Zt=je().trim();return $()||!Zt?thn:Zt}",
+    "target": "ct=me(()=>{if(j())return je();if(te())return\"已取消\";if(ke())return je();if(re()||oe())return\"已停止\";if(ae()){const Dt=je().trim();return Dt&&Dt!==\"Completed\"?Dt:VIm}const Zt=je().trim();return $()||!Zt?thn:Zt}"
+  },
+  {
+    "id": "workbench.ct.agent-will-ask-for-approval-before-running-tools",
+    "source": "ct=We=>{switch(We){case Gp.ASK_EVERY_TIME:return\"Agent will ask for approval before running tools.\";case Gp.YOLO:return\"Commands that are allowlisted will run automatically.\";case Gp.YOLO_WITH_SANDBOX:return\"Many commands will run automatically inside the sandbox, and you can also allowlist other actions.\";case Gp.SMART_AUTO:return\"A classifier will run for each action and decide whether it's safe to execute this command. Allowlists are still respected.\";case Gp.SMART_AUTO_WITH_SANDBOX:return\"Many commands will run automatically inside the sandbox, and a classifier will run for the actions that cannot run in the sandbox. Allowlists are still respected.\";case Gp.FULL_YOLO:return\"All commands will run without approval, classification or sandboxing.\";default:{const et=We;return\"\"}}}",
+    "target": "ct=We=>{switch(We){case Gp.ASK_EVERY_TIME:return\"智能体在运行工具前会先请求批准。\";case Gp.YOLO:return\"允许列表中的命令将自动运行。\";case Gp.YOLO_WITH_SANDBOX:return\"许多命令会在沙箱内自动运行，你也可以将其他操作加入允许列表。\";case Gp.SMART_AUTO:return\"每个操作都会运行分类器，以判断执行该命令是否安全。允许列表仍然生效。\";case Gp.SMART_AUTO_WITH_SANDBOX:return\"许多命令会在沙箱内自动运行；无法在沙箱中运行的操作会运行分类器。允许列表仍然生效。\";case Gp.FULL_YOLO:return\"所有命令都将无需批准、分类或沙箱即可运行。\";default:{const et=We;return\"\"}}}"
+  },
+  {
+    "id": "workbench.d.apply-checkout-branch",
+    "source": "d=[{id:\"apply-all\",label:\"Apply\",tooltip:\"Apply changes locally\",class:void 0,enabled:!n.isLoading,run:()=>r()},{id:\"checkout-branch\",label:\"Checkout Branch\",tooltip:\"Checkout branch locally\",class:void 0,enabled:!n.isLoading,run:()=>n.onCheckoutLocally?.(!1)}]",
+    "target": "d=[{id:\"apply-all\",label:\"应用\",tooltip:\"在本地应用更改\",class:void 0,enabled:!n.isLoading,run:()=>r()},{id:\"checkout-branch\",label:\"检出分支\",tooltip:\"在本地检出分支\",class:void 0,enabled:!n.isLoading,run:()=>n.onCheckoutLocally?.(!1)}]"
+  },
+  {
+    "id": "workbench.D.run-mcp-tool-edit-file-delete-file-asking-a-ques",
+    "source": "D=me(()=>{const Ge=x();if(Ge.length===0)return;const Ze=Ge[0];switch(Ze.clientSideTool){case lt.RUN_TERMINAL_COMMAND_V2:{const Ke=P(Ze.toolCallId);return Ke?`Run ${Ke}`:\"Run terminal command\"}case lt.MCP:return\"Run MCP tool\";case lt.EDIT_FILE:case lt.EDIT_FILE_V2:return\"Edit file\";case lt.DELETE_FILE:return\"Delete file\";case lt.ASK_QUESTION:return\"Asking a question\";default:return\"Waiting for approval\"}}",
+    "target": "D=me(()=>{const Ge=x();if(Ge.length===0)return;const Ze=Ge[0];switch(Ze.clientSideTool){case lt.RUN_TERMINAL_COMMAND_V2:{const Ke=P(Ze.toolCallId);return Ke?`运行 ${Ke}`:\"运行终端命令\"}case lt.MCP:return\"运行 MCP 工具\";case lt.EDIT_FILE:case lt.EDIT_FILE_V2:return\"编辑文件\";case lt.DELETE_FILE:return\"删除文件\";case lt.ASK_QUESTION:return\"正在提问\";default:return\"等待批准\"}})"
+  },
+  {
+    "id": "workbench.e.myself",
+    "source": "e=[{id:\"user\",label:\"Myself\",scope:\"user\"}]",
+    "target": "e=[{id:\"user\",label:\"我自己\",scope:\"user\"}]"
+  },
+  {
+    "id": "workbench.e.open-closed-draft-merged",
+    "source": "e=me(()=>{switch(n.status){case\"open\":return\"Open\";case\"closed\":return\"Closed\";case\"draft\":return\"Draft\";case\"merged\":return\"Merged\";default:return n.status,\"\"}}",
+    "target": "e=me(()=>{switch(n.status){case\"open\":return\"打开\";case\"closed\":return\"已关闭\";case\"draft\":return\"草稿\";case\"merged\":return\"已合并\";default:return n.status,\"\"}}"
+  },
+  {
+    "id": "workbench.Fcy.drop-shadow-inner-shadow-layer-blur-backdrop-blu",
+    "source": "Fcy=[{id:\"drop-shadow\",label:\"Drop shadow\"},{id:\"inner-shadow\",label:\"Inner shadow\"},{id:\"layer-blur\",label:\"Layer Blur\"},{id:\"backdrop-blur\",label:\"Backdrop Blur\"}]",
+    "target": "Fcy=[{id:\"drop-shadow\",label:\"投影\"},{id:\"inner-shadow\",label:\"内阴影\"},{id:\"layer-blur\",label:\"图层模糊\"},{id:\"backdrop-blur\",label:\"背景模糊\"}]"
+  },
+  {
+    "id": "workbench.Dfh.admin-dashboard-admin-configured-file-local-ide-",
+    "source": "function Dfh(n,e){switch(n){case\"dashboard\":return\"admin dashboard\";case\"adminRemotePermissionsFile\":case\"adminLocalPermissionsFile\":case\"adminPermissionsFile\":return\"admin-configured file\";case\"userPermissionsFile\":return`~/${e??\".cursor\"}/permissions.json`;case\"ide\":return\"local IDE settings\"}}",
+    "target": "function Dfh(n,e){switch(n){case\"dashboard\":return\"管理后台\";case\"adminRemotePermissionsFile\":case\"adminLocalPermissionsFile\":case\"adminPermissionsFile\":return\"管理员配置文件\";case\"userPermissionsFile\":return`~/${e??\".cursor\"}/permissions.json`;case\"ide\":return\"本地 IDE 设置\"}}"
+  },
+  {
+    "id": "workbench.Gw.skill-rule-subagent-command-mcp",
+    "source": "Gw=xr=>{switch(xr){case\"skill\":return\"Skill\";case\"rule\":return\"Rule\";case\"subagent\":return\"Subagent\";case\"command\":return\"Command\";case\"mcp\":return\"MCP\"}}",
+    "target": "Gw=xr=>{switch(xr){case\"skill\":return\"技能\";case\"rule\":return\"规则\";case\"subagent\":return\"子智能体\";case\"command\":return\"命令\";case\"mcp\":return\"MCP\"}}"
+  },
+  {
+    "id": "workbench.i.confirmation-required-for-editing-file-outside-w",
+    "source": "i=me(()=>{if(n.decision()===void 0)switch(n.reasonForAcceptReject?.type){case\"outOfWorkspace\":return\"Confirmation required for editing file outside workspace\";case\"cursorIgnore\":return n.reasonForAcceptReject.source===\"globalIgnore\"?\"Confirmation required - file is listed in globalignore\":\"Confirmation required - file is listed in .cursorignore\";case\"otherThreadEdit\":return\"This file is already being edited in another thread. Accept to apply those changes first, or reject to discard them.\";case\"restrictedFile\":return\"Confirmation required for editing restricted file (e.g. .cursor/mcp.json)\";case\"adminBlock\":case void 0:return;default:{const o=n.reasonForAcceptReject;throw new Error(`Parsing unknown reasonForAcceptReject: ${n.reasonForAcceptReject}`)}}}",
+    "target": "i=me(()=>{if(n.decision()===void 0)switch(n.reasonForAcceptReject?.type){case\"outOfWorkspace\":return\"编辑工作区外文件需要确认\";case\"cursorIgnore\":return n.reasonForAcceptReject.source===\"globalIgnore\"?\"需要确认 - 文件已在 globalignore 中列出\":\"需要确认 - 文件已在 .cursorignore 中列出\";case\"otherThreadEdit\":return\"该文件已在另一个线程中编辑。接受以先应用那些更改，或拒绝以丢弃它们。\";case\"restrictedFile\":return\"编辑受限文件需要确认（例如 .cursor/mcp.json）\";case\"adminBlock\":case void 0:return;default:{const o=n.reasonForAcceptReject;throw new Error(`Parsing unknown reasonForAcceptReject: ${n.reasonForAcceptReject}`)}}})"
+  },
+  {
+    "id": "workbench.items.always-applied-agent-decides-when-to-apply-apply",
+    "source": "items:[{id:\"always\",label:\"Always applied\"},{id:\"agent\",label:\"Agent decides when to apply\"},{id:\"glob\",label:\"Apply to Specific Files & Folders\"}]",
+    "target": "items:[{id:\"always\",label:\"始终应用\"},{id:\"agent\",label:\"由智能体决定何时应用\"},{id:\"glob\",label:\"应用到特定文件和文件夹\"}]"
+  },
+  {
+    "id": "workbench.items.always-applied-apply-to-specific-files-folders",
+    "source": "items:[{id:\"always\",label:\"Always applied\"},{id:\"glob\",label:\"Apply to Specific Files & Folders\"}]",
+    "target": "items:[{id:\"always\",label:\"始终应用\"},{id:\"glob\",label:\"应用到特定文件和文件夹\"}]"
+  },
+  {
+    "id": "workbench.items.breadcrumb-island",
+    "source": "items:[{id:\"breadcrumb\",label:\"Breadcrumb\"},{id:\"island\",label:\"Island\"}]",
+    "target": "items:[{id:\"breadcrumb\",label:\"面包屑\"},{id:\"island\",label:\"浮动岛\"}]"
+  },
+  {
+    "id": "workbench.items.fixed-unlimited-disabled",
+    "source": "items:[{id:\"fixed\",label:\"Fixed\"},{id:\"unlimited\",label:\"Unlimited\"},{id:\"disabled\",label:\"Disabled\"}]",
+    "target": "items:[{id:\"fixed\",label:\"固定\"},{id:\"unlimited\",label:\"不限额\"},{id:\"disabled\",label:\"已禁用\"}]"
+  },
+  {
+    "id": "workbench.items.http-2-http-1-1-http-1-0",
+    "source": "items:[{id:\"http2\",label:\"HTTP/2\"},{id:\"http1.1\",label:\"HTTP/1.1\"},{id:\"http1.0\",label:\"HTTP/1.0\"}]",
+    "target": "items:[{id:\"http2\",label:\"HTTP/2\"},{id:\"http1.1\",label:\"HTTP/1.1\"},{id:\"http1.0\",label:\"HTTP/1.0\"}]"
+  },
+  {
+    "id": "workbench.items.send-after-current-message-stop-send-right-away",
+    "source": "items:[{id:\"queue\",label:\"Send after current message\"},{id:\"stop-and-send\",label:\"Stop & send right away\"}]",
+    "target": "items:[{id:\"queue\",label:\"在当前消息后发送\"},{id:\"stop-and-send\",label:\"停止并立即发送\"}]"
+  },
+  {
+    "id": "workbench.items.sandbox-json-only-sandbox-json-defaults-allow-al",
+    "source": "items:[{id:\"user_config_only\",label:\"sandbox.json Only\"},{id:\"user_config_with_defaults\",label:\"sandbox.json + Defaults\"},{id:\"allow_all\",label:\"Allow All\"}]",
+    "target": "items:[{id:\"user_config_only\",label:\"仅 sandbox.json\"},{id:\"user_config_with_defaults\",label:\"sandbox.json + 默认值\"},{id:\"allow_all\",label:\"全部允许\"}]"
+  },
+  {
+    "id": "workbench.J.undo-all",
+    "source": "J=me(()=>{if(!M())return\"Undo All\";const et=O();if(et===1){const Ue=F();return gcn[Ue]?.reject??\"Undo\"}if(et===0&&n.pendingDecisionGroup.length===1){const Ue=F();return gcn[Ue]?.reject??\"Undo\"}return\"Undo All\"}",
+    "target": "J=me(()=>{if(!M())return\"全部撤销\";const et=O();if(et===1){const Ue=F();return gcn[Ue]?.reject??\"撤销\"}if(et===0&&n.pendingDecisionGroup.length===1){const Ue=F();return gcn[Ue]?.reject??\"撤销\"}return\"全部撤销\"})"
+  },
+  {
+    "id": "workbench.j5g.default-green-cyan-blue-purple-magenta-orange-ye",
+    "source": "j5g=[{id:\"default\",label:\"Default\"},{id:\"green\",label:\"Green\"},{id:\"cyan\",label:\"Cyan\"},{id:\"blue\",label:\"Blue\"},{id:\"purple\",label:\"Purple\"},{id:\"magenta\",label:\"Magenta\"},{id:\"orange\",label:\"Orange\"},{id:\"yellow\",label:\"Yellow\"},{id:\"red\",label:\"Red\"},{id:\"brand\",label:\"Brand\"}]",
+    "target": "j5g=[{id:\"default\",label:\"默认\"},{id:\"green\",label:\"绿色\"},{id:\"cyan\",label:\"青色\"},{id:\"blue\",label:\"蓝色\"},{id:\"purple\",label:\"紫色\"},{id:\"magenta\",label:\"品红\"},{id:\"orange\",label:\"橙色\"},{id:\"yellow\",label:\"黄色\"},{id:\"red\",label:\"红色\"},{id:\"brand\",label:\"品牌色\"}]"
+  },
+  {
+    "id": "workbench.jt.all-user",
+    "source": "jt=[{id:\"all\",label:\"All\"},{id:\"user\",label:\"User\"}]",
+    "target": "jt=[{id:\"all\",label:\"全部\"},{id:\"user\",label:\"用户\"}]"
+  },
+  {
+    "id": "workbench.K6d.stash-changes-commit-changes-temporarily-save-un",
+    "source": "K6d=[{id:\"stash\",label:\"Stash changes\",description:\"Temporarily save uncommitted work, then check out the cloud agent branch.\"},{id:\"commit\",label:\"Commit changes\",description:\"Create a checkpoint commit of your changes, then check out the branch.\"}]",
+    "target": "K6d=[{id:\"stash\",label:\"暂存更改\",description:\"临时保存未提交的工作，然后检出云端智能体分支。\"},{id:\"commit\",label:\"提交更改\",description:\"为你的更改创建检查点提交，然后检出分支。\"}]"
+  },
+  {
+    "id": "workbench.l.generate-image-generated-image-image-generation-",
+    "source": "l=me(()=>{const m=n.lifecycleStatus();switch(m){case\"pending\":return\"Generate image\";case\"loading\":case\"running\":return n.loadingLabel?.()??\"Generating image\";case\"success\":return\"Generated image\";case\"skipped\":return\"Image generation skipped\";case\"error\":return\"Image generation failed\";case\"cancelled\":return\"Image generation cancelled\";case\"rejected\":return\"Image generation rejected\";default:return m}}",
+    "target": "l=me(()=>{const m=n.lifecycleStatus();switch(m){case\"pending\":return\"生成图片\";case\"loading\":case\"running\":return n.loadingLabel?.()??\"正在生成图片\";case\"success\":return\"已生成图片\";case\"skipped\":return\"已跳过图片生成\";case\"error\":return\"图片生成失败\";case\"cancelled\":return\"图片生成已取消\";case\"rejected\":return\"图片生成已拒绝\";default:return m}})"
+  },
+  {
+    "id": "workbench.M.archive-prior-chats",
+    "source": "M=[{id:\"archive\",label:n.bc.isArchived?\"Restore\":\"Archive\",tooltip:\"\",class:void 0,enabled:!0,run:()=>{n.bc.isArchived?n.onRestore?.():n.onArchive?.()}},{id:\"archive-earlier\",label:\"Archive Prior Chats\",tooltip:\"Archive all chats older than this one\",class:void 0,enabled:!0,run:()=>{n.onArchiveEarlier?.()}}]",
+    "target": "M=[{id:\"archive\",label:n.bc.isArchived?\"恢复\":\"归档\",tooltip:\"\",class:void 0,enabled:!0,run:()=>{n.bc.isArchived?n.onRestore?.():n.onArchive?.()}},{id:\"archive-earlier\",label:\"归档更早的聊天\",tooltip:\"归档此聊天之前的所有聊天\",class:void 0,enabled:!0,run:()=>{n.onArchiveEarlier?.()}}]"
+  },
+  {
+    "id": "workbench.M.by-default-get-notifications-for-stable-updates-",
+    "source": "M=me(()=>{if(!P())return\"By default, get notifications for stable updates. In Early Access, pre-release builds may be unstable for production work.\";const J=D();return(()=>{var W=D2C(),K=W.firstChild;return le(W,z(Pe,{when:J,children:j=>[\" \",(()=>{var Z=L2C();return Z.addEventListener(\"click\",Q=>{Q.preventDefault(),n.openerService.open(j(),{openExternal:!0})}),kt(()=>ki(Z,\"href\",j())),Z})()]}),null),W})()}",
+    "target": "M=me(()=>{if(!P())return\"默认情况下，你会收到稳定版更新通知。在抢先体验中，预发布版本可能不适合用于生产工作。\";const J=D();return(()=>{var W=D2C(),K=W.firstChild;return le(W,z(Pe,{when:J,children:j=>[\" \",(()=>{var Z=L2C();return Z.addEventListener(\"click\",Q=>{Q.preventDefault(),n.openerService.open(j(),{openExternal:!0})}),kt(()=>ki(Z,\"href\",j())),Z})()]}),null),W})()})"
+  },
+  {
+    "id": "workbench.M.starting-environment-setup-taking-longer-than-ex",
+    "source": "M=me(()=>{if(s())return cGv;if(o())return\"Starting environment setup\";if(v())return QYi;const ae=I();if(ae)return ae;if(S())return uGv;const se=KQb(n.currentComposer().subagentInfo?.subagentTypeName);if(se)return se;if(D()!==void 0)return HUy;if(x())return\"Taking longer than expected\\u2026\"}",
+    "target": "M=me(()=>{if(s())return cGv;if(o())return\"正在启动环境\";if(v())return QYi;const ae=I();if(ae)return ae;if(S())return uGv;const se=KQb(n.currentComposer().subagentInfo?.subagentTypeName);if(se)return se;if(D()!==void 0)return HUy;if(x())return\"耗时超出预期…\"})"
+  },
+  {
+    "id": "workbench.mv_.codebase-web-grep-search-search-files-edit-reapp",
+    "source": "mv_=[{id:\"search\",title:\"Search\",description:\"Codebase, web\",tools:[{tool:lt.READ_SEMSEARCH_FILES,label:\"Codebase\"},{tool:lt.WEB_SEARCH,label:\"Web\"},{tool:lt.RIPGREP_RAW_SEARCH,label:\"Grep Search\"},{tool:lt.FILE_SEARCH,label:\"Search files\"}]},{id:\"edit\",title:\"Edit\",description:\"Files in workspace\",tools:[{tool:lt.EDIT_FILE,label:\"Edit & Reapply\"},{tool:lt.DELETE_FILE,label:\"Delete file\"}]},{id:\"run\",title:\"Run\",description:\"Commands\",tools:[{tool:lt.RUN_TERMINAL_COMMAND_V2,label:\"Terminal\"}]}]",
+    "target": "mv_=[{id:\"search\",title:\"搜索\",description:\"代码库、网页\",tools:[{tool:lt.READ_SEMSEARCH_FILES,label:\"代码库\"},{tool:lt.WEB_SEARCH,label:\"网页\"},{tool:lt.RIPGREP_RAW_SEARCH,label:\"Grep 搜索\"},{tool:lt.FILE_SEARCH,label:\"搜索文件\"}]},{id:\"edit\",title:\"编辑\",description:\"工作区中的文件\",tools:[{tool:lt.EDIT_FILE,label:\"编辑并重新应用\"},{tool:lt.DELETE_FILE,label:\"删除文件\"}]},{id:\"run\",title:\"运行\",description:\"命令\",tools:[{tool:lt.RUN_TERMINAL_COMMAND_V2,label:\"终端\"}]}]"
+  },
+  {
+    "id": "workbench.oe.loading-general-purpose-explore-shell-computer-u",
+    "source": "oe=me(()=>{const Ye=n.bubbleData.params?.name||\"general-purpose\",bt=n.bubbleData.params?.subagentType,Rt=n.bubbleData.params?.description?.trim();if(te())return iVm({bubbleDescription:n.bubbleData.params?.description,liveComposerName:A()?.name,loadingTitle:J()&&!y()?\"Loading...\":\"Best-of-N Runner\"});if(Rt)return Rt;if(Ye===\"general-purpose\"||Ye===\"explore\"||Ye===\"shell\"||Ye===\"computerUse\"||E_t(bt)){if(J()&&!y())return\"Loading...\";if(Ye===\"general-purpose\")return\"General Purpose\";if(Ye===\"explore\")return\"Explore\";if(Ye===\"shell\")return\"Shell\";if(Ye===\"computerUse\")return\"Computer Use\";if(te())return\"Best-of-N Runner\";if(E_t(bt))return\"Browser\"}return Ye.replace(/([a-z])([A-Z])/g,\"$1-$2\").split(\"-\").map(Et=>Et.charAt(0).toUpperCase()+Et.slice(1).toLowerCase()).join(\" \")}",
+    "target": "oe=me(()=>{const Ye=n.bubbleData.params?.name||\"general-purpose\",bt=n.bubbleData.params?.subagentType,Rt=n.bubbleData.params?.description?.trim();if(te())return iVm({bubbleDescription:n.bubbleData.params?.description,liveComposerName:A()?.name,loadingTitle:J()&&!y()?\"加载中...\":\"Best-of-N Runner\"});if(Rt)return Rt;if(Ye===\"general-purpose\"||Ye===\"explore\"||Ye===\"shell\"||Ye===\"computerUse\"||E_t(bt)){if(J()&&!y())return\"加载中...\";if(Ye===\"general-purpose\")return\"通用\";if(Ye===\"explore\")return\"探索\";if(Ye===\"shell\")return\"Shell\";if(Ye===\"computerUse\")return\"计算机使用\";if(te())return\"Best-of-N Runner\";if(E_t(bt))return\"浏览器\"}return Ye.replace(/([a-z])([A-Z])/g,\"$1-$2\").split(\"-\").map(Et=>Et.charAt(0).toUpperCase()+Et.slice(1).toLowerCase()).join(\" \")})"
+  },
+  {
+    "id": "workbench.P.privacy-mode-share-data-privacy-mode-legacy",
+    "source": "P=me(()=>{const F=(()=>{var O=a5C();return O.style.setProperty(\"font-size\",\"12px\"),O})();if(t()===Ls.ENTERPRISE)switch(i()){case lu.NO_STORAGE:return[{id:\"NO_STORAGE\",label:\"Privacy Mode\",jsx:F}];case lu.NO_TRAINING:return[{id:\"NO_TRAINING\",label:\"Privacy Mode\",jsx:F}];case lu.USAGE_CODEBASE_TRAINING_ALLOWED:return[{id:\"USAGE_CODEBASE_TRAINING_ALLOWED\",label:\"Share Data\",jsx:F}];case lu.USAGE_DATA_TRAINING_ALLOWED:return[{id:\"USAGE_DATA_TRAINING_ALLOWED\",label:\"Share Data\",jsx:F}];default:return[{id:\"NO_STORAGE\",label:\"Privacy Mode\",jsx:F}]}else{const O=()=>(e.reactiveStorageService.applicationUserPersistentStorage.goneThroughCodeSnippetOnboarding||e.reactiveStorageService.applicationUserPersistentStorage.goneThroughCodeSnippetChangeManagement||s()===lu.USAGE_CODEBASE_TRAINING_ALLOWED)&&s()!==lu.USAGE_DATA_TRAINING_ALLOWED,$=s()===lu.NO_STORAGE,J=[{id:O()?\"USAGE_CODEBASE_TRAINING_ALLOWED\":\"USAGE_DATA_TRAINING_ALLOWED\",label:\"Share Data\",jsx:(()=>{var W=l5C(),K=W.firstChild,j=K.nextSibling,Z=j.firstChild;return K.style.setProperty(\"font-size\",\"12px\"),j.style.setProperty(\"font-size\",\"10px\"),j.style.setProperty(\"opacity\",\"0.5\"),le(j,z(Pe,{get when(){return I()},children:\". Prompts and limited telemetry may also be shared with model providers when you explicitly select their models\"}),null),W})()},{id:\"NO_TRAINING\",label:\"Privacy Mode\",jsx:(()=>{var W=c5C(),K=W.firstChild,j=K.nextSibling;return K.style.setProperty(\"font-size\",\"12px\"),j.style.setProperty(\"font-size\",\"10px\"),j.style.setProperty(\"opacity\",\"0.5\"),W})()}];return $&&J.push({id:\"NO_STORAGE\",label:\"Privacy Mode (Legacy)\",jsx:z(w5C,{changePrivacyMode:S,get isExpanded(){return x()}})}),J}}",
+    "target": "P=me(()=>{const F=(()=>{var O=a5C();return O.style.setProperty(\"font-size\",\"12px\"),O})();if(t()===Ls.ENTERPRISE)switch(i()){case lu.NO_STORAGE:return[{id:\"NO_STORAGE\",label:\"隐私模式\",jsx:F}];case lu.NO_TRAINING:return[{id:\"NO_TRAINING\",label:\"隐私模式\",jsx:F}];case lu.USAGE_CODEBASE_TRAINING_ALLOWED:return[{id:\"USAGE_CODEBASE_TRAINING_ALLOWED\",label:\"共享数据\",jsx:F}];case lu.USAGE_DATA_TRAINING_ALLOWED:return[{id:\"USAGE_DATA_TRAINING_ALLOWED\",label:\"共享数据\",jsx:F}];default:return[{id:\"NO_STORAGE\",label:\"隐私模式\",jsx:F}]}else{const O=()=>(e.reactiveStorageService.applicationUserPersistentStorage.goneThroughCodeSnippetOnboarding||e.reactiveStorageService.applicationUserPersistentStorage.goneThroughCodeSnippetChangeManagement||s()===lu.USAGE_CODEBASE_TRAINING_ALLOWED)&&s()!==lu.USAGE_DATA_TRAINING_ALLOWED,$=s()===lu.NO_STORAGE,J=[{id:O()?\"USAGE_CODEBASE_TRAINING_ALLOWED\":\"USAGE_DATA_TRAINING_ALLOWED\",label:\"共享数据\",jsx:(()=>{var W=l5C(),K=W.firstChild,j=K.nextSibling,Z=j.firstChild;return K.style.setProperty(\"font-size\",\"12px\"),j.style.setProperty(\"font-size\",\"10px\"),j.style.setProperty(\"opacity\",\"0.5\"),le(j,z(Pe,{get when(){return I()},children:\". 当你明确选择模型提供商的模型时，提示词和有限的遥测数据也可能与其共享\"}),null),W})()},{id:\"NO_TRAINING\",label:\"隐私模式\",jsx:(()=>{var W=c5C(),K=W.firstChild,j=K.nextSibling;return K.style.setProperty(\"font-size\",\"12px\"),j.style.setProperty(\"font-size\",\"10px\"),j.style.setProperty(\"opacity\",\"0.5\"),W})()}];return $&&J.push({id:\"NO_STORAGE\",label:\"隐私模式（旧版）\",jsx:z(w5C,{changePrivacyMode:S,get isExpanded(){return x()}})}),J}})"
+  },
+  {
+    "id": "workbench.Q4C.agent-editor",
+    "source": "Q4C=[{id:\"agent\",label:\"Agent\"},{id:\"editor\",label:\"Editor\"}]",
+    "target": "Q4C=[{id:\"agent\",label:\"智能体\"},{id:\"editor\",label:\"编辑器\"}]"
+  },
+  {
+    "id": "workbench.r3e.commit-changes-stash-changes-discard-changes-cre",
+    "source": "r3e=[{id:\"commit\",label:\"Commit changes\",description:\"Create a checkpoint commit with your current changes\"},{id:\"stash\",label:\"Stash changes\",description:\"Save your changes to a stash and restore them later\"},{id:\"discard\",label:\"Discard changes\",description:\"Delete your current uncommitted changes before switching\"}]",
+    "target": "r3e=[{id:\"commit\",label:\"提交更改\",description:\"使用当前更改创建检查点提交\"},{id:\"stash\",label:\"暂存更改\",description:\"将更改保存到 stash 并稍后恢复\"},{id:\"discard\",label:\"丢弃更改\",description:\"切换前删除当前未提交的更改\"}]"
+  },
+  {
+    "id": "workbench.S.disabled",
+    "source": "S=me(()=>{const $=l();if(!n.server.enabled)return\"Disabled\";const J=y();return J!==void 0?J:$?.phase===\"checking\"?\"Checking server status\":$?.phase===\"needsAuth\"?\"Needs authentication\":$?.phase===\"error\"?c():\"Connected\"}",
+    "target": "S=me(()=>{const $=l();if(!n.server.enabled)return\"已禁用\";const J=y();return J!==void 0?J:$?.phase===\"checking\"?\"正在检查服务器状态\":$?.phase===\"needsAuth\"?\"需要身份验证\":$?.phase===\"error\"?c():\"已连接\"})"
+  },
+  {
+    "id": "workbench.S.team-default-cursor-review-github-graphite",
+    "source": "S=me(()=>{const M=[];return v()&&M.push({id:\"team_default\",label:\"Team default\"}),t()&&M.push({id:\"reviewCursor\",label:\"Cursor Review\"}),M.push({id:\"github\",label:\"GitHub\"},{id:\"graphite\",label:\"Graphite\"}),M}",
+    "target": "S=me(()=>{const M=[];return v()&&M.push({id:\"team_default\",label:\"团队默认\"}),t()&&M.push({id:\"reviewCursor\",label:\"Cursor Review\"}),M.push({id:\"github\",label:\"GitHub\"},{id:\"graphite\",label:\"Graphite\"}),M})"
+  },
+  {
+    "id": "workbench.s.human-tab-other",
+    "source": "s=me(()=>{if(!n.stats)return[];const g=n.stats,v=[];Math.floor(g.humanPercent)>=1&&v.push({type:\"human\",percent:g.humanPercent,label:\"human\",displayLabel:n.author||\"Human\"}),Math.floor(g.tabPercent)>=1&&v.push({type:\"tab\",percent:g.tabPercent,label:\"tab\",displayLabel:\"Tab\"});const y=[...g.agentByModel].sort((x,A)=>A.percent-x.percent);y.slice(0,3).filter(x=>x.percent>=1).forEach((x,A)=>{const I=q5e(x.model===\"unknown\"?\"Agent\":x.model,n.availableModels);v.push({type:\"model\",percent:x.percent,label:`model-${A}`,displayLabel:I,modelIndex:A,model:x.model})});const C=y.slice(3).reduce((x,A)=>x+A.percent,0);return C>=1&&v.push({type:\"other\",percent:C,label:\"other\",displayLabel:\"Other\"}),v.sort((x,A)=>A.percent-x.percent).slice(0,5)}",
+    "target": "s=me(()=>{if(!n.stats)return[];const g=n.stats,v=[];Math.floor(g.humanPercent)>=1&&v.push({type:\"human\",percent:g.humanPercent,label:\"human\",displayLabel:n.author||\"人工\"}),Math.floor(g.tabPercent)>=1&&v.push({type:\"tab\",percent:g.tabPercent,label:\"tab\",displayLabel:\"Tab 补全\"});const y=[...g.agentByModel].sort((x,A)=>A.percent-x.percent);y.slice(0,3).filter(x=>x.percent>=1).forEach((x,A)=>{const I=q5e(x.model===\"unknown\"?\"智能体\":x.model,n.availableModels);v.push({type:\"model\",percent:x.percent,label:`model-${A}`,displayLabel:I,modelIndex:A,model:x.model})});const C=y.slice(3).reduce((x,A)=>x+A.percent,0);return C>=1&&v.push({type:\"other\",percent:C,label:\"other\",displayLabel:\"其他\"}),v.sort((x,A)=>A.percent-x.percent).slice(0,5)})"
+  },
+  {
+    "id": "workbench.s.failed-to-get-ai-attribution-data",
+    "source": "s=me(()=>{if(n.bubbleData.error?.clientVisibleErrorMessage)return n.bubbleData.error.clientVisibleErrorMessage;const D=n.bubbleData.result;if(D&&D.result.case===\"error\")return\"Failed to get AI attribution data.\"}",
+    "target": "s=me(()=>{if(n.bubbleData.error?.clientVisibleErrorMessage)return n.bubbleData.error.clientVisibleErrorMessage;const D=n.bubbleData.result;if(D&&D.result.case===\"error\")return\"获取 AI 归因数据失败。\"})"
+  },
+  {
+    "id": "workbench.se.diff-with-main-branch-latest-commit",
+    "source": "se=me(()=>{const Te=P();if(Te===\"workingTree\"||Te===\"branch\")return\"(Diff with Main Branch)\";if(Te===\"singleCommit\")return\"(Latest Commit)\";if(Te===\"pendingDiffs\"||Te===\"allAgentChanges\"){const _e=L();return _e?`In Chat: ${n.composerDataService.getComposerTitle(_e)}`:\"In Chat\"}return\"(Diff with Main Branch)\"}",
+    "target": "se=me(()=>{const Te=P();if(Te===\"workingTree\"||Te===\"branch\")return\"（与主分支的差异）\";if(Te===\"singleCommit\")return\"（最新提交）\";if(Te===\"pendingDiffs\"||Te===\"allAgentChanges\"){const _e=L();return _e?`在聊天中：${n.composerDataService.getComposerTitle(_e)}`:\"在聊天中\"}return\"（与主分支的差异）\"})"
+  },
+  {
+    "id": "workbench.sn.start-new-chat-conversation-corrupted",
+    "source": "sn=me(()=>{const Oi=C();if(!Oi)return;if(Oi.hasCorruptedCheckpoints)return{title:\"Conversation Corrupted\",message:\"This conversation has corrupted data. You can view and export it, but new messages cannot be sent. Please start a new conversation to continue.\",extraButtons:[{label:\"Start New Chat\",variant:\"primary\",callback:()=>{e.commandService.executeCommand(\"composer.createNew\")}}]};if(Oi.text!==\"\")return;const ys=Oi.fullConversationHeadersOnly;if(n.bubbleId){const qs=ns(()=>{const aa=ys.findIndex(Fl=>Fl.bubbleId===n.bubbleId);if(aa!==-1){const Fl=Oi.conversationMap;for(let ga=aa+1;ga<ys.length;ga++)if(Fl[ys[ga].bubbleId]?.type===fo.AI)return ys[ga].bubbleId}});if(qs)return Oi.conversationMap[qs]?.errorDetails}const Is=un?.();if(Is)return t.getComposerBubble(S(),Is)?.errorDetails}",
+    "target": "sn=me(()=>{const Oi=C();if(!Oi)return;if(Oi.hasCorruptedCheckpoints)return{title:\"对话已损坏\",message:\"此对话的数据已损坏。你可以查看并导出它，但无法发送新消息。请开始新对话以继续。\",extraButtons:[{label:\"开始新聊天\",variant:\"primary\",callback:()=>{e.commandService.executeCommand(\"composer.createNew\")}}]};if(Oi.text!==\"\")return;const ys=Oi.fullConversationHeadersOnly;if(n.bubbleId){const qs=ns(()=>{const aa=ys.findIndex(Fl=>Fl.bubbleId===n.bubbleId);if(aa!==-1){const Fl=Oi.conversationMap;for(let ga=aa+1;ga<ys.length;ga++)if(Fl[ys[ga].bubbleId]?.type===fo.AI)return ys[ga].bubbleId}});if(qs)return Oi.conversationMap[qs]?.errorDetails}const Is=un?.();if(Is)return t.getComposerBubble(S(),Is)?.errorDetails})"
+  },
+  {
+    "id": "workbench.t.fix-with-agent-dismiss-thumbs-up-thumbs-down",
+    "source": "t=[{id:\"fix_in_chat\",label:\"Fix with Agent\",onClick:e?.onFixInChat},{id:\"dismiss\",label:\"Dismiss\",onClick:e?.onDismiss},{id:\"thumbs_up\",label:\"Thumbs Up\",icon:\"thumbsup\",iconOnly:!0,position:\"right\",togglable:!0,pressed:e?.thumbsState===\"up\",pressedClass:\"bugbot-thumbs-up-pressed\",onClick:e?.onThumbsUp},{id:\"thumbs_down\",label:\"Thumbs Down\",icon:\"thumbsdown\",iconOnly:!0,position:\"right\",togglable:!0,pressed:e?.thumbsState===\"down\",pressedClass:\"bugbot-thumbs-down-pressed\",onClick:e?.onThumbsDown}]",
+    "target": "t=[{id:\"fix_in_chat\",label:\"使用智能体修复\",onClick:e?.onFixInChat},{id:\"dismiss\",label:\"忽略\",onClick:e?.onDismiss},{id:\"thumbs_up\",label:\"赞\",icon:\"thumbsup\",iconOnly:!0,position:\"right\",togglable:!0,pressed:e?.thumbsState===\"up\",pressedClass:\"bugbot-thumbs-up-pressed\",onClick:e?.onThumbsUp},{id:\"thumbs_down\",label:\"踩\",icon:\"thumbsdown\",iconOnly:!0,position:\"right\",togglable:!0,pressed:e?.thumbsState===\"down\",pressedClass:\"bugbot-thumbs-down-pressed\",onClick:e?.onThumbsDown}]"
+  },
+  {
+    "id": "workbench.T6d.plugins-skills-mcps-subagents-commands",
+    "source": "T6d=[{id:\"plugins\",label:\"Plugins\"},{id:\"skills\",label:\"Skills\"},{id:\"tools\",label:\"MCPs\"},{id:\"subagents\",label:\"Subagents\"},{id:\"commands\",label:\"Commands\"}]",
+    "target": "T6d=[{id:\"plugins\",label:\"插件\"},{id:\"skills\",label:\"技能\"},{id:\"tools\",label:\"MCP\"},{id:\"subagents\",label:\"子智能体\"},{id:\"commands\",label:\"命令\"}]"
+  },
+  {
+    "id": "workbench.te.files-changed-outside-of-conversations",
+    "source": "te=me(()=>{const st=a(),Tt=re();if(st.length===0)return null;const wt=new Set;for(const sn of Tt)for(const Tn of sn.resources){const rn=Tn.goToFileUri?.path||Tn.modifiedUri?.path||Tn.originalUri?.path||\"\";if(rn){const bn=rn.replace(/^\\//,\"\").replace(/\\\\/g,\"/\");wt.add(bn)}}const un=[];for(const sn of st){const Tn=sn.goToFileUri?.path||sn.modifiedUri?.path||sn.originalUri?.path||\"\";if(Tn){const rn=Tn.replace(/^\\//,\"\").replace(/\\\\/g,\"/\");Array.from(wt).some(Zt=>rn===Zt||rn.endsWith(Zt)||Zt.endsWith(rn))||un.push(sn)}}return un.length===0?null:{title:\"Files changed outside of conversations\",description:void 0,resources:un}}",
+    "target": "te=me(()=>{const st=a(),Tt=re();if(st.length===0)return null;const wt=new Set;for(const sn of Tt)for(const Tn of sn.resources){const rn=Tn.goToFileUri?.path||Tn.modifiedUri?.path||Tn.originalUri?.path||\"\";if(rn){const bn=rn.replace(/^\\//,\"\").replace(/\\\\/g,\"/\");wt.add(bn)}}const un=[];for(const sn of st){const Tn=sn.goToFileUri?.path||sn.modifiedUri?.path||sn.originalUri?.path||\"\";if(Tn){const rn=Tn.replace(/^\\//,\"\").replace(/\\\\/g,\"/\");Array.from(wt).some(Zt=>rn===Zt||rn.endsWith(Zt)||Zt.endsWith(rn))||un.push(sn)}}return un.length===0?null:{title:\"对话外更改的文件\",description:void 0,resources:un}})"
+  },
+  {
+    "id": "workbench.Te.unlock-3x-more-usage-on-agent-more",
+    "source": "Te=me(()=>{const Ue=e.nextUpgrade();if(Ue)return{tier:Ue.tier,name:Ue.name,amount:Ue.amount,price:Ue.price,description:Ue.description};switch(i()){case Ls.FREE:case Ls.FREE_TRIAL:case Ls.PRO:return{tier:\"pro_plus\",name:\"Get Pro+\",amount:70,price:\"$60/mo\",description:\"Unlock 3x more usage on Agent & more\"};case Ls.PRO_PLUS:return{tier:\"ultra\",name:\"Get Ultra\",amount:400,price:\"$200/mo\",description:\"\"};default:return null}}",
+    "target": "Te=me(()=>{const Ue=e.nextUpgrade();if(Ue)return{tier:Ue.tier,name:Ue.name,amount:Ue.amount,price:Ue.price,description:Ue.description};switch(i()){case Ls.FREE:case Ls.FREE_TRIAL:case Ls.PRO:return{tier:\"pro_plus\",name:\"Get Pro+\",amount:70,price:\"$60/mo\",description:\"解锁 3 倍智能体用量及更多权益\"};case Ls.PRO_PLUS:return{tier:\"ultra\",name:\"Get Ultra\",amount:400,price:\"$200/mo\",description:\"\"};default:return null}})"
+  },
+  {
+    "id": "workbench.Ut.ask-every-time-run-everything",
+    "source": "Ut=oi=>{switch(oi){case\"ask_every_time\":return\"Ask Every Time\";case\"use_allowlist\":return bn()?\"Run in Sandbox\":\"Allowlist\";case\"smart_auto\":return bn()?\"Auto-review (with Sandbox)\":\"Auto-review\";case\"run_everything\":return\"Run Everything\"}}",
+    "target": "Ut=oi=>{switch(oi){case\"ask_every_time\":return\"每次都询问\";case\"use_allowlist\":return bn()?\"在沙箱中运行\":\"允许列表\";case\"smart_auto\":return bn()?\"自动审查（使用沙箱）\":\"自动审查\";case\"run_everything\":return\"运行所有内容\"}}"
+  },
+  {
+    "id": "workbench.nph.my-task-task-definition-file",
+    "source": "var nph={id:w4r,description:\"Task definition file\",type:\"object\",allowTrailingCommas:!0,allowComments:!0,default:{version:\"2.0.0\",tasks:[{label:\"My Task\",command:\"echo hello\",type:\"shell\",args:[],problemMatcher:[\"$tsc\"],presentation:{reveal:\"always\"},group:\"build\"}]}}",
+    "target": "var nph={id:w4r,description:\"任务定义文件\",type:\"object\",allowTrailingCommas:!0,allowComments:!0,default:{version:\"2.0.0\",tasks:[{label:\"我的任务\",command:\"echo hello\",type:\"shell\",args:[],problemMatcher:[\"$tsc\"],presentation:{reveal:\"always\"},group:\"build\"}]}}"
+  },
+  {
+    "id": "workbench.W.no-pr-data-available",
+    "source": "W=me(()=>{const j=n.prData,Z=v();if(!j)return\"No PR data available\";const Q=Z?j.author===Z:!1;return Fdk(j,Q)}",
+    "target": "W=me(()=>{const j=n.prData,Z=v();if(!j)return\"暂无 PR 数据\";const Q=Z?j.author===Z:!1;return Fdk(j,Q)})"
+  },
+  {
+    "id": "workbench.W.all-user",
+    "source": "W=me(()=>{if(!e){const K=[{id:yD,label:\"All\"},{id:vX,label:\"User\"}];return a()&&K.push({id:vDe,label:a()}),[...K,{id:nCe,label:m()}]}return[{id:vX,label:\"User\"},...v().map(K=>({id:K.id,label:K.label})),{id:nCe,label:m()}]}",
+    "target": "W=me(()=>{if(!e){const K=[{id:yD,label:\"全部\"},{id:vX,label:\"用户\"}];return a()&&K.push({id:vDe,label:a()}),[...K,{id:nCe,label:m()}]}return[{id:vX,label:\"用户\"},...v().map(K=>({id:K.id,label:K.label})),{id:nCe,label:m()}]})"
+  },
+  {
+    "id": "workbench.W.always-ask-always-run",
+    "source": "W=re=>{switch(re){case\"alwaysAsk\":return\"Always ask\";case\"alwaysRun\":return\"Always run\";default:return re}}",
+    "target": "W=re=>{switch(re){case\"alwaysAsk\":return\"始终询问\";case\"alwaysRun\":return\"始终运行\";default:return re}}"
+  },
+  {
+    "id": "workbench.We.undo-apply-keep-apply",
+    "source": "We=me(()=>{const et=[];return oe()?re()&&et.push({id:\"undo-action\",title:\"Undo Apply\",isDisabled:Te(),hintText:_e(),onClick:async()=>{const Ue=s();await e.composerService.undoAllAppliedChanges(Ue),Ze()}}):ae()&&et.push({id:\"undo-action\",title:re()?\"Undo Apply\":\"Undo\",isDisabled:Te(),hintText:re()?_e():void 0,onClick:async()=>{const Ue=s(),Qe=e.composerDataService.getComposerData(i());if(Qe?.applied&&Qe?.appliedDiffs&&Qe.appliedDiffs.length>0){await e.composerService.undoAllAppliedChanges(Ue);return}n.onRejectAllOverrideClick?n.onRejectAllOverrideClick():t.rejectAll(Ue),Ze()}}),se()&&et.push({id:\"keep-action\",title:\"Keep\",isDisabled:we(),hintText:\"Accept all changes\",onClick:async()=>{const Ue=s();Ze(),await t.acceptAll(Ue),await L2e(e,\"composer\")}}),ge()&&et.push({id:\"apply-action\",title:\"Apply\",isDisabled:we(),hintText:\"Apply changes to the main working directory\",onClick:async()=>{const Ue=s();await e.composerService.applyWorktreeToCurrentBranch(Ue),Ze()}}),et.length===0?[]:[{type:\"items\",items:et}]}",
+    "target": "We=me(()=>{const et=[];return oe()?re()&&et.push({id:\"undo-action\",title:\"撤销应用\",isDisabled:Te(),hintText:_e(),onClick:async()=>{const Ue=s();await e.composerService.undoAllAppliedChanges(Ue),Ze()}}):ae()&&et.push({id:\"undo-action\",title:re()?\"撤销应用\":\"撤销\",isDisabled:Te(),hintText:re()?_e():void 0,onClick:async()=>{const Ue=s(),Qe=e.composerDataService.getComposerData(i());if(Qe?.applied&&Qe?.appliedDiffs&&Qe.appliedDiffs.length>0){await e.composerService.undoAllAppliedChanges(Ue);return}n.onRejectAllOverrideClick?n.onRejectAllOverrideClick():t.rejectAll(Ue),Ze()}}),se()&&et.push({id:\"keep-action\",title:\"保留\",isDisabled:we(),hintText:\"接受所有更改\",onClick:async()=>{const Ue=s();Ze(),await t.acceptAll(Ue),await L2e(e,\"composer\")}}),ge()&&et.push({id:\"apply-action\",title:\"应用\",isDisabled:we(),hintText:\"将更改应用到主工作目录\",onClick:async()=>{const Ue=s();await e.composerService.applyWorktreeToCurrentBranch(Ue),Ze()}}),et.length===0?[]:[{type:\"items\",items:et}]})"
+  },
+  {
+    "id": "workbench.we.switching-models-is-unavailable-in-this-conversa",
+    "source": "we=me(()=>{if(c())return\"Switching models is unavailable in this conversation. Start a new conversation to use a different model.\";const Qe=ge(),Ye=ve(),bt=ke();let Rt=\"Switch Model\";return Qe&&(Rt+=` (${Qe})`),bt&&Ye&&(Rt+=` \\xB7 Cycle ${bt} (${Ye})`),Rt}",
+    "target": "we=me(()=>{if(c())return\"此对话中无法切换模型。请开始新对话以使用不同模型。\";const Qe=ge(),Ye=ve(),bt=ke();let Rt=\"切换模型\";return Qe&&(Rt+=` (${Qe})`),bt&&Ye&&(Rt+=` · 轮次 ${bt} (${Ye})`),Rt})"
+  },
+  {
+    "id": "workbench.Wn.sandbox-only-fetches-from-domains-in-your-allowl",
+    "source": "Wn=me(()=>{if(n.toolType===\"web_fetch\")return\"Sandbox: only fetches from domains in your allowlist\";const oi=n.sandboxPolicy;if(oi?.unrestricted)return\"No sandbox: full filesystem and network access.\";const rr=oi?.networkAccess===!0,Vr=[];rr&&Vr.push(\"network access\");const is=\"Sandbox: read-only filesystem access, workspace write access\";return Vr.length===0?`${is}. No network access.`:`${is}. Allows ${Vr.join(\" + \")}.`}",
+    "target": "Wn=me(()=>{if(n.toolType===\"web_fetch\")return\"沙箱：仅从你允许列表中的域名获取\";const oi=n.sandboxPolicy;if(oi?.unrestricted)return\"无沙箱：完整的文件系统和网络访问。\";const rr=oi?.networkAccess===!0,Vr=[];rr&&Vr.push(\"网络访问\");const is=\"沙箱：只读文件系统访问，工作区可写\";return Vr.length===0?`${is}。无网络访问。`:`${is}。允许 ${Vr.join(\" + \")}。`})"
+  },
+  {
+    "id": "workbench.x0.you-re-out-of-usage-continue-chatting-in-cursor-",
+    "source": "x0=me(()=>{if(Ni())return\"You're out of usage\";if(n.placeholder)return n.placeholder;if(wt()?.header?.source===\"claude-code\")return\"Continue chatting in Cursor\";const Oi=lS();if(Oi&&g()!==!1&&!F())return Oi;const ys=C();if(ys.editingQueueItemId)return\"Editing queued message...\";if(Gc())return\"Add more optional details\";if(gd()){const qs=D5y();if(qs&&qs.composerId===ys.composerId){if(qs.button===\"proceed\")return e.experimentService.getDynamicConfigParam(\"debug_mode_ui_instructions_config\",\"proceed_instructions\",{disableExposureLog:!1})??\"Issue reproduced, please proceed\";if(qs.button===\"markFixed\")return e.experimentService.getDynamicConfigParam(\"debug_mode_ui_instructions_config\",\"mark_fixed_instructions\",{disableExposureLog:!1})??\"The issue has been fixed. Please clean up the instrumentation.\"}return\"Enter additional context about the issue\"}if(ms().filter(qs=>qs.clientSideTool!==lt.ASK_QUESTION).length>0)return\"Reject, suggest, follow up?\";if(_a()&&ys.applied===!0&&ys.reservedWorktree)return\"Continue locally\";if(fa()&&_a())return\"Ask follow-ups in the worktree\";if(we())return\"Add a follow-up\";if(o())return\"Plan, Build, / for skills, @ for context\";switch(ve()){case\"chat\":return\"Ask, learn, brainstorm\";case\"edit\":return\"Work on explicitly added files (no tools)\";case\"background\":return auk;case\"agent\":default:return\"Plan, search, build anything\"}}",
+    "target": "x0=me(()=>{if(Ni())return\"你的用量已用尽\";if(n.placeholder)return n.placeholder;if(wt()?.header?.source===\"claude-code\")return\"在 Cursor 中继续聊天\";const Oi=lS();if(Oi&&g()!==!1&&!F())return Oi;const ys=C();if(ys.editingQueueItemId)return\"正在编辑排队消息...\";if(Gc())return\"添加更多可选详情\";if(gd()){const qs=D5y();if(qs&&qs.composerId===ys.composerId){if(qs.button===\"proceed\")return e.experimentService.getDynamicConfigParam(\"debug_mode_ui_instructions_config\",\"proceed_instructions\",{disableExposureLog:!1})??\"问题已复现，请继续\";if(qs.button===\"markFixed\")return e.experimentService.getDynamicConfigParam(\"debug_mode_ui_instructions_config\",\"mark_fixed_instructions\",{disableExposureLog:!1})??\"问题已修复。请清理检测代码。\"}return\"输入有关该问题的更多上下文\"}if(ms().filter(qs=>qs.clientSideTool!==lt.ASK_QUESTION).length>0)return\"拒绝、建议还是继续追问？\";if(_a()&&ys.applied===!0&&ys.reservedWorktree)return\"在本地继续\";if(fa()&&_a())return\"在工作树中继续追问\";if(we())return\"添加后续消息\";if(o())return\"规划、构建，/ 使用技能，@ 添加上下文\";switch(ve()){case\"chat\":return\"提问、学习、头脑风暴\";case\"edit\":return\"处理明确添加的文件（无工具）\";case\"background\":return auk;case\"agent\":default:return\"规划、搜索、构建任何内容\"}})"
+  },
+  {
+    "id": "workbench.xnc.plugins-mcps-skills-subagents-rules-commands-hoo",
+    "source": "xnc=[{id:\"plugins\",label:\"Plugins\"},{id:\"mcps\",label:\"MCPs\"},{id:\"skills\",label:\"Skills\"},{id:\"agents\",label:\"Subagents\"},{id:\"rules\",label:\"Rules\"},{id:\"commands\",label:\"Commands\"},{id:\"hooks\",label:\"Hooks\"}]",
+    "target": "xnc=[{id:\"plugins\",label:\"插件\"},{id:\"mcps\",label:\"MCP\"},{id:\"skills\",label:\"技能\"},{id:\"agents\",label:\"子智能体\"},{id:\"rules\",label:\"规则\"},{id:\"commands\",label:\"命令\"},{id:\"hooks\",label:\"钩子\"}]"
+  },
+  {
+    "id": "workbench.y.connecting",
+    "source": "y=me(()=>{switch(i().kind){case\"idle\":return;case\"opening\":return\"Connecting...\";case\"waiting\":return l()?.phase===\"checking\"?\"Exchanging token...\":\"Waiting for callback...\"}}",
+    "target": "y=me(()=>{switch(i().kind){case\"idle\":return;case\"opening\":return\"正在连接...\";case\"waiting\":return l()?.phase===\"checking\"?\"正在交换令牌...\":\"等待回调...\"}})"
+  },
+  {
+    "id": "workbench.YUg.files-folders-agent-stores-past-chats",
+    "source": "YUg=[{id:\"files-and-folders\",label:\"Files & Folders\",mode:\"files_and_folders\",iconName:\"folder\"},{id:\"agent-stores\",label:\"Agent Stores\",mode:\"agent_stores\",iconName:\"folder\"},{id:\"past-chats\",label:\"Past Chats\",mode:\"past_chats\",iconName:\"comment\"}]",
+    "target": "YUg=[{id:\"files-and-folders\",label:\"文件和文件夹\",mode:\"files_and_folders\",iconName:\"folder\"},{id:\"agent-stores\",label:\"智能体存储\",mode:\"agent_stores\",iconName:\"folder\"},{id:\"past-chats\",label:\"历史聊天\",mode:\"past_chats\",iconName:\"comment\"}]"
+  },
+  {
+    "id": "workbench.Z.no-branches",
+    "source": "Z=me(()=>{const _e=S();return _e.length===0?[{id:\"no-branches\",title:\"No branches\",isDisabled:!0}]:_e.map(xe=>({id:`branch-${xe}`,title:xe,showType:v()===xe?\"check\":void 0,onClick:()=>{n.isRunning||(y(xe),a())},isDisabled:n.isRunning,closeMenuOnClick:!0}))}",
+    "target": "Z=me(()=>{const _e=S();return _e.length===0?[{id:\"no-branches\",title:\"没有分支\",isDisabled:!0}]:_e.map(xe=>({id:`branch-${xe}`,title:xe,showType:v()===xe?\"check\":void 0,onClick:()=>{n.isRunning||(y(xe),a())},isDisabled:n.isRunning,closeMenuOnClick:!0}))})"
+  },
+  {
+    "id": "workbench.Z.plan",
+    "source": "Z=me(()=>{const st=O();if(st){const Tt=st.path,wt=Tt.lastIndexOf(\"/\");return Tt.substring(wt+1)}return\"Plan\"}",
+    "target": "Z=me(()=>{const st=O();if(st){const Tt=st.path,wt=Tt.lastIndexOf(\"/\");return Tt.substring(wt+1)}return\"规划\"})"
+  },
+  {
+    "id": "workbench.mcp.security-warning-html",
+    "source": "$qC=Re(\"<div class=mcp-security-warning role=alert>Installing an MCP server will execute commands with the same privileges as your user. Only proceed if you fully trust the server source and understand the implications.\")",
+    "target": "$qC=Re(\"<div class=mcp-security-warning role=alert>安装 MCP 服务器将以与你用户相同的权限执行命令。仅在你完全信任服务器来源并了解相关风险时才继续。\")"
+  },
+  {
+    "id": "settings.auto-run.denylist-deprecated-html",
+    "source": "A4C=Re(\"<div>\\u26A0\\uFE0F <strong>Deprecated Feature:</strong> The command denylist is often bypassable, providing a false sense of security. Consider using the allowlist approach instead for better security.\")",
+    "target": "A4C=Re(\"<div>\\u26A0\\uFE0F <strong>已弃用功能：</strong> 命令拒绝列表通常可被绕过，会给人虚假的安全感。建议改用允许列表以提高安全性。\")"
+  },
+  {
+    "id": "workbench.indexing.and-more-html",
+    "source": "AqS=Re(\"<div>And <!> more...\")",
+    "target": "AqS=Re(\"<div>还有 <!> 项…\")"
+  },
+  {
+    "id": "settings.privacy.more-options-html",
+    "source": "b5C=Re(\"<div><span>More Options</span><span>\")",
+    "target": "b5C=Re(\"<div><span>更多选项</span><span>\")"
+  },
+  {
+    "id": "settings.billing.cursor-pro-benefits-html",
+    "source": "C$C=Re(\"<div class=error__content_subtitle>Cursor Pro comes with other benefits too, such as unlimited Cursor Tab requests and access to all the latest models (see <a href=https://cursor.com/pricing target=_blank>cursor.com/pricing</a> for more details).\")",
+    "target": "C$C=Re(\"<div class=error__content_subtitle>Cursor Pro 还包含其他权益，例如无限的 Cursor Tab 请求以及访问所有最新模型（详见 <a href=https://cursor.com/pricing target=_blank>cursor.com/pricing</a>）。\")"
+  },
+  {
+    "id": "settings.beta.release-track-policy-html-v2",
+    "source": "D2C=Re(\"<span>Update Access is managed by internal release-track policy.\")",
+    "target": "D2C=Re(\"<span>更新通道受内部 release-track 策略管理。\")"
+  },
+  {
+    "id": "workbench.mcp.allowlist.accept-html",
+    "source": "DDk=Re(\"<span>Accept\")",
+    "target": "DDk=Re(\"<span>接受\")"
+  },
+  {
+    "id": "settings.models.openai.using-key-html",
+    "source": "E$C=Re(\"<span class=openai-switch-text>Using key\")",
+    "target": "E$C=Re(\"<span class=openai-switch-text>正在使用密钥\")"
+  },
+  {
+    "id": "settings.extension.signature-verification-html",
+    "source": "E5C=Re(\"<div>Extension signature verification is only available with the OpenVSX or Cursor marketplace. Your current marketplace does not support this feature.\")",
+    "target": "E5C=Re(\"<div>扩展签名验证仅在使用 OpenVSX 或 Cursor 应用市场时可用。你当前的应用市场不支持此功能。\")"
+  },
+  {
+    "id": "settings.models.google.subscription-note-html-v2",
+    "source": "e6C=Re(\"<div>With your Cursor <!>subscription, you do not need to use your own Google key!\")",
+    "target": "e6C=Re(\"<div>使用你的 Cursor <!>订阅时，无需使用你自己的 Google 密钥！\")"
+  },
+  {
+    "id": "workbench.mcp.detail-type-label-html",
+    "source": "GqC=Re(\"<div><span class=mcp-detail-label>Type:</span><input type=text class=mcp-editable-input value=stdio disabled>\")",
+    "target": "GqC=Re(\"<div><span class=mcp-detail-label>类型：</span><input type=text class=mcp-editable-input value=stdio disabled>\")"
+  },
+  {
+    "id": "settings.models.openai.not-using-key-html",
+    "source": "I$C=Re(\"<span class=openai-switch-text>Not using key\")",
+    "target": "I$C=Re(\"<span class=openai-switch-text>未使用密钥\")"
+  },
+  {
+    "id": "settings.models.anthropic.link-text-html-v2",
+    "source": "i6C=Re(\"<span>your Anthropic key\")",
+    "target": "i6C=Re(\"<span>你的 Anthropic 密钥\")"
+  },
+  {
+    "id": "settings.rules.loading-skills-html",
+    "source": "i8C=Re(\"<div>Loading Skills...\")",
+    "target": "i8C=Re(\"<div>正在加载技能…\")"
+  },
+  {
+    "id": "settings.search.no-results-html",
+    "source": "J8C=Re(\"<div>No results found.\")",
+    "target": "J8C=Re(\"<div>未找到结果。\")"
+  },
+  {
+    "id": "settings.import.vscode-confirm-html",
+    "source": "k5C=Re(\"<div>Are you sure? This replaces your settings and extensions with your vscode ones. This cannot be undone.\")",
+    "target": "k5C=Re(\"<div>确定要继续吗？这将用你的 VS Code 设置和扩展替换当前配置，且无法撤销。\")"
+  },
+  {
+    "id": "settings.rules.show-all-more-html",
+    "source": "Kru=Re(\"<button class=show-all-rules-button>Show all (<!> more)\")",
+    "target": "Kru=Re(\"<button class=show-all-rules-button>显示全部（还有 <!> 项）\")"
+  },
+  {
+    "id": "settings.beta.statsig-config-link-html-v2",
+    "source": "L2C=Re(\"<a class=settings-beta-release-track-policy-link target=_blank>Open Statsig config\")",
+    "target": "L2C=Re(\"<a class=settings-beta-release-track-policy-link target=_blank>打开 Statsig 配置\")"
+  },
+  {
+    "id": "settings.beta.auto-update-warning-html",
+    "source": "N2C=Re(\"<div><div>\\u26A0\\uFE0F Warning: Updates Apply Automatically</div><div class=cursor-settings-cell-description>This track will silently download and install updates without prompting whenever Cursor is closed.\")",
+    "target": "N2C=Re(\"<div><div>\\u26A0\\uFE0F 警告：更新将自动应用</div><div class=cursor-settings-cell-description>此通道会在 Cursor 关闭时静默下载并安装更新，无需提示。\")"
+  },
+  {
+    "id": "settings.models.anthropic.subscription-note-html-v2",
+    "source": "n6C=Re(\"<div>With your Cursor <!>subscription, you do not need to use your own Anthropic key!\")",
+    "target": "n6C=Re(\"<div>使用你的 Cursor <!>订阅时，无需使用你自己的 Anthropic 密钥！\")"
+  },
+  {
+    "id": "settings.rules.loading-rules-html",
+    "source": "n8C=Re(\"<div>Loading Rules...\")",
+    "target": "n8C=Re(\"<div>正在加载规则…\")"
+  },
+  {
+    "id": "settings.sidebar.upgrade-to-pro-html",
+    "source": "p2C=Re(\"<span class=cursor-settings-sidebar-cell-label>Upgrade to Pro\")",
+    "target": "p2C=Re(\"<span class=cursor-settings-sidebar-cell-label>升级至 Pro\")"
+  },
+  {
+    "id": "workbench.mcp.allowlist.allow-html",
+    "source": "PDk=Re(\"<span>Allow \")",
+    "target": "PDk=Re(\"<span>允许 \")"
+  },
+  {
+    "id": "settings.rules.show-less-html",
+    "source": "Qru=Re(\"<button class=show-all-rules-button>Show less\")",
+    "target": "Qru=Re(\"<button class=show-all-rules-button>收起\")"
+  },
+  {
+    "id": "settings.models.bedrock.team-configured-note-html-v2",
+    "source": "r6C=Re(\"<div>Your team has configured AWS Bedrock access. You can use your teams Bedrock instance without any additional configuration.\")",
+    "target": "r6C=Re(\"<div>你的团队已配置 AWS Bedrock 访问。无需额外配置即可使用团队的 Bedrock 实例。\")"
+  },
+  {
+    "id": "settings.rules.loading-subagents-html",
+    "source": "r8C=Re(\"<div>Loading Subagents...\")",
+    "target": "r8C=Re(\"<div>正在加载子智能体…\")"
+  },
+  {
+    "id": "settings.rules.loading-commands-html",
+    "source": "s8C=Re(\"<div>Loading Commands...\")",
+    "target": "s8C=Re(\"<div>正在加载命令…\")"
+  },
+  {
+    "id": "settings.mcp.new-server-item-html",
+    "source": "sUC=Re(\"<div class=mcp-server-item-container><div class=cursor-settings-cell-divider></div><div class=mcp-server-item><div class=mcp-server-item-main-content><div class=mcp-server-item-main-content-name>New MCP Server</div><div class=mcp-server-item-subtext>Add a Custom MCP Server\")",
+    "target": "sUC=Re(\"<div class=mcp-server-item-container><div class=cursor-settings-cell-divider></div><div class=mcp-server-item><div class=mcp-server-item-main-content><div class=mcp-server-item-main-content-name>新建 MCP 服务器</div><div class=mcp-server-item-subtext>添加自定义 MCP 服务器\")"
+  },
+  {
+    "id": "settings.models.invalid-api-key-html",
+    "source": "T$C=Re(\"<div class=cursor-settings-error-message>Invalid API Key. Please try again.\")",
+    "target": "T$C=Re(\"<div class=cursor-settings-error-message>API 密钥无效，请重试。\")"
+  },
+  {
+    "id": "settings.models.google.link-text-html-v2",
+    "source": "t6C=Re(\"<span>your Google AI Studio key\")",
+    "target": "t6C=Re(\"<span>你的 Google AI Studio 密钥\")"
+  },
+  {
+    "id": "settings.privacy.data-sharing-paused-html",
+    "source": "u5C=Re(\"<div><span><strong>Data Sharing is paused for your first day of usage.</strong> Sharing will activate in <!> hour<!>.\")",
+    "target": "u5C=Re(\"<div><span><strong>数据共享在首日使用期间暂停。</strong> 共享将在 <!> 小时<!>后启用。\")"
+  },
+  {
+    "id": "settings.sidebar.unified-settings-banner-html",
+    "source": "z8C=Re(\"<span>Settings are now unified. You can find built-in settings for VS Code in the sidebar or by pressing \")",
+    "target": "z8C=Re(\"<span>设置现已统一。你可以在侧边栏找到 VS Code 内置设置，或按 \")"
   }
 ]
