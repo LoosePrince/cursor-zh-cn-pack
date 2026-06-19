@@ -513,7 +513,8 @@
     "T$C=Re(",
     "t6C=Re(",
     "u5C=Re(",
-    "z8C=Re("
+    "z8C=Re(",
+    "e?.dontShowPrompt&&e.commit===this.productService.commit"
   ],
   "guardedRuntimeNeedles": [
     "globalStorage",

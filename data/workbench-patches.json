@@ -4208,5 +4208,11 @@
     "id": "settings.sidebar.unified-settings-banner-html",
     "source": "z8C=Re(\"<span>Settings are now unified. You can find built-in settings for VS Code in the sidebar or by pressing \")",
     "target": "z8C=Re(\"<span>设置现已统一。你可以在侧边栏找到 VS Code 内置设置，或按 \")"
+  },
+  {
+    "id": "workbench.integrity.suppress-corrupt-prompt",
+    "source": "e?.dontShowPrompt&&e.commit===this.productService.commit||this._showNotification()}async _isExplainedByPendingUpdate()",
+    "target": "e?.dontShowPrompt&&e.commit===this.productService.commit||void 0}async _isExplainedByPendingUpdate()",
+    "note": "汉化补丁会触发完整性校验失败；跳过 corrupt 安装提示，避免误导用户重装"
   }
 ]

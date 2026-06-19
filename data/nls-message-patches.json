@@ -96,5 +96,26 @@
     "key": "moreActions",
     "source": "More Actions",
     "target": "更多操作"
+  },
+  {
+    "id": "integrity.prompt",
+    "module": "vs/workbench/services/integrity/electron-sandbox/integrityService",
+    "key": "integrity.prompt",
+    "source": "Your {0} installation appears to be corrupt. Please reinstall.",
+    "target": "您的 {0} 安装文件已被汉化修改，可安全忽略本提示。如遇异常，请在汉化管理器中恢复备份或重新安装 Cursor，数据不会丢失。"
+  },
+  {
+    "id": "integrity.more-information",
+    "module": "vs/workbench/services/integrity/electron-sandbox/integrityService",
+    "key": "integrity.moreInformation",
+    "source": "More Information",
+    "target": "了解更多"
+  },
+  {
+    "id": "integrity.dont-show-again",
+    "module": "vs/workbench/services/integrity/electron-sandbox/integrityService",
+    "key": "integrity.dontShowAgain",
+    "source": "Don't Show Again",
+    "target": "不再显示"
   }
 ]
