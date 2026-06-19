@@ -135,7 +135,9 @@ export class ManagerPanel {
           break;
       }
     } catch (error) {
-      this.log(error instanceof Error ? error.message : String(error));
+      const message = error instanceof Error ? error.message : String(error);
+      this.log(message);
+      void vscode.window.showErrorMessage(message);
       this.render();
     }
   }

@@ -522,6 +522,6 @@
     "Storage Error",
     "Cursor was unable to open local storage"
   ],
-  "maxRuntimePatchRuleHits": 600,
-  "maxRuntimePatchChangedLines": 420
+  "maxRuntimePatchRuleHits": 1200,
+  "maxRuntimePatchChangedLines": 900
 }

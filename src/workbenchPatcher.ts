@@ -5,9 +5,19 @@ import * as vscode from 'vscode';
 import { CursorInstall, validateCursorRoot } from './cursorLocator';
 import { loadWorkbenchPatchData, WorkbenchPatchRule, WorkbenchPatchRuntimePolicy } from './patchMap';
 import { createScopedProgress, ProgressCallback, reportProgress, toPercent, yieldToEventLoop } from './progress';
+import { assertBraceBalanceUnchanged, measureBraceBalance } from './braceBalance';
+import { countOccurrences, replaceAllWithCount } from './stringPatchUtils';
 
 const metadataKey = 'cursorZhCn.workbenchPatchMetadata';
 const backupFilePrefix = 'workbench.desktop.main.js.cursor-zh-cn-pack.';
+
+interface RuleScanCacheEntry {
+  readonly contentHash: string;
+  readonly ruleFingerprint: string;
+  readonly statuses: readonly PatchRuleStatus[];
+}
+
+let cachedRuleScan: RuleScanCacheEntry | undefined;
 
 export type PatchState = 'not-applied' | 'applied' | 'partial' | 'unknown';
 export type PatchBackupKind = 'original' | 'before-restore' | 'before-uninstall' | 'unknown';
@@ -98,7 +108,14 @@ export async function scanWorkbenchPatch(root: string, context: vscode.Extension
   }
 
   const patchData = await loadWorkbenchPatchData(createScopedProgress(progress, 15, 35, '加载补丁数据'));
-  const result = await scanInstallPatch(install, context, patchData.rules, createScopedProgress(progress, 35, 99, '扫描补丁状态'));
+  const result = await scanInstallPatch(
+    install,
+    context,
+    patchData.rules,
+    createScopedProgress(progress, 35, 99, '扫描补丁状态'),
+    undefined,
+    { scanBackupRuleStatus: false }
+  );
   await reportProgress(progress, {
     message: `扫描完成，命中 ${result.matchedRules}/${result.totalRules} 条规则`,
     percent: 100,
@@ -115,7 +132,16 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
   }
 
   const patchData = await loadWorkbenchPatchData(createScopedProgress(progress, 5, 15, '加载补丁数据'));
-  const before = await scanInstallPatch(install, context, patchData.rules, createScopedProgress(progress, 15, 35, '扫描当前状态'));
+  await reportProgress(progress, { message: '读取 workbench 文件', percent: 18 });
+  const originalContent = await fs.readFile(install.workbenchPath, 'utf8');
+  const before = await scanInstallPatch(
+    install,
+    context,
+    patchData.rules,
+    createScopedProgress(progress, 20, 35, '扫描当前状态'),
+    originalContent,
+    { scanBackupRuleStatus: false }
+  );
   if (before.state === 'applied') {
     await reportProgress(progress, {
       message: '补丁已处于应用状态',
@@ -137,8 +163,6 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
     throw new Error('当前 workbench 文件中没有命中可补丁的英文源文案，也没有命中已补丁中文文案。请确认 Cursor 版本是否已变化。');
   }
 
-  await reportProgress(progress, { message: '读取 workbench 文件', percent: 38 });
-  const originalContent = await fs.readFile(install.workbenchPath, 'utf8');
   const originalHash = sha256(originalContent);
 
   await reportProgress(progress, { message: '创建或复用原始备份', percent: 42 });
@@ -150,16 +174,14 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
 
   for (let index = 0; index < rules.length; index += 1) {
     const rule = rules[index];
-    const occurrences = countOccurrences(patchedContent, rule.source);
-    if (occurrences > 0) {
-      const braceBalanceBefore = measureBraceBalance(patchedContent);
-      patchedContent = replaceAll(patchedContent, rule.source, rule.target);
-      assertBraceBalanceUnchanged(braceBalanceBefore, measureBraceBalance(patchedContent), rule.id);
-      appliedOccurrences += occurrences;
+    const replacement = replaceAllWithCount(patchedContent, rule.source, rule.target);
+    if (replacement.count > 0) {
+      patchedContent = replacement.value;
+      appliedOccurrences += replacement.count;
       appliedRuleIds.push(rule.id);
     }
 
-    if ((index + 1) % 10 === 0 || index + 1 === rules.length) {
+    if (shouldYieldPatchProgress(index + 1, rules.length, progress)) {
       await reportProgress(progress, {
         message: `应用补丁规则 ${index + 1}/${rules.length}`,
         percent: 45 + toPercent(index + 1, rules.length) * 0.3,
@@ -171,7 +193,14 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
   }
 
   if (patchedContent === originalContent) {
-    const after = await scanInstallPatch(install, context, rules, createScopedProgress(progress, 80, 99, '复扫补丁状态'));
+    const after = await scanInstallPatch(
+      install,
+      context,
+      rules,
+      createScopedProgress(progress, 80, 99, '复扫补丁状态'),
+      patchedContent,
+      { scanBackupRuleStatus: false }
+    );
     await reportProgress(progress, {
       message: '补丁未写入：没有需要替换的内容',
       percent: 100,
@@ -188,7 +217,15 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
     };
   }
 
-  await assertRuntimePatchIsSafe(originalContent, patchedContent, appliedRuleIds, appliedOccurrences, patchData.runtimePolicy, createScopedProgress(progress, 76, 84, '校验运行时安全'));
+  await assertRuntimePatchIsSafe(
+    originalContent,
+    patchedContent,
+    appliedRuleIds,
+    appliedOccurrences,
+    patchData.runtimePolicy,
+    rules.length,
+    createScopedProgress(progress, 76, 84, '校验运行时安全')
+  );
 
   await reportProgress(progress, { message: '写入补丁文件', percent: 86, current: rules.length, total: rules.length });
   await fs.writeFile(install.workbenchPath, patchedContent, 'utf8');
@@ -207,9 +244,16 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
   await reportProgress(progress, { message: '保存补丁元数据', percent: 90, current: rules.length, total: rules.length });
   await context.globalState.update(metadataKey, metadata);
 
-  const after = await scanInstallPatch(install, context, rules, createScopedProgress(progress, 92, 99, '复扫补丁状态'));
+  const after = await scanInstallPatch(
+    install,
+    context,
+    rules,
+    createScopedProgress(progress, 92, 99, '复扫补丁状态'),
+    patchedContent,
+    { scanBackupRuleStatus: false }
+  );
   await reportProgress(progress, {
-    message: `补丁应用完成，处理 ${rules.length}/${rules.length} 条规则`,
+    message: `补丁应用完成，处理 ${appliedRuleIds.length}/${rules.length} 条规则`,
     percent: 100,
     current: rules.length,
     total: rules.length
@@ -231,7 +275,16 @@ export async function unapplyWorkbenchPatch(root: string, context: vscode.Extens
   }
 
   const patchData = await loadWorkbenchPatchData(createScopedProgress(progress, 5, 15, '加载补丁数据'));
-  const before = await scanInstallPatch(install, context, patchData.rules, createScopedProgress(progress, 15, 35, '扫描当前状态'));
+  await reportProgress(progress, { message: '读取 workbench 文件', percent: 18 });
+  const currentContent = await fs.readFile(install.workbenchPath, 'utf8');
+  const before = await scanInstallPatch(
+    install,
+    context,
+    patchData.rules,
+    createScopedProgress(progress, 20, 35, '扫描当前状态'),
+    currentContent,
+    { scanBackupRuleStatus: false }
+  );
   if (before.targetHits === 0) {
     await reportProgress(progress, {
       message: '未检测到已应用的中文补丁',
@@ -247,8 +300,6 @@ export async function unapplyWorkbenchPatch(root: string, context: vscode.Extens
     };
   }
 
-  await reportProgress(progress, { message: '读取 workbench 文件', percent: 40 });
-  const currentContent = await fs.readFile(install.workbenchPath, 'utf8');
   let restoredContent = currentContent;
   let unappliedOccurrences = 0;
   const unappliedRuleIds: string[] = [];
@@ -256,14 +307,14 @@ export async function unapplyWorkbenchPatch(root: string, context: vscode.Extens
 
   for (let index = 0; index < rules.length; index += 1) {
     const rule = rules[index];
-    const occurrences = countOccurrences(restoredContent, rule.target);
-    if (occurrences > 0) {
-      restoredContent = replaceAll(restoredContent, rule.target, rule.source);
-      unappliedOccurrences += occurrences;
+    const replacement = replaceAllWithCount(restoredContent, rule.target, rule.source);
+    if (replacement.count > 0) {
+      restoredContent = replacement.value;
+      unappliedOccurrences += replacement.count;
       unappliedRuleIds.push(rule.id);
     }
 
-    if ((index + 1) % 10 === 0 || index + 1 === rules.length) {
+    if (shouldYieldPatchProgress(index + 1, rules.length, progress)) {
       await reportProgress(progress, {
         message: `卸载补丁规则 ${index + 1}/${rules.length}`,
         percent: 45 + toPercent(index + 1, rules.length) * 0.3,
@@ -275,7 +326,14 @@ export async function unapplyWorkbenchPatch(root: string, context: vscode.Extens
   }
 
   if (restoredContent === currentContent) {
-    const after = await scanInstallPatch(install, context, rules, createScopedProgress(progress, 80, 99, '复扫补丁状态'));
+    const after = await scanInstallPatch(
+      install,
+      context,
+      rules,
+      createScopedProgress(progress, 80, 99, '复扫补丁状态'),
+      restoredContent,
+      { scanBackupRuleStatus: false }
+    );
     await reportProgress(progress, {
       message: '补丁未卸载：没有需要还原的内容',
       percent: 100,
@@ -290,7 +348,15 @@ export async function unapplyWorkbenchPatch(root: string, context: vscode.Extens
     };
   }
 
-  await assertRuntimePatchIsSafe(restoredContent, currentContent, unappliedRuleIds, unappliedOccurrences, patchData.runtimePolicy, createScopedProgress(progress, 76, 84, '校验运行时安全'));
+  await assertRuntimePatchIsSafe(
+    restoredContent,
+    currentContent,
+    unappliedRuleIds,
+    unappliedOccurrences,
+    patchData.runtimePolicy,
+    rules.length,
+    createScopedProgress(progress, 76, 84, '校验运行时安全')
+  );
 
   const safetyBackupPath = backupPathFor(install, 'before-uninstall');
   await reportProgress(progress, { message: '保存卸载前快照', percent: 86, current: rules.length, total: rules.length });
@@ -308,9 +374,16 @@ export async function unapplyWorkbenchPatch(root: string, context: vscode.Extens
     await context.globalState.update(metadataKey, updatedMetadata);
   }
 
-  const after = await scanInstallPatch(install, context, rules, createScopedProgress(progress, 92, 99, '复扫补丁状态'));
+  const after = await scanInstallPatch(
+    install,
+    context,
+    rules,
+    createScopedProgress(progress, 92, 99, '复扫补丁状态'),
+    restoredContent,
+    { scanBackupRuleStatus: false }
+  );
   await reportProgress(progress, {
-    message: `补丁卸载完成，处理 ${rules.length}/${rules.length} 条规则`,
+    message: `补丁卸载完成，处理 ${unappliedRuleIds.length}/${rules.length} 条规则`,
     percent: 100,
     current: rules.length,
     total: rules.length
@@ -332,7 +405,14 @@ export async function restoreWorkbenchBackup(root: string, context: vscode.Exten
 
   const patchData = await loadWorkbenchPatchData(createScopedProgress(progress, 8, 15, '加载补丁数据'));
   const metadata = getPatchMetadata(context);
-  const backups = await scanBackupFiles(install, context, patchData.rules, createScopedProgress(progress, 15, 45, '扫描备份'));
+  const backups = await scanBackupFiles(
+    install,
+    context,
+    patchData.rules,
+    metadata,
+    createScopedProgress(progress, 15, 45, '扫描备份'),
+    true
+  );
   const selectedBackup = backupPath
     ? backups.find(backup => samePath(backup.path, backupPath))
     : backups.find(backup => metadata?.backupPath && samePath(backup.path, metadata.backupPath));
@@ -364,7 +444,14 @@ export async function restoreWorkbenchBackup(root: string, context: vscode.Exten
     await context.globalState.update(metadataKey, updatedMetadata);
   }
 
-  const after = await scanInstallPatch(install, context, patchData.rules, createScopedProgress(progress, 92, 99, '复扫补丁状态'));
+  const after = await scanInstallPatch(
+    install,
+    context,
+    patchData.rules,
+    createScopedProgress(progress, 92, 99, '复扫补丁状态'),
+    backupContent,
+    { scanBackupRuleStatus: false }
+  );
   await reportProgress(progress, { message: '备份恢复完成', percent: 100, current: 1, total: 1 });
   return {
     restored: true,
@@ -378,18 +465,41 @@ export function getPatchMetadata(context: vscode.ExtensionContext): PatchMetadat
   return context.globalState.get<PatchMetadata>(metadataKey);
 }
 
+interface ScanInstallPatchOptions {
+  readonly scanBackupRuleStatus?: boolean;
+}
+
 async function scanInstallPatch(
   install: CursorInstall,
   context: vscode.ExtensionContext,
   rules: readonly WorkbenchPatchRule[],
-  progress?: ProgressCallback
+  progress?: ProgressCallback,
+  content?: string,
+  options?: ScanInstallPatchOptions
 ): Promise<PatchScanResult> {
-  await reportProgress(progress, { message: '读取 workbench 文件', percent: 5 });
-  const content = await fs.readFile(install.workbenchPath, 'utf8');
-  const ruleStatuses = await getPatchRuleStatuses(content, rules, createScopedProgress(progress, 15, 75, '扫描规则'));
+  if (!content) {
+    await reportProgress(progress, { message: '读取 workbench 文件', percent: 5 });
+  }
+
+  const resolvedContent = content ?? await fs.readFile(install.workbenchPath, 'utf8');
+  const currentHash = sha256(resolvedContent);
+  const ruleStatuses = await getPatchRuleStatuses(
+    resolvedContent,
+    rules,
+    currentHash,
+    createScopedProgress(progress, 15, 75, '扫描规则'),
+    progress
+  );
   const status = getPatchStatusFromRules(ruleStatuses);
   const metadata = getPatchMetadata(context);
-  const backups = await scanBackupFiles(install, context, rules, createScopedProgress(progress, 80, 98, '扫描备份'));
+  const backups = await scanBackupFiles(
+    install,
+    context,
+    rules,
+    metadata,
+    createScopedProgress(progress, 80, 98, '扫描备份'),
+    options?.scanBackupRuleStatus ?? true
+  );
 
   await reportProgress(progress, {
     message: `补丁状态扫描完成，命中 ${status.matchedRules}/${rules.length} 条规则`,
@@ -402,7 +512,7 @@ async function scanInstallPatch(
     filePath: install.workbenchPath,
     cursorRoot: install.root,
     cursorVersion: install.version,
-    currentHash: sha256(content),
+    currentHash,
     backupPath: metadata?.backupPath,
     backups,
     totalRules: rules.length,
@@ -417,10 +527,11 @@ async function scanBackupFiles(
   install: CursorInstall,
   context: vscode.ExtensionContext,
   rules: readonly WorkbenchPatchRule[],
-  progress?: ProgressCallback
+  metadata: PatchMetadata | undefined,
+  progress?: ProgressCallback,
+  scanRuleStatus = true
 ): Promise<PatchBackupInfo[]> {
   const directory = path.dirname(install.workbenchPath);
-  const metadata = getPatchMetadata(context);
   let entries: string[];
 
   await reportProgress(progress, { message: '读取备份目录', percent: 0 });
@@ -439,18 +550,20 @@ async function scanBackupFiles(
   }
 
   for (let index = 0; index < names.length; index += 1) {
-    const backup = await readPatchBackupInfo(directory, names[index], metadata, rules);
+    const backup = await readPatchBackupInfo(directory, names[index], metadata, rules, scanRuleStatus);
     if (backup) {
       backups.push(backup);
     }
 
-    await reportProgress(progress, {
-      message: `扫描备份文件 ${index + 1}/${names.length}`,
-      percent: toPercent(index + 1, names.length),
-      current: index + 1,
-      total: names.length
-    });
-    await yieldToEventLoop();
+    if (shouldYieldPatchProgress(index + 1, names.length, progress)) {
+      await reportProgress(progress, {
+        message: `扫描备份文件 ${index + 1}/${names.length}`,
+        percent: toPercent(index + 1, names.length),
+        current: index + 1,
+        total: names.length
+      });
+      await yieldToEventLoop();
+    }
   }
 
   return backups.sort((left, right) => Date.parse(right.modifiedAt) - Date.parse(left.modifiedAt));
@@ -460,7 +573,8 @@ async function readPatchBackupInfo(
   directory: string,
   name: string,
   metadata: PatchMetadata | undefined,
-  rules: readonly WorkbenchPatchRule[]
+  rules: readonly WorkbenchPatchRule[],
+  scanRuleStatus: boolean
 ): Promise<PatchBackupInfo | undefined> {
   const filePath = path.join(directory, name);
 
@@ -470,9 +584,32 @@ async function readPatchBackupInfo(
       return undefined;
     }
 
-    const content = await fs.readFile(filePath, 'utf8');
-    const status = await getPatchContentStatus(content, rules);
     const kind = getPatchBackupKind(name);
+    if (!scanRuleStatus) {
+      const hash = getBackupInferredHash(filePath, metadata);
+      const status = inferBackupPatchStatus(hash, kind, metadata) ?? {
+        state: 'unknown',
+        sourceHits: 0,
+        targetHits: 0,
+        matchedRules: 0
+      };
+
+      return {
+        path: filePath,
+        name,
+        kind,
+        isOriginal: kind === 'original' && status.state === 'not-applied',
+        currentMetadataBackup: metadata?.backupPath ? samePath(filePath, metadata.backupPath) : false,
+        hash,
+        size: stat.size,
+        modifiedAt: stat.mtime.toISOString(),
+        status
+      };
+    }
+
+    const content = await fs.readFile(filePath, 'utf8');
+    const hash = sha256(content);
+    const status = await getPatchContentStatus(content, rules);
 
     return {
       path: filePath,
@@ -480,7 +617,7 @@ async function readPatchBackupInfo(
       kind,
       isOriginal: kind === 'original' && status.state === 'not-applied',
       currentMetadataBackup: metadata?.backupPath ? samePath(filePath, metadata.backupPath) : false,
-      hash: sha256(content),
+      hash,
       size: stat.size,
       modifiedAt: stat.mtime.toISOString(),
       status
@@ -488,6 +625,42 @@ async function readPatchBackupInfo(
   } catch {
     return undefined;
   }
+}
+
+function shouldYieldPatchProgress(current: number, total: number, progress?: ProgressCallback): boolean {
+  if (!progress) {
+    return false;
+  }
+
+  return current % 50 === 0 || current === total;
+}
+
+function getBackupInferredHash(filePath: string, metadata: PatchMetadata | undefined): string {
+  if (metadata?.backupPath && samePath(filePath, metadata.backupPath)) {
+    return metadata.originalHash;
+  }
+
+  return '';
+}
+
+function inferBackupPatchStatus(
+  hash: string,
+  kind: PatchBackupKind,
+  metadata: PatchMetadata | undefined
+): PatchBackupStatus | undefined {
+  if (metadata?.originalHash && hash === metadata.originalHash) {
+    return { state: 'not-applied', sourceHits: 0, targetHits: 0, matchedRules: 0 };
+  }
+
+  if (metadata?.patchedHash && hash === metadata.patchedHash) {
+    return { state: 'applied', sourceHits: 0, targetHits: 0, matchedRules: 0 };
+  }
+
+  if (kind === 'original') {
+    return { state: 'not-applied', sourceHits: 0, targetHits: 0, matchedRules: 0 };
+  }
+
+  return undefined;
 }
 
 function getPatchBackupKind(name: string): PatchBackupKind {
@@ -507,10 +680,27 @@ function getPatchBackupKind(name: string): PatchBackupKind {
 }
 
 async function getPatchContentStatus(content: string, rules: readonly WorkbenchPatchRule[]): Promise<PatchBackupStatus> {
-  return getPatchStatusFromRules(await getPatchRuleStatuses(content, rules));
+  return getPatchStatusFromRules(await getPatchRuleStatuses(content, rules, sha256(content)));
 }
 
-async function getPatchRuleStatuses(content: string, rules: readonly WorkbenchPatchRule[], progress?: ProgressCallback): Promise<PatchRuleStatus[]> {
+async function getPatchRuleStatuses(
+  content: string,
+  rules: readonly WorkbenchPatchRule[],
+  contentHash: string,
+  progress?: ProgressCallback,
+  yieldProgress?: ProgressCallback
+): Promise<PatchRuleStatus[]> {
+  const ruleFingerprint = getRuleFingerprint(rules);
+  if (cachedRuleScan?.contentHash === contentHash && cachedRuleScan.ruleFingerprint === ruleFingerprint) {
+    await reportProgress(progress, {
+      message: '复用补丁扫描缓存',
+      percent: 100,
+      current: rules.length,
+      total: rules.length
+    });
+    return [...cachedRuleScan.statuses];
+  }
+
   const statuses: PatchRuleStatus[] = [];
   await reportProgress(progress, { message: '开始扫描补丁规则', percent: 0, current: 0, total: rules.length });
 
@@ -522,7 +712,7 @@ async function getPatchRuleStatuses(content: string, rules: readonly WorkbenchPa
       targetHits: countOccurrences(content, rule.target)
     });
 
-    if ((index + 1) % 10 === 0 || index + 1 === rules.length) {
+    if (shouldYieldPatchProgress(index + 1, rules.length, yieldProgress ?? progress)) {
       await reportProgress(progress, {
         message: `扫描补丁规则 ${index + 1}/${rules.length}`,
         percent: toPercent(index + 1, rules.length),
@@ -533,7 +723,16 @@ async function getPatchRuleStatuses(content: string, rules: readonly WorkbenchPa
     }
   }
 
+  cachedRuleScan = { contentHash, ruleFingerprint, statuses };
   return statuses;
+}
+
+function getRuleFingerprint(rules: readonly WorkbenchPatchRule[]): string {
+  if (rules.length === 0) {
+    return '0';
+  }
+
+  return crypto.createHash('sha1').update(rules.map(rule => rule.id).join('\n'), 'utf8').digest('hex');
 }
 
 function getPatchStatusFromRules(rules: readonly PatchRuleStatus[]): PatchBackupStatus {
@@ -597,16 +796,19 @@ async function assertRuntimePatchIsSafe(
   appliedRuleIds: readonly string[],
   appliedOccurrences: number,
   policy: WorkbenchPatchRuntimePolicy,
+  ruleCount: number,
   progress?: ProgressCallback
 ): Promise<void> {
-  if (appliedOccurrences > policy.maxRuntimePatchRuleHits) {
-    throw new Error(`补丁命中 ${appliedOccurrences} 处，超过运行时安全阈值 ${policy.maxRuntimePatchRuleHits}，已取消写入。`);
+  const maxHits = resolveMaxRuntimePatchHits(policy, ruleCount);
+  if (appliedOccurrences > maxHits) {
+    throw new Error(`补丁命中 ${appliedOccurrences} 处，超过运行时安全阈值 ${maxHits}，已取消写入。`);
   }
 
   await reportProgress(progress, { message: '计算变更行数', percent: 30, current: 1, total: 4 });
   const changedLines = countChangedLines(originalContent, patchedContent);
-  if (changedLines > policy.maxRuntimePatchChangedLines) {
-    throw new Error(`补丁将修改 ${changedLines} 行，超过运行时安全阈值 ${policy.maxRuntimePatchChangedLines}，已取消写入。`);
+  const maxChangedLines = resolveMaxRuntimePatchChangedLines(policy, ruleCount);
+  if (changedLines > maxChangedLines) {
+    throw new Error(`补丁将修改 ${changedLines} 行，超过运行时安全阈值 ${maxChangedLines}，已取消写入。`);
   }
 
   assertBraceBalanceUnchanged(
@@ -623,16 +825,26 @@ async function assertRuntimePatchIsSafe(
       throw new Error(`补丁触及受保护运行时关键字 ${needle}，已取消写入。`);
     }
 
-    await reportProgress(progress, {
-      message: `校验受保护关键字 ${index + 1}/${policy.guardedRuntimeNeedles.length}`,
-      percent: 30 + toPercent(index + 1, policy.guardedRuntimeNeedles.length) * 0.7,
-      current: index + 1,
-      total: policy.guardedRuntimeNeedles.length
-    });
-    await yieldToEventLoop();
+    if (shouldYieldPatchProgress(index + 1, policy.guardedRuntimeNeedles.length, progress)) {
+      await reportProgress(progress, {
+        message: `校验受保护关键字 ${index + 1}/${policy.guardedRuntimeNeedles.length}`,
+        percent: 30 + toPercent(index + 1, policy.guardedRuntimeNeedles.length) * 0.7,
+        current: index + 1,
+        total: policy.guardedRuntimeNeedles.length
+      });
+      await yieldToEventLoop();
+    }
   }
 
   void appliedRuleIds;
+}
+
+function resolveMaxRuntimePatchHits(policy: WorkbenchPatchRuntimePolicy, ruleCount: number): number {
+  return Math.max(policy.maxRuntimePatchRuleHits, Math.ceil(ruleCount * 1.25));
+}
+
+function resolveMaxRuntimePatchChangedLines(policy: WorkbenchPatchRuntimePolicy, ruleCount: number): number {
+  return Math.max(policy.maxRuntimePatchChangedLines, Math.ceil(ruleCount * 0.75));
 }
 
 function countChangedLines(before: string, after: string): number {
@@ -648,95 +860,6 @@ function countChangedLines(before: string, after: string): number {
   }
 
   return changed;
-}
-
-interface BraceBalance {
-  readonly curly: number;
-  readonly round: number;
-  readonly square: number;
-}
-
-function measureBraceBalance(value: string): BraceBalance {
-  let curly = 0;
-  let round = 0;
-  let square = 0;
-  let inString = false;
-  let quote = '';
-  let escaped = false;
-
-  for (let index = 0; index < value.length; index += 1) {
-    const char = value[index];
-    if (inString) {
-      if (escaped) {
-        escaped = false;
-        continue;
-      }
-
-      if (char === '\\') {
-        escaped = true;
-        continue;
-      }
-
-      if (char === quote) {
-        inString = false;
-      }
-
-      continue;
-    }
-
-    if (char === '"' || char === '\'' || char === '`') {
-      inString = true;
-      quote = char;
-      continue;
-    }
-
-    switch (char) {
-      case '{':
-        curly += 1;
-        break;
-      case '}':
-        curly -= 1;
-        break;
-      case '(':
-        round += 1;
-        break;
-      case ')':
-        round -= 1;
-        break;
-      case '[':
-        square += 1;
-        break;
-      case ']':
-        square -= 1;
-        break;
-      default:
-        break;
-    }
-  }
-
-  return { curly, round, square };
-}
-
-function assertBraceBalanceUnchanged(before: BraceBalance, after: BraceBalance, ruleId: string): void {
-  if (before.curly === after.curly && before.round === after.round && before.square === after.square) {
-    return;
-  }
-
-  throw new Error(
-    `补丁规则 ${ruleId} 改变了括号平衡（{} ${before.curly}→${after.curly}，() ${before.round}→${after.round}，[] ${before.square}→${after.square}），已取消写入。`
-  );
-}
-
-function replaceAll(value: string, source: string, target: string): string {
-  return value.split(source).join(target);
-}
-
-function countOccurrences(value: string, needle: string): number {
-  if (!needle) {
-    return 0;
-  }
-
-  return value.split(needle).length - 1;
 }
 
 function sha256(value: string): string {

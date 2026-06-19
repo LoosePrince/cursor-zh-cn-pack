@@ -1,5 +1,6 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { assertPatchRuleBraceBalance } from './braceBalance';
 import { createScopedProgress, ProgressCallback, reportProgress, toPercent, yieldToEventLoop } from './progress';
 
 export interface WorkbenchPatchRule {
@@ -40,6 +41,8 @@ let cachedPatchData: WorkbenchPatchData | undefined;
 let loadingPatchData: Promise<WorkbenchPatchData> | undefined;
 let cachedNlsMessagePatchRules: readonly NlsMessagePatchRule[] | undefined;
 let loadingNlsMessagePatchRules: Promise<readonly NlsMessagePatchRule[]> | undefined;
+let cachedSafeSourcePrefixMatcher: ((source: string) => boolean) | undefined;
+let cachedRuntimeRuleIdPrefixMatcher: ((ruleId: string) => boolean) | undefined;
 
 export async function loadWorkbenchPatchData(progress?: ProgressCallback): Promise<WorkbenchPatchData> {
   if (cachedPatchData) {
@@ -98,6 +101,8 @@ export async function loadNlsMessagePatchRules(progress?: ProgressCallback): Pro
 async function loadWorkbenchPatchDataCore(progress?: ProgressCallback): Promise<WorkbenchPatchData> {
   await reportProgress(progress, { message: '读取补丁运行策略', percent: 5 });
   const runtimePolicy = await readWorkbenchPatchRuntimePolicy();
+  cachedSafeSourcePrefixMatcher = createPrefixMatcher(runtimePolicy.safeSourcePrefixes);
+  cachedRuntimeRuleIdPrefixMatcher = createPrefixMatcher(runtimePolicy.runtimeRuleIdPrefixes);
 
   await reportProgress(progress, { message: '读取补丁规则文件', percent: 20 });
   const rawRules = await readJson(patchDataPath);
@@ -132,8 +137,9 @@ async function parseWorkbenchPatchRules(rawRules: readonly unknown[], progress?:
       throw new Error(`无效的 workbench 补丁规则 #${index + 1}: ${patchDataPath}`);
     }
 
+    assertPatchRuleBraceBalance(rule.id, rule.source, rule.target);
     rules.push(rule);
-    if ((index + 1) % 25 === 0 || index + 1 === total) {
+    if (shouldYieldRuleProgress(index + 1, total, progress)) {
       await reportProgress(progress, {
         message: `校验补丁规则 ${index + 1}/${total}`,
         percent: toPercent(index + 1, total),
@@ -188,7 +194,7 @@ async function filterRuntimeSafePatchRules(
       rules.push(rule);
     }
 
-    if ((index + 1) % 25 === 0 || index + 1 === total) {
+    if (shouldYieldRuleProgress(index + 1, total, progress)) {
       await reportProgress(progress, {
         message: `筛选运行时安全规则 ${index + 1}/${total}`,
         percent: toPercent(index + 1, total),
@@ -214,13 +220,49 @@ async function readJson(filePath: string): Promise<unknown> {
   return JSON.parse(await fs.readFile(filePath, 'utf8')) as unknown;
 }
 
-function isRuntimeSafePatchRule(rule: WorkbenchPatchRule, policy: WorkbenchPatchRuntimePolicy): boolean {
+function isRuntimeSafePatchRule(rule: WorkbenchPatchRule, _policy: WorkbenchPatchRuntimePolicy): boolean {
   if (rule.source === rule.target) {
     return false;
   }
 
-  return policy.runtimeRuleIdPrefixes.some(prefix => rule.id.startsWith(prefix))
-    && policy.safeSourcePrefixes.some(prefix => rule.source.startsWith(prefix));
+  return getRuntimeRuleIdPrefixMatcher()(rule.id)
+    && getSafeSourcePrefixMatcher()(rule.source);
+}
+
+function getSafeSourcePrefixMatcher(): (source: string) => boolean {
+  if (!cachedSafeSourcePrefixMatcher) {
+    throw new Error('补丁运行策略尚未加载');
+  }
+
+  return cachedSafeSourcePrefixMatcher;
+}
+
+function getRuntimeRuleIdPrefixMatcher(): (ruleId: string) => boolean {
+  if (!cachedRuntimeRuleIdPrefixMatcher) {
+    throw new Error('补丁运行策略尚未加载');
+  }
+
+  return cachedRuntimeRuleIdPrefixMatcher;
+}
+
+function createPrefixMatcher(prefixes: readonly string[]): (value: string) => boolean {
+  return value => {
+    for (const prefix of prefixes) {
+      if (value.startsWith(prefix)) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+}
+
+function shouldYieldRuleProgress(current: number, total: number, progress?: ProgressCallback): boolean {
+  if (!progress) {
+    return false;
+  }
+
+  return current % 100 === 0 || current === total;
 }
 
 function isWorkbenchPatchRule(value: unknown): value is WorkbenchPatchRule {
