@@ -13,7 +13,6 @@ artifacts/
 
 # Generated artifacts
 baselines/
-reports/coverage-report.md
 reports/untranslated-*.json
 reports/workbench-untranslated.*
 

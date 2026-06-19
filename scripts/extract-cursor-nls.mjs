@@ -253,28 +253,15 @@ async function updateManifest(extensionTranslations) {
   await writeJson(manifestPath, manifest);
 }
 
-async function scanHardcodedCandidates(appDir) {
-  const workbenchPath = path.join(appDir, 'out', 'vs', 'workbench', 'workbench.desktop.main.js');
-  if (!(await exists(workbenchPath))) return [];
-
-  const source = await fs.readFile(workbenchPath, 'utf8');
-  const needles = await readJson(path.join(projectRoot, 'data', 'workbench-hardcoded-needles.json'));
-
-  return needles
-    .map((needle) => ({ needle, occurrences: source.split(needle).length - 1 }))
-    .filter((item) => item.occurrences > 0);
-}
-
 function percentage(translated, total) {
   if (!total) return '0.00%';
   return `${((translated / total) * 100).toFixed(2)}%`;
 }
 
-async function writeReports({ appDir, extensionStats, hardcodedCandidates }) {
+async function writeReports(extensionStats) {
   const reportsDir = path.join(projectRoot, 'reports');
   await fs.mkdir(reportsDir, { recursive: true });
 
-  await deleteIfExists(path.join(reportsDir, 'coverage-report.md'));
   await deleteIfExists(path.join(reportsDir, 'untranslated-main.json'));
   await writeJson(path.join(reportsDir, 'untranslated-extensions.json'), extensionStats.untranslated.slice(0, 2000));
 }
@@ -287,13 +274,12 @@ async function main() {
   const extensionStats = await buildExtensionBundles(appDir);
   await updateManifest(extensionStats.generated);
 
-  const hardcodedCandidates = await scanHardcodedCandidates(appDir);
-  await writeReports({ appDir, extensionStats, hardcodedCandidates });
+  await writeReports(extensionStats);
 
   console.log(`Cursor 专用扩展：${extensionStats.translated}/${extensionStats.total} (${percentage(extensionStats.translated, extensionStats.total)})`);
   console.log(`生成 Cursor 专用扩展翻译文件：${extensionStats.generated.length} 个`);
   console.log(`跳过官方/通用内置扩展翻译文件：${extensionStats.skipped.length} 个`);
-  console.log(`报告：${path.join(projectRoot, 'reports', 'coverage-report.md')}`);
+  console.log(`未翻译样本：${path.join(projectRoot, 'reports', 'untranslated-extensions.json')}`);
 }
 
 main().catch((error) => {
