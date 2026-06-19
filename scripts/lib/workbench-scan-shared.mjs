@@ -135,3 +135,106 @@ export function countOccurrences(source, needle) {
   }
   return count;
 }
+
+function isQuote(char) {
+  return char === '\'' || char === '"' || char === '`';
+}
+
+export function skipQuotedString(source, start, quote) {
+  for (let i = start + 1; i < source.length; i += 1) {
+    const char = source[i];
+    if (char === '\\') {
+      i += 1;
+      continue;
+    }
+    if (quote === '`' && char === '$' && source[i + 1] === '{') {
+      i = skipTemplateExpression(source, i + 2) - 1;
+      continue;
+    }
+    if (char === quote) {
+      return i + 1;
+    }
+  }
+  return source.length;
+}
+
+function skipTemplateExpression(source, start) {
+  let depth = 1;
+  for (let i = start; i < source.length; i += 1) {
+    const char = source[i];
+    if (isQuote(char)) {
+      i = skipQuotedString(source, i, char) - 1;
+      continue;
+    }
+    if (char === '{') {
+      depth += 1;
+      continue;
+    }
+    if (char === '}') {
+      depth -= 1;
+      if (depth === 0) {
+        return i + 1;
+      }
+    }
+  }
+  return source.length;
+}
+
+export function findBalancedEnd(source, startIndex, openChar = '{', closeChar = '}') {
+  let depth = 0;
+  for (let i = startIndex; i < source.length; i += 1) {
+    const char = source[i];
+    if (isQuote(char)) {
+      i = skipQuotedString(source, i, char) - 1;
+      continue;
+    }
+    if (char === openChar) {
+      depth += 1;
+    }
+    if (char === closeChar) {
+      depth -= 1;
+      if (depth === 0) {
+        return i;
+      }
+    }
+  }
+  return -1;
+}
+
+export function extractQuotedEnglishPhrases(code) {
+  const phrases = [];
+  const patterns = [
+    /return"((?:[^"\\]|\\.)*)"/g,
+    /return'((?:[^'\\]|\\.)*)'/g,
+    /label:"((?:[^"\\]|\\.)*)"/g,
+    /title:"((?:[^"\\]|\\.)*)"/g,
+    /description:"((?:[^"\\]|\\.)*)"/g,
+    /placeholder:"((?:[^"\\]|\\.)*)"/g,
+    /general:"((?:[^"\\]|\\.)*)"/g,
+    /chat:"((?:[^"\\]|\\.)*)"/g,
+    /appearance:"((?:[^"\\]|\\.)*)"/g
+  ];
+
+  for (const pattern of patterns) {
+    for (const match of code.matchAll(pattern)) {
+      try {
+        const text = normalizeText(decodeJsString(match[1]));
+        if (!text || !hasEnglishText(text) || hasCjkText(text)) continue;
+        phrases.push(text);
+      } catch {
+        // Ignore invalid escape sequences.
+      }
+    }
+  }
+
+  return [...new Set(phrases)];
+}
+
+export function summarizeCodeBlock(code, maxLength = 320) {
+  const phrases = extractQuotedEnglishPhrases(code);
+  if (phrases.length === 0) {
+    return '';
+  }
+  const summary = phrases.join(' | ');
+  return summary.length > maxLength ? `${summary.slice(0, maxLength - 1)}…` : summary;
+}

@@ -1,6 +1,7 @@
 {
   "minLength": 2,
   "maxLength": 320,
+  "maxPatchSourceLength": 2000,
   "maxSamplesPerCandidate": 5,
   "markdownCandidateLimit": 800,
   "surroundingChars": 90,
@@ -22,7 +23,11 @@
     "I4C\\(\\)",
     "l5C\\(\\)",
     "c5C\\(\\)",
-    "h5C\\(\\)"
+    "h5C\\(\\)",
+    "Run Mode",
+    "zR\\.ASK_EVERY_TIME",
+    "function jCk",
+    "function KCk"
   ],
   "settingsHtmlSymbols": [
     "I4C",
@@ -60,7 +65,22 @@
     "helpTooltipLabel",
     "tooltip",
     "aria-label",
-    "ariaLabel"
+    "ariaLabel",
+    "general",
+    "profile",
+    "appearance",
+    "chat",
+    "tab",
+    "models",
+    "rules",
+    "plugins",
+    "indexing",
+    "mcp",
+    "hooks",
+    "beta",
+    "network",
+    "worktrees",
+    "developer"
   ],
   "contextTags": [
     {

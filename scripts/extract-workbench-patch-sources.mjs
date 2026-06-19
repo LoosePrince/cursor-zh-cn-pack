@@ -16,8 +16,14 @@ import {
   readJson,
   resolveWorkbenchPath,
   slugifyId,
+  summarizeCodeBlock,
   writeJson
 } from './lib/workbench-scan-shared.mjs';
+import {
+  BLOCK_ANCHORS,
+  extractBlockCandidates,
+  pruneSubsumedCandidates
+} from './lib/workbench-patch-extractors.mjs';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, '..');
@@ -45,7 +51,22 @@ const DEFAULT_UI_KEYS = [
   'accept',
   'reject',
   'waitText',
-  'errorText'
+  'errorText',
+  'general',
+  'profile',
+  'appearance',
+  'chat',
+  'tab',
+  'models',
+  'rules',
+  'plugins',
+  'indexing',
+  'mcp',
+  'hooks',
+  'beta',
+  'network',
+  'worktrees',
+  'developer'
 ];
 
 function parseArgs(argv) {
@@ -91,6 +112,11 @@ function printHelp() {
 
 从 workbench.desktop.main.js 按补丁规范提取未汉化片段，生成可直接用作 workbench-patches.json 的 source 候选表。
 
+提取器支持：
+  - UI 键名：label/title/description/children 等
+  - 块级结构：function switch、memo-arrow、items 数组、导航映射 anh={}、模式对象 var O4r={}
+  - HTML 模板：Re()/ot()、Mr 三元表达式、页面标题
+
 选项:
   --scope=settings|all     默认 settings，仅保留设置页相关上下文
   --min-confidence=high|medium|low
@@ -121,7 +147,9 @@ function confidenceFor({ kind, innerText, highConfidencePatterns, lowConfidenceP
   if (lowConfidencePatterns.some((pattern) => pattern.test(innerText))) {
     return 'low';
   }
-  if (kind === 'ui-key' || kind === 'getter' || kind === 'html-template' || kind === 'platform-ternary') {
+  if (kind === 'ui-key' || kind === 'getter' || kind === 'html-template' || kind === 'platform-ternary'
+    || kind === 'function-switch' || kind === 'memo-arrow' || kind === 'arrow-switch'
+    || kind === 'items-array' || kind === 'array-literal' || kind === 'nav-map' || kind === 'mode-object') {
     return 'high';
   }
   if (highConfidencePatterns.some((pattern) => pattern.test(innerText))) {
@@ -141,6 +169,27 @@ function matchesSafePrefix(source, safePrefixes, extractor) {
     return true;
   }
   if (extractor?.kind === 'section-title' && source.startsWith('Jf,{title:')) {
+    return true;
+  }
+  if (extractor?.kind === 'function-switch' && source.startsWith('function ')) {
+    return true;
+  }
+  if (extractor?.kind === 'memo-arrow' && /=me\(\(\)=>\{/.test(source)) {
+    return true;
+  }
+  if (extractor?.kind === 'arrow-switch' && /=>\{switch/.test(source)) {
+    return true;
+  }
+  if (extractor?.kind === 'items-array' && source.startsWith('items:[')) {
+    return true;
+  }
+  if (extractor?.kind === 'array-literal' && /=\[\{id:/.test(source)) {
+    return true;
+  }
+  if (extractor?.kind === 'nav-map' && source.startsWith('anh={')) {
+    return true;
+  }
+  if (extractor?.kind === 'mode-object' && /^var [A-Za-z_$][\w$]*=\{id:/.test(source)) {
     return true;
   }
   return safePrefixes.some((prefix) => source.startsWith(prefix));
@@ -302,7 +351,7 @@ function createExtractorPatterns(uiKeys) {
     {
       kind: 'getter',
       id: 'getter-return',
-      regex: /get (description|title|fallback|label)\(\)\{return("(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`)\}/g
+      regex: /get (description|title|fallback|label)\(\)\{return(`(?:[^`\\]|\\.|\\$\\{(?:[^{}]|\\{[^{}]*\\})*\\})*`|"(?:[^"\\]|\\.)*")\}/g
     },
     {
       kind: 'html-template',
@@ -351,6 +400,7 @@ function extractCandidates({
   const contextTagOrder = config.contextTagOrder || contextTagDefinitions.map((tag) => tag.id);
   const uiKeys = config.patchSourceKeys || DEFAULT_UI_KEYS;
   const safePrefixes = [...policy.safeSourcePrefixes].sort((a, b) => b.length - a.length);
+  const maxPatchSourceLength = config.maxPatchSourceLength ?? 2000;
   const lineStarts = buildLineStarts(workbenchSource);
   const { sourceToRule, targetSet } = buildPatchIndexes(patches);
   const extractors = createExtractorPatterns(uiKeys);
@@ -361,11 +411,101 @@ function extractCandidates({
     if (existing) {
       existing.occurrences += 1;
       if (existing.samples.length < config.maxSamplesPerCandidate) {
-        existing.samples.push(candidate.sample);
+        existing.samples.push(candidate.samples[0]);
       }
       return;
     }
     bySource.set(candidate.source, candidate);
+  };
+
+  const processRawCandidate = ({
+    source,
+    innerText,
+    kind,
+    key,
+    index,
+    extractor
+  }) => {
+    if (!innerText || innerText.length < config.minLength) return;
+    if (source.length > maxPatchSourceLength) return;
+    if (!hasEnglishText(innerText)) return;
+    if (excludePatterns.some((pattern) => pattern.test(innerText))) return;
+
+    if (!matchesSafePrefix(source, safePrefixes, extractor)) {
+      const canExpand = kind === 'return-literal' || kind === 'getter';
+      if (!canExpand) return;
+      const expanded = expandToSafePrefix(workbenchSource, index, index + source.length, safePrefixes);
+      if (!expanded) return;
+      source = expanded;
+      index = workbenchSource.indexOf(expanded, Math.max(0, index - 20));
+      if (!matchesSafePrefix(source, safePrefixes, extractor)) return;
+    }
+
+    const context = contextAt(workbenchSource, index, source.length, config.surroundingChars);
+    const contextTags = contextTagsFor(context, contextTagDefinitions);
+    const blockAutoScopeKinds = new Set([
+      'memo-arrow',
+      'arrow-switch',
+      'items-array',
+      'array-literal',
+      'nav-map',
+      'mode-object'
+    ]);
+    const inSettingsScope = contextTags.some((tag) => contextTagOrder.includes(tag))
+      || isInSettingsScope(workbenchSource, index, source.length, config)
+      || (kind === 'html-template' && isSettingsHtmlSymbol(key, config))
+      || blockAutoScopeKinds.has(kind);
+
+    if (options.scope === 'settings' && !inSettingsScope) return;
+
+    const confidenceText = kind === 'html-template'
+      ? innerText.replace(/<[^>]+>/g, ' ').trim()
+      : innerText;
+
+    const confidence = confidenceFor({
+      kind,
+      innerText: confidenceText,
+      highConfidencePatterns,
+      lowConfidencePatterns
+    });
+    if (confidenceRank(confidence) > confidenceRank(options.minConfidence)) return;
+
+    const classification = classifyCandidate({
+      source,
+      sourceToRule,
+      targetSet,
+      workbenchSource
+    });
+
+    if (!options.includeApplied && (classification.status === 'covered-applied' || classification.status === 'covered-stale')) {
+      return;
+    }
+
+    const safePrefix = longestMatchingPrefix(source, safePrefixes);
+    const patchRule = sourceToRule.get(source);
+    addCandidate({
+      id: patchRule?.id || suggestPatchId({ kind, key, innerText, contextTags }),
+      source,
+      target: patchRule?.target || '',
+      innerText,
+      kind,
+      key: key || undefined,
+      confidence,
+      status: classification.status,
+      patchId: classification.patchId,
+      sourceHits: classification.sourceHits,
+      targetHits: classification.targetHits,
+      safePrefix,
+      uniqueInFile: classification.sourceHits === 1,
+      contextTags,
+      occurrences: 1,
+      samples: [{
+        line: lineColumnAt(lineStarts, index).line,
+        column: lineColumnAt(lineStarts, index).column,
+        index,
+        context
+      }]
+    });
   };
 
   for (const extractor of extractors) {
@@ -432,81 +572,37 @@ function extractCandidates({
         index = match.index;
       }
 
-      if (!innerText || innerText.length < config.minLength || innerText.length > config.maxLength) continue;
+      if (!innerText || innerText.length > config.maxLength) continue;
       if (!hasEnglishText(innerText) || hasCjkText(innerText)) continue;
-      if (excludePatterns.some((pattern) => pattern.test(innerText))) continue;
 
-      if (!matchesSafePrefix(source, safePrefixes, extractor)) {
-        const canExpand = extractor.kind === 'return-literal' || extractor.kind === 'getter';
-        if (!canExpand) continue;
-        const expanded = expandToSafePrefix(workbenchSource, index, index + source.length, safePrefixes);
-        if (!expanded) continue;
-        source = expanded;
-        index = workbenchSource.indexOf(expanded, Math.max(0, index - 20));
-        if (!matchesSafePrefix(source, safePrefixes, extractor)) continue;
-      }
-
-      const context = contextAt(workbenchSource, index, source.length, config.surroundingChars);
-      const contextTags = contextTagsFor(context, contextTagDefinitions);
-      const inSettingsScope = contextTags.some((tag) => contextTagOrder.includes(tag))
-        || isInSettingsScope(workbenchSource, index, source.length, config)
-        || (extractor.kind === 'html-template' && isSettingsHtmlSymbol(key, config));
-
-      if (options.scope === 'settings' && !inSettingsScope) continue;
-
-      const confidenceText = extractor.kind === 'html-template'
-        ? innerText.replace(/<[^>]+>/g, ' ').trim()
-        : innerText;
-
-      const confidence = confidenceFor({
-        kind: extractor.kind,
-        innerText: confidenceText,
-        highConfidencePatterns,
-        lowConfidencePatterns
-      });
-      if (confidenceRank(confidence) > confidenceRank(options.minConfidence)) continue;
-
-      const classification = classifyCandidate({
+      processRawCandidate({
         source,
-        sourceToRule,
-        targetSet,
-        workbenchSource
-      });
-
-      if (!options.includeApplied && (classification.status === 'covered-applied' || classification.status === 'covered-stale')) {
-        continue;
-      }
-
-      const safePrefix = longestMatchingPrefix(source, safePrefixes);
-      const patchRule = sourceToRule.get(source);
-      addCandidate({
-        id: patchRule?.id || suggestPatchId({ kind: extractor.kind, key, innerText, contextTags }),
-        source,
-        target: patchRule?.target || '',
         innerText,
         kind: extractor.kind,
-        key: key || undefined,
-        confidence,
-        status: classification.status,
-        patchId: classification.patchId,
-        sourceHits: classification.sourceHits,
-        targetHits: classification.targetHits,
-        safePrefix,
-        uniqueInFile: classification.sourceHits === 1,
-        contextTags,
-        occurrences: 1,
-        samples: [{
-          line: lineColumnAt(lineStarts, index).line,
-          column: lineColumnAt(lineStarts, index).column,
-          index,
-          context
-        }]
+        key,
+        index,
+        extractor
       });
     }
   }
 
+  for (const block of extractBlockCandidates(workbenchSource, BLOCK_ANCHORS)) {
+    const innerText = summarizeCodeBlock(block.source, config.maxLength);
+    if (!innerText) continue;
+
+    processRawCandidate({
+      source: block.source,
+      innerText,
+      kind: block.kind,
+      key: block.key,
+      index: block.index,
+      extractor: { kind: block.kind }
+    });
+  }
+
   const statusOrder = ['missing', 'covered-unapplied', 'covered-stale', 'covered-applied'];
-  return [...bySource.values()].sort((a, b) => {
+  const pruned = pruneSubsumedCandidates([...bySource.values()]);
+  return pruned.sort((a, b) => {
     return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status)
       || confidenceRank(a.confidence) - confidenceRank(b.confidence)
       || (a.uniqueInFile === b.uniqueInFile ? 0 : a.uniqueInFile ? -1 : 1)
@@ -578,7 +674,13 @@ async function main() {
     coveredUnapplied: candidates.filter((item) => item.status === 'covered-unapplied').length,
     coveredApplied: candidates.filter((item) => item.status === 'covered-applied').length,
     coveredStale: candidates.filter((item) => item.status === 'covered-stale').length,
-    highConfidence: candidates.filter((item) => item.confidence === 'high').length
+    highConfidence: candidates.filter((item) => item.confidence === 'high').length,
+    byKind: Object.fromEntries(
+      [...candidates.reduce((map, item) => {
+        map.set(item.kind, (map.get(item.kind) ?? 0) + 1);
+        return map;
+      }, new Map()).entries()].sort((a, b) => b[1] - a[1])
+    )
   };
 
   const report = {
@@ -611,6 +713,7 @@ async function main() {
   console.log(`  missing: ${summary.missing}`);
   console.log(`  covered-unapplied: ${summary.coveredUnapplied}`);
   console.log(`  high confidence: ${summary.highConfidence}`);
+  console.log(`  by kind: ${JSON.stringify(summary.byKind)}`);
   console.log(`JSON: ${path.join(reportsDir, 'workbench-patch-source-candidates.json')}`);
   console.log(`Markdown: ${path.join(reportsDir, 'workbench-patch-source-candidates.md')}`);
   if (options.staging) {
