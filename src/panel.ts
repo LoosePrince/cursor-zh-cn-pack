@@ -622,10 +622,10 @@ function getHtml(webview: vscode.Webview, state: ManagerState): string {
     <section class="two-col">
       <div class="targets">
         ${renderTargetCard({
-          title: 'Workbench 主界面补丁',
+          title: 'Workbench / 智能体窗口补丁',
           helpId: 'workbench-patch',
-          targetName: 'workbench.desktop.main.js',
-          filePath: patch?.filePath ?? install?.workbenchPath,
+          targetName: 'workbench.desktop.main.js + workbench.glass.main.js',
+          filePath: patch?.filePath ?? [install?.workbenchPath, install?.glassWorkbenchPath].filter(Boolean).join('\n'),
           scan: patch,
           patchStatusText
         })}
@@ -828,7 +828,7 @@ function renderTargetCard(input: {
     <div class="target-head">
       <div>
         <div class="target-title"><h2>${escapeHtml(input.title)}</h2>${renderHelpButton(input.helpId)}</div>
-        <div class="target-path mono">目标：${escapeHtml(input.targetName)} · ${escapeHtml(input.filePath ?? '未确认路径')}</div>
+        <div class="target-path mono">目标：${escapeHtml(input.targetName)} · ${escapeHtml(input.filePath ?? '未确认路径').replace(/\n/g, '<br>')}</div>
       </div>
       <span class="badge ${stateClass}">${escapeHtml(stateText)}</span>
     </div>
@@ -837,7 +837,7 @@ function renderTargetCard(input: {
       <div class="metric"><div class="label">待处理英文</div><strong>${input.scan?.sourceHits ?? '-'}</strong></div>
       <div class="metric"><div class="label">规则数量</div><strong>${input.scan?.totalRules ?? '-'}</strong></div>
     </div>
-    ${input.scan ? `<div class="target-path mono">SHA-256：${escapeHtml(input.scan.currentHash)}</div>` : ''}
+    ${input.scan ? `<div class="target-path mono">SHA-256：${escapeHtml(input.scan.currentHash).replace(/\n/g, '<br>')}</div>` : ''}
   </article>`;
 }
 
@@ -910,7 +910,7 @@ function renderSafetyList(): string {
     <li>只修改 Cursor 安装目录内的目标文件，不会修改你的项目源码。</li>
     <li>规则按稳定上下文匹配，不做裸词全局替换，不翻译用户输入或配置值。</li>
     <li>Workbench 备份和 NLS 备份必须分开恢复，界面已经按目标隔离。</li>
-    <li>应用、卸载或恢复后，需要重启 Cursor 才能看到完整效果；可使用顶部的一键重启并清理。</li>
+    <li>应用、卸载或恢复后，需要重启 Cursor 与智能体窗口才能看到完整效果；可使用顶部的一键重启并清理。</li>
   </ul>`;
 }
 
@@ -919,10 +919,13 @@ function renderProblems(problems: readonly string[]): string {
 }
 
 function renderKeyFiles(install: CursorInstall | undefined, patch: PatchScanResult | undefined, nlsPatch: NlsMessagePatchScanResult | undefined): string {
+  const paths = [install?.workbenchPath, install?.glassWorkbenchPath].filter((value): value is string => Boolean(value));
+  const workbenchPaths = patch?.filePath ?? (paths.length > 0 ? paths.join('\n') : '未确认');
+
   return `<section class="panel-card">
     <div class="section-title"><h2>关键文件</h2>${renderHelpButton('key-files')}</div>
     <div class="key-files">
-      <div class="file-line mono">Workbench：${escapeHtml(patch?.filePath ?? install?.workbenchPath ?? '未确认')}</div>
+      <div class="file-line mono">Workbench：${escapeHtml(workbenchPaths).replace(/\n/g, '<br>')}</div>
       <div class="file-line mono">NLS 消息表：${escapeHtml(nlsPatch?.filePath ?? '未确认')}</div>
       <div class="file-line mono">运行时状态库：${escapeHtml(resolveRuntimeStatePathForDisplay())}</div>
       <div class="file-line mono">安装根目录：${escapeHtml(install?.root ?? '未确认')}</div>

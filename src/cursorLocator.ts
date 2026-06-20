@@ -11,6 +11,7 @@ export interface CursorInstallPaths {
   readonly nlsKeysPath: string;
   readonly nlsMessagesPath: string;
   readonly workbenchPath: string;
+  readonly glassWorkbenchPath: string;
 }
 
 export interface CursorInstall extends CursorInstallPaths {
@@ -128,7 +129,8 @@ export function getCursorPaths(root: string): CursorInstallPaths {
     appPackagePath: path.join(appRoot, 'package.json'),
     nlsKeysPath: path.join(appRoot, 'out', 'nls.keys.json'),
     nlsMessagesPath: path.join(appRoot, 'out', 'nls.messages.json'),
-    workbenchPath: path.join(appRoot, 'out', 'vs', 'workbench', 'workbench.desktop.main.js')
+    workbenchPath: path.join(appRoot, 'out', 'vs', 'workbench', 'workbench.desktop.main.js'),
+    glassWorkbenchPath: path.join(appRoot, 'out', 'vs', 'workbench', 'workbench.glass.main.js')
   };
 }
 

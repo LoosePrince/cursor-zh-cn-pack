@@ -9,7 +9,26 @@ import { assertBraceBalanceUnchanged, measureBraceBalance } from './braceBalance
 import { countOccurrences, replaceAllWithCount } from './stringPatchUtils';
 
 const metadataKey = 'cursorZhCn.workbenchPatchMetadata';
-const backupFilePrefix = 'workbench.desktop.main.js.cursor-zh-cn-pack.';
+const desktopBackupFilePrefix = 'workbench.desktop.main.js.cursor-zh-cn-pack.';
+const glassBackupFilePrefix = 'workbench.glass.main.js.cursor-zh-cn-pack.';
+const backupFilePrefixes = [desktopBackupFilePrefix, glassBackupFilePrefix] as const;
+
+type WorkbenchPatchTargetId = 'desktop' | 'glass';
+
+interface WorkbenchPatchTarget {
+  readonly id: WorkbenchPatchTargetId;
+  readonly filePath: string;
+  readonly backupFilePrefix: string;
+  readonly label: string;
+}
+
+interface PatchTargetRecord {
+  readonly id: WorkbenchPatchTargetId;
+  readonly filePath: string;
+  readonly originalHash: string;
+  readonly patchedHash: string;
+  readonly backupPath: string;
+}
 
 interface RuleScanCacheEntry {
   readonly contentHash: string;
@@ -35,6 +54,7 @@ export interface PatchMetadata {
   readonly originalHash: string;
   readonly patchedHash: string;
   readonly backupPath: string;
+  readonly targets?: readonly PatchTargetRecord[];
   readonly appliedRuleIds: readonly string[];
   readonly appliedAt: string;
   readonly restoredAt?: string;
@@ -132,14 +152,17 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
   }
 
   const patchData = await loadWorkbenchPatchData(createScopedProgress(progress, 5, 15, '加载补丁数据'));
-  await reportProgress(progress, { message: '读取 workbench 文件', percent: 18 });
-  const originalContent = await fs.readFile(install.workbenchPath, 'utf8');
+  const targets = await filterExistingPatchTargets(resolveWorkbenchPatchTargets(install));
+  if (targets.length === 0) {
+    throw new Error('未找到可补丁的 workbench 文件。');
+  }
+
   const before = await scanInstallPatch(
     install,
     context,
     patchData.rules,
     createScopedProgress(progress, 20, 35, '扫描当前状态'),
-    originalContent,
+    undefined,
     { scanBackupRuleStatus: false }
   );
   if (before.state === 'applied') {
@@ -163,14 +186,107 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
     throw new Error('当前 workbench 文件中没有命中可补丁的英文源文案，也没有命中已补丁中文文案。请确认 Cursor 版本是否已变化。');
   }
 
+  const rules = patchData.rules;
+  const targetRecords: PatchTargetRecord[] = [];
+  let changed = false;
+  let totalAppliedOccurrences = 0;
+  const appliedRuleIds = new Set<string>();
+  let primaryBackupPath: string | undefined;
+
+  for (let targetIndex = 0; targetIndex < targets.length; targetIndex += 1) {
+    const target = targets[targetIndex];
+    const targetProgress = createScopedProgress(
+      progress,
+      35 + toPercent(targetIndex, targets.length) * 55,
+      35 + toPercent(targetIndex + 1, targets.length) * 55,
+      `补丁 ${target.label}`
+    );
+    const result = await applyPatchToTarget(
+      target,
+      install,
+      context,
+      rules,
+      patchData.runtimePolicy,
+      targetProgress
+    );
+
+    if (result.changed) {
+      changed = true;
+      totalAppliedOccurrences += result.appliedOccurrences;
+      for (const ruleId of result.appliedRuleIds) {
+        appliedRuleIds.add(ruleId);
+      }
+    }
+
+    targetRecords.push(result.record);
+    if (!primaryBackupPath && result.record.backupPath) {
+      primaryBackupPath = result.record.backupPath;
+    }
+  }
+
+  const desktopRecord = targetRecords.find(record => record.id === 'desktop');
+  const metadata: PatchMetadata = {
+    cursorRoot: install.root,
+    cursorVersion: install.version,
+    workbenchPath: install.workbenchPath,
+    originalHash: desktopRecord?.originalHash ?? targetRecords[0]?.originalHash ?? '',
+    patchedHash: desktopRecord?.patchedHash ?? targetRecords[0]?.patchedHash ?? '',
+    backupPath: desktopRecord?.backupPath ?? targetRecords[0]?.backupPath ?? '',
+    targets: targetRecords,
+    appliedRuleIds: [...appliedRuleIds],
+    appliedAt: new Date().toISOString()
+  };
+  await reportProgress(progress, { message: '保存补丁元数据', percent: 92, current: rules.length, total: rules.length });
+  await context.globalState.update(metadataKey, metadata);
+
+  const after = await scanInstallPatch(
+    install,
+    context,
+    rules,
+    createScopedProgress(progress, 94, 99, '复扫补丁状态'),
+    undefined,
+    { scanBackupRuleStatus: false }
+  );
+  await reportProgress(progress, {
+    message: `补丁应用完成，处理 ${appliedRuleIds.size}/${rules.length} 条规则`,
+    percent: 100,
+    current: rules.length,
+    total: rules.length
+  });
+  return {
+    changed,
+    backupPath: primaryBackupPath,
+    appliedRuleIds: [...appliedRuleIds],
+    appliedOccurrences: totalAppliedOccurrences,
+    before,
+    after
+  };
+}
+
+interface ApplyPatchToTargetResult {
+  readonly changed: boolean;
+  readonly appliedRuleIds: readonly string[];
+  readonly appliedOccurrences: number;
+  readonly record: PatchTargetRecord;
+}
+
+async function applyPatchToTarget(
+  target: WorkbenchPatchTarget,
+  install: CursorInstall,
+  context: vscode.ExtensionContext,
+  rules: readonly WorkbenchPatchRule[],
+  runtimePolicy: WorkbenchPatchRuntimePolicy,
+  progress?: ProgressCallback
+): Promise<ApplyPatchToTargetResult> {
+  await reportProgress(progress, { message: `读取 ${target.label}`, percent: 5 });
+  const originalContent = await fs.readFile(target.filePath, 'utf8');
   const originalHash = sha256(originalContent);
 
-  await reportProgress(progress, { message: '创建或复用原始备份', percent: 42 });
-  const backupPath = await ensureBackup(install, originalContent, context);
+  await reportProgress(progress, { message: `创建或复用 ${target.label} 原始备份`, percent: 15 });
+  const backupPath = await ensureBackup(target, install, originalContent, context);
   let patchedContent = originalContent;
   let appliedOccurrences = 0;
   const appliedRuleIds: string[] = [];
-  const rules = patchData.rules;
 
   for (let index = 0; index < rules.length; index += 1) {
     const rule = rules[index];
@@ -183,8 +299,8 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
 
     if (shouldYieldPatchProgress(index + 1, rules.length, progress)) {
       await reportProgress(progress, {
-        message: `应用补丁规则 ${index + 1}/${rules.length}`,
-        percent: 45 + toPercent(index + 1, rules.length) * 0.3,
+        message: `应用 ${target.label} 规则 ${index + 1}/${rules.length}`,
+        percent: 20 + toPercent(index + 1, rules.length) * 0.55,
         current: index + 1,
         total: rules.length
       });
@@ -193,27 +309,17 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
   }
 
   if (patchedContent === originalContent) {
-    const after = await scanInstallPatch(
-      install,
-      context,
-      rules,
-      createScopedProgress(progress, 80, 99, '复扫补丁状态'),
-      patchedContent,
-      { scanBackupRuleStatus: false }
-    );
-    await reportProgress(progress, {
-      message: '补丁未写入：没有需要替换的内容',
-      percent: 100,
-      current: rules.length,
-      total: rules.length
-    });
     return {
       changed: false,
-      backupPath,
       appliedRuleIds,
       appliedOccurrences,
-      before,
-      after
+      record: {
+        id: target.id,
+        filePath: target.filePath,
+        originalHash,
+        patchedHash: originalHash,
+        backupPath
+      }
     };
   }
 
@@ -222,49 +328,25 @@ export async function applyWorkbenchPatch(root: string, context: vscode.Extensio
     patchedContent,
     appliedRuleIds,
     appliedOccurrences,
-    patchData.runtimePolicy,
+    runtimePolicy,
     rules.length,
-    createScopedProgress(progress, 76, 84, '校验运行时安全')
+    createScopedProgress(progress, 78, 86, `校验 ${target.label} 运行时安全`)
   );
 
-  await reportProgress(progress, { message: '写入补丁文件', percent: 86, current: rules.length, total: rules.length });
-  await fs.writeFile(install.workbenchPath, patchedContent, 'utf8');
-  const patchedHash = sha256(patchedContent);
+  await reportProgress(progress, { message: `写入 ${target.label}`, percent: 90, current: rules.length, total: rules.length });
+  await fs.writeFile(target.filePath, patchedContent, 'utf8');
 
-  const metadata: PatchMetadata = {
-    cursorRoot: install.root,
-    cursorVersion: install.version,
-    workbenchPath: install.workbenchPath,
-    originalHash,
-    patchedHash,
-    backupPath,
-    appliedRuleIds,
-    appliedAt: new Date().toISOString()
-  };
-  await reportProgress(progress, { message: '保存补丁元数据', percent: 90, current: rules.length, total: rules.length });
-  await context.globalState.update(metadataKey, metadata);
-
-  const after = await scanInstallPatch(
-    install,
-    context,
-    rules,
-    createScopedProgress(progress, 92, 99, '复扫补丁状态'),
-    patchedContent,
-    { scanBackupRuleStatus: false }
-  );
-  await reportProgress(progress, {
-    message: `补丁应用完成，处理 ${appliedRuleIds.length}/${rules.length} 条规则`,
-    percent: 100,
-    current: rules.length,
-    total: rules.length
-  });
   return {
     changed: true,
-    backupPath,
     appliedRuleIds,
     appliedOccurrences,
-    before,
-    after
+    record: {
+      id: target.id,
+      filePath: target.filePath,
+      originalHash,
+      patchedHash: sha256(patchedContent),
+      backupPath
+    }
   };
 }
 
@@ -275,14 +357,13 @@ export async function unapplyWorkbenchPatch(root: string, context: vscode.Extens
   }
 
   const patchData = await loadWorkbenchPatchData(createScopedProgress(progress, 5, 15, '加载补丁数据'));
-  await reportProgress(progress, { message: '读取 workbench 文件', percent: 18 });
-  const currentContent = await fs.readFile(install.workbenchPath, 'utf8');
+  const targets = await filterExistingPatchTargets(resolveWorkbenchPatchTargets(install));
   const before = await scanInstallPatch(
     install,
     context,
     patchData.rules,
     createScopedProgress(progress, 20, 35, '扫描当前状态'),
-    currentContent,
+    undefined,
     { scanBackupRuleStatus: false }
   );
   if (before.targetHits === 0) {
@@ -300,72 +381,31 @@ export async function unapplyWorkbenchPatch(root: string, context: vscode.Extens
     };
   }
 
-  let restoredContent = currentContent;
-  let unappliedOccurrences = 0;
-  const unappliedRuleIds: string[] = [];
   const rules = patchData.rules;
+  let changed = false;
+  let safetyBackupPath: string | undefined;
+  const unappliedRuleIds = new Set<string>();
 
-  for (let index = 0; index < rules.length; index += 1) {
-    const rule = rules[index];
-    const replacement = replaceAllWithCount(restoredContent, rule.target, rule.source);
-    if (replacement.count > 0) {
-      restoredContent = replacement.value;
-      unappliedOccurrences += replacement.count;
-      unappliedRuleIds.push(rule.id);
-    }
-
-    if (shouldYieldPatchProgress(index + 1, rules.length, progress)) {
-      await reportProgress(progress, {
-        message: `卸载补丁规则 ${index + 1}/${rules.length}`,
-        percent: 45 + toPercent(index + 1, rules.length) * 0.3,
-        current: index + 1,
-        total: rules.length
-      });
-      await yieldToEventLoop();
-    }
-  }
-
-  if (restoredContent === currentContent) {
-    const after = await scanInstallPatch(
-      install,
-      context,
-      rules,
-      createScopedProgress(progress, 80, 99, '复扫补丁状态'),
-      restoredContent,
-      { scanBackupRuleStatus: false }
+  for (let targetIndex = 0; targetIndex < targets.length; targetIndex += 1) {
+    const target = targets[targetIndex];
+    const targetProgress = createScopedProgress(
+      progress,
+      35 + toPercent(targetIndex, targets.length) * 55,
+      35 + toPercent(targetIndex + 1, targets.length) * 55,
+      `卸载 ${target.label}`
     );
-    await reportProgress(progress, {
-      message: '补丁未卸载：没有需要还原的内容',
-      percent: 100,
-      current: rules.length,
-      total: rules.length
-    });
-    return {
-      changed: false,
-      unappliedRuleIds,
-      before,
-      after
-    };
+    const result = await unapplyPatchFromTarget(target, install, rules, patchData.runtimePolicy, targetProgress);
+    if (result.changed) {
+      changed = true;
+      safetyBackupPath = result.safetyBackupPath;
+      for (const ruleId of result.unappliedRuleIds) {
+        unappliedRuleIds.add(ruleId);
+      }
+    }
   }
-
-  await assertRuntimePatchIsSafe(
-    restoredContent,
-    currentContent,
-    unappliedRuleIds,
-    unappliedOccurrences,
-    patchData.runtimePolicy,
-    rules.length,
-    createScopedProgress(progress, 76, 84, '校验运行时安全')
-  );
-
-  const safetyBackupPath = backupPathFor(install, 'before-uninstall');
-  await reportProgress(progress, { message: '保存卸载前快照', percent: 86, current: rules.length, total: rules.length });
-  await fs.writeFile(safetyBackupPath, currentContent, 'utf8');
-  await reportProgress(progress, { message: '写入还原后的 workbench 文件', percent: 90, current: rules.length, total: rules.length });
-  await fs.writeFile(install.workbenchPath, restoredContent, 'utf8');
 
   const metadata = getPatchMetadata(context);
-  if (metadata) {
+  if (metadata && changed) {
     const updatedMetadata: PatchMetadata = {
       ...metadata,
       uninstalledAt: new Date().toISOString(),
@@ -379,21 +419,87 @@ export async function unapplyWorkbenchPatch(root: string, context: vscode.Extens
     context,
     rules,
     createScopedProgress(progress, 92, 99, '复扫补丁状态'),
-    restoredContent,
+    undefined,
     { scanBackupRuleStatus: false }
   );
   await reportProgress(progress, {
-    message: `补丁卸载完成，处理 ${unappliedRuleIds.length}/${rules.length} 条规则`,
+    message: `补丁卸载完成，处理 ${unappliedRuleIds.size}/${rules.length} 条规则`,
     percent: 100,
     current: rules.length,
     total: rules.length
   });
   return {
-    changed: true,
+    changed,
     safetyBackupPath,
-    unappliedRuleIds,
+    unappliedRuleIds: [...unappliedRuleIds],
     before,
     after
+  };
+}
+
+interface UnapplyPatchFromTargetResult {
+  readonly changed: boolean;
+  readonly safetyBackupPath?: string;
+  readonly unappliedRuleIds: readonly string[];
+}
+
+async function unapplyPatchFromTarget(
+  target: WorkbenchPatchTarget,
+  install: CursorInstall,
+  rules: readonly WorkbenchPatchRule[],
+  runtimePolicy: WorkbenchPatchRuntimePolicy,
+  progress?: ProgressCallback
+): Promise<UnapplyPatchFromTargetResult> {
+  await reportProgress(progress, { message: `读取 ${target.label}`, percent: 5 });
+  const currentContent = await fs.readFile(target.filePath, 'utf8');
+  let restoredContent = currentContent;
+  let unappliedOccurrences = 0;
+  const unappliedRuleIds: string[] = [];
+
+  for (let index = 0; index < rules.length; index += 1) {
+    const rule = rules[index];
+    const replacement = replaceAllWithCount(restoredContent, rule.target, rule.source);
+    if (replacement.count > 0) {
+      restoredContent = replacement.value;
+      unappliedOccurrences += replacement.count;
+      unappliedRuleIds.push(rule.id);
+    }
+
+    if (shouldYieldPatchProgress(index + 1, rules.length, progress)) {
+      await reportProgress(progress, {
+        message: `卸载 ${target.label} 规则 ${index + 1}/${rules.length}`,
+        percent: 20 + toPercent(index + 1, rules.length) * 0.55,
+        current: index + 1,
+        total: rules.length
+      });
+      await yieldToEventLoop();
+    }
+  }
+
+  if (restoredContent === currentContent) {
+    return { changed: false, unappliedRuleIds };
+  }
+
+  await assertRuntimePatchIsSafe(
+    restoredContent,
+    currentContent,
+    unappliedRuleIds,
+    unappliedOccurrences,
+    runtimePolicy,
+    rules.length,
+    createScopedProgress(progress, 78, 86, `校验 ${target.label} 运行时安全`)
+  );
+
+  const safetyBackupPath = backupPathFor(target, install, 'before-uninstall');
+  await reportProgress(progress, { message: `保存 ${target.label} 卸载前快照`, percent: 88 });
+  await fs.writeFile(safetyBackupPath, currentContent, 'utf8');
+  await reportProgress(progress, { message: `写入还原后的 ${target.label}`, percent: 94 });
+  await fs.writeFile(target.filePath, restoredContent, 'utf8');
+
+  return {
+    changed: true,
+    safetyBackupPath,
+    unappliedRuleIds
   };
 }
 
@@ -405,7 +511,7 @@ export async function restoreWorkbenchBackup(root: string, context: vscode.Exten
 
   const patchData = await loadWorkbenchPatchData(createScopedProgress(progress, 8, 15, '加载补丁数据'));
   const metadata = getPatchMetadata(context);
-  const backups = await scanBackupFiles(
+  const backups = await scanAllBackupFiles(
     install,
     context,
     patchData.rules,
@@ -421,19 +527,24 @@ export async function restoreWorkbenchBackup(root: string, context: vscode.Exten
     throw new Error(backupPath ? `所选备份文件不在当前 Cursor 安装的备份列表中: ${backupPath}` : '没有选择可恢复的补丁备份。');
   }
 
+  const target = getPatchTargetFromBackupName(selectedBackup.name, install);
+  if (!target) {
+    throw new Error(`无法识别备份文件对应的目标: ${selectedBackup.name}`);
+  }
+
   await reportProgress(progress, { message: '校验备份文件', percent: 50, current: 1, total: 1 });
   await assertFile(selectedBackup.path, '备份文件不存在');
 
-  await reportProgress(progress, { message: '读取当前 workbench 文件', percent: 58, current: 1, total: 1 });
-  const currentContent = await fs.readFile(install.workbenchPath, 'utf8');
-  const safetyBackupPath = backupPathFor(install, 'before-restore');
+  await reportProgress(progress, { message: `读取当前 ${target.label}`, percent: 58, current: 1, total: 1 });
+  const currentContent = await fs.readFile(target.filePath, 'utf8');
+  const safetyBackupPath = backupPathFor(target, install, 'before-restore');
   await reportProgress(progress, { message: '保存恢复前快照', percent: 68, current: 1, total: 1 });
   await fs.writeFile(safetyBackupPath, currentContent, 'utf8');
 
   await reportProgress(progress, { message: '读取备份内容', percent: 78, current: 1, total: 1 });
   const backupContent = await fs.readFile(selectedBackup.path, 'utf8');
-  await reportProgress(progress, { message: '写入备份内容', percent: 88, current: 1, total: 1 });
-  await fs.writeFile(install.workbenchPath, backupContent, 'utf8');
+  await reportProgress(progress, { message: `写入 ${target.label} 备份内容`, percent: 88, current: 1, total: 1 });
+  await fs.writeFile(target.filePath, backupContent, 'utf8');
 
   if (metadata) {
     const updatedMetadata: PatchMetadata = {
@@ -465,8 +576,122 @@ export function getPatchMetadata(context: vscode.ExtensionContext): PatchMetadat
   return context.globalState.get<PatchMetadata>(metadataKey);
 }
 
+function resolveWorkbenchPatchTargets(install: CursorInstall): readonly WorkbenchPatchTarget[] {
+  const targets: WorkbenchPatchTarget[] = [{
+    id: 'desktop',
+    filePath: install.workbenchPath,
+    backupFilePrefix: desktopBackupFilePrefix,
+    label: 'workbench.desktop.main.js'
+  }];
+
+  if (install.glassWorkbenchPath) {
+    targets.push({
+      id: 'glass',
+      filePath: install.glassWorkbenchPath,
+      backupFilePrefix: glassBackupFilePrefix,
+      label: 'workbench.glass.main.js'
+    });
+  }
+
+  return targets;
+}
+
+function formatPatchFilePaths(targets: readonly WorkbenchPatchTarget[]): string {
+  return targets.map(target => target.filePath).join('\n');
+}
+
+function getPatchTargetFromBackupName(name: string, install: CursorInstall): WorkbenchPatchTarget | undefined {
+  if (name.startsWith(glassBackupFilePrefix)) {
+    return resolveWorkbenchPatchTargets(install).find(target => target.id === 'glass');
+  }
+
+  return resolveWorkbenchPatchTargets(install).find(target => target.id === 'desktop');
+}
+
+function getMetadataTargetRecord(metadata: PatchMetadata | undefined, targetId: WorkbenchPatchTargetId): PatchTargetRecord | undefined {
+  return metadata?.targets?.find(record => record.id === targetId);
+}
+
+function mergePatchRuleStatuses(allStatuses: readonly (readonly PatchRuleStatus[])[]): readonly PatchRuleStatus[] {
+  const merged = new Map<string, PatchRuleStatus>();
+
+  for (const statuses of allStatuses) {
+    for (const status of statuses) {
+      const existing = merged.get(status.id);
+      if (!existing) {
+        merged.set(status.id, { ...status });
+        continue;
+      }
+
+      merged.set(status.id, {
+        id: status.id,
+        sourceHits: existing.sourceHits + status.sourceHits,
+        targetHits: existing.targetHits + status.targetHits
+      });
+    }
+  }
+
+  return [...merged.values()];
+}
+
 interface ScanInstallPatchOptions {
   readonly scanBackupRuleStatus?: boolean;
+}
+
+async function scanTargetPatch(
+  target: WorkbenchPatchTarget,
+  install: CursorInstall,
+  context: vscode.ExtensionContext,
+  rules: readonly WorkbenchPatchRule[],
+  progress?: ProgressCallback,
+  content?: string,
+  options?: ScanInstallPatchOptions
+): Promise<PatchScanResult> {
+  if (!content) {
+    await reportProgress(progress, { message: `读取 ${target.label}`, percent: 5 });
+  }
+
+  const resolvedContent = content ?? await fs.readFile(target.filePath, 'utf8');
+  const currentHash = sha256(resolvedContent);
+  const ruleStatuses = await getPatchRuleStatuses(
+    resolvedContent,
+    rules,
+    currentHash,
+    createScopedProgress(progress, 15, 75, `扫描 ${target.label} 规则`),
+    progress
+  );
+  const status = getPatchStatusFromRules(ruleStatuses);
+  const metadata = getPatchMetadata(context);
+  const backups = await scanBackupFiles(
+    install,
+    target,
+    context,
+    rules,
+    metadata,
+    createScopedProgress(progress, 80, 98, `扫描 ${target.label} 备份`),
+    options?.scanBackupRuleStatus ?? true
+  );
+
+  await reportProgress(progress, {
+    message: `${target.label} 补丁状态扫描完成，命中 ${status.matchedRules}/${rules.length} 条规则`,
+    percent: 100,
+    current: status.matchedRules,
+    total: rules.length
+  });
+  return {
+    state: status.state,
+    filePath: target.filePath,
+    cursorRoot: install.root,
+    cursorVersion: install.version,
+    currentHash,
+    backupPath: getMetadataTargetRecord(metadata, target.id)?.backupPath ?? (target.id === 'desktop' ? metadata?.backupPath : undefined),
+    backups,
+    totalRules: rules.length,
+    sourceHits: status.sourceHits,
+    targetHits: status.targetHits,
+    matchedRules: status.matchedRules,
+    rules: ruleStatuses
+  };
 }
 
 async function scanInstallPatch(
@@ -477,53 +702,62 @@ async function scanInstallPatch(
   content?: string,
   options?: ScanInstallPatchOptions
 ): Promise<PatchScanResult> {
-  if (!content) {
-    await reportProgress(progress, { message: '读取 workbench 文件', percent: 5 });
+  const targets = await filterExistingPatchTargets(resolveWorkbenchPatchTargets(install));
+  if (targets.length === 0) {
+    throw new Error('未找到可补丁的 workbench 文件。');
   }
 
-  const resolvedContent = content ?? await fs.readFile(install.workbenchPath, 'utf8');
-  const currentHash = sha256(resolvedContent);
-  const ruleStatuses = await getPatchRuleStatuses(
-    resolvedContent,
-    rules,
-    currentHash,
-    createScopedProgress(progress, 15, 75, '扫描规则'),
-    progress
-  );
-  const status = getPatchStatusFromRules(ruleStatuses);
-  const metadata = getPatchMetadata(context);
-  const backups = await scanBackupFiles(
-    install,
-    context,
-    rules,
-    metadata,
-    createScopedProgress(progress, 80, 98, '扫描备份'),
-    options?.scanBackupRuleStatus ?? true
-  );
+  if (content !== undefined && targets.length === 1) {
+    return scanTargetPatch(targets[0], install, context, rules, progress, content, options);
+  }
 
-  await reportProgress(progress, {
-    message: `补丁状态扫描完成，命中 ${status.matchedRules}/${rules.length} 条规则`,
-    percent: 100,
-    current: status.matchedRules,
-    total: rules.length
-  });
+  const scans: PatchScanResult[] = [];
+  for (let index = 0; index < targets.length; index += 1) {
+    const target = targets[index];
+    scans.push(await scanTargetPatch(
+      target,
+      install,
+      context,
+      rules,
+      createScopedProgress(progress, toPercent(index, targets.length), toPercent(index + 1, targets.length)),
+      undefined,
+      options
+    ));
+  }
+
+  const mergedRules = mergePatchRuleStatuses(scans.map(scan => scan.rules));
+  const mergedStatus = getPatchStatusFromRules(mergedRules);
+  const backups = scans.flatMap(scan => scan.backups).sort((left, right) => Date.parse(right.modifiedAt) - Date.parse(left.modifiedAt));
+
   return {
-    state: status.state,
-    filePath: install.workbenchPath,
+    state: mergedStatus.state,
+    filePath: formatPatchFilePaths(targets),
     cursorRoot: install.root,
     cursorVersion: install.version,
-    currentHash,
-    backupPath: metadata?.backupPath,
+    currentHash: scans.map(scan => `${scan.filePath}:${scan.currentHash}`).join('\n'),
+    backupPath: scans.find(scan => scan.backupPath)?.backupPath,
     backups,
     totalRules: rules.length,
-    sourceHits: status.sourceHits,
-    targetHits: status.targetHits,
-    matchedRules: status.matchedRules,
-    rules: ruleStatuses
+    sourceHits: mergedStatus.sourceHits,
+    targetHits: mergedStatus.targetHits,
+    matchedRules: mergedStatus.matchedRules,
+    rules: mergedRules
   };
 }
 
-async function scanBackupFiles(
+async function filterExistingPatchTargets(targets: readonly WorkbenchPatchTarget[]): Promise<WorkbenchPatchTarget[]> {
+  const existing: WorkbenchPatchTarget[] = [];
+
+  for (const target of targets) {
+    if (await fileExists(target.filePath)) {
+      existing.push(target);
+    }
+  }
+
+  return existing;
+}
+
+async function scanAllBackupFiles(
   install: CursorInstall,
   context: vscode.ExtensionContext,
   rules: readonly WorkbenchPatchRule[],
@@ -531,33 +765,60 @@ async function scanBackupFiles(
   progress?: ProgressCallback,
   scanRuleStatus = true
 ): Promise<PatchBackupInfo[]> {
-  const directory = path.dirname(install.workbenchPath);
+  const targets = await filterExistingPatchTargets(resolveWorkbenchPatchTargets(install));
+  const backups: PatchBackupInfo[] = [];
+
+  for (const target of targets) {
+    backups.push(...await scanBackupFiles(
+      install,
+      target,
+      context,
+      rules,
+      metadata,
+      progress,
+      scanRuleStatus
+    ));
+  }
+
+  return backups.sort((left, right) => Date.parse(right.modifiedAt) - Date.parse(left.modifiedAt));
+}
+
+async function scanBackupFiles(
+  install: CursorInstall,
+  target: WorkbenchPatchTarget,
+  context: vscode.ExtensionContext,
+  rules: readonly WorkbenchPatchRule[],
+  metadata: PatchMetadata | undefined,
+  progress?: ProgressCallback,
+  scanRuleStatus = true
+): Promise<PatchBackupInfo[]> {
+  const directory = path.dirname(target.filePath);
   let entries: string[];
 
-  await reportProgress(progress, { message: '读取备份目录', percent: 0 });
+  await reportProgress(progress, { message: `读取 ${target.label} 备份目录`, percent: 0 });
   try {
     entries = await fs.readdir(directory);
   } catch {
-    await reportProgress(progress, { message: '备份目录不可读取', percent: 100, current: 0, total: 0 });
+    await reportProgress(progress, { message: `${target.label} 备份目录不可读取`, percent: 100, current: 0, total: 0 });
     return [];
   }
 
-  const names = entries.filter(name => name.startsWith(backupFilePrefix));
+  const names = entries.filter(name => name.startsWith(target.backupFilePrefix));
   const backups: PatchBackupInfo[] = [];
   if (names.length === 0) {
-    await reportProgress(progress, { message: '未发现备份文件', percent: 100, current: 0, total: 0 });
+    await reportProgress(progress, { message: `未发现 ${target.label} 备份文件`, percent: 100, current: 0, total: 0 });
     return [];
   }
 
   for (let index = 0; index < names.length; index += 1) {
-    const backup = await readPatchBackupInfo(directory, names[index], metadata, rules, scanRuleStatus);
+    const backup = await readPatchBackupInfo(target, directory, names[index], metadata, rules, scanRuleStatus);
     if (backup) {
       backups.push(backup);
     }
 
     if (shouldYieldPatchProgress(index + 1, names.length, progress)) {
       await reportProgress(progress, {
-        message: `扫描备份文件 ${index + 1}/${names.length}`,
+        message: `扫描 ${target.label} 备份 ${index + 1}/${names.length}`,
         percent: toPercent(index + 1, names.length),
         current: index + 1,
         total: names.length
@@ -570,6 +831,7 @@ async function scanBackupFiles(
 }
 
 async function readPatchBackupInfo(
+  target: WorkbenchPatchTarget,
   directory: string,
   name: string,
   metadata: PatchMetadata | undefined,
@@ -599,7 +861,7 @@ async function readPatchBackupInfo(
         name,
         kind,
         isOriginal: kind === 'original' && status.state === 'not-applied',
-        currentMetadataBackup: metadata?.backupPath ? samePath(filePath, metadata.backupPath) : false,
+        currentMetadataBackup: isCurrentMetadataBackup(filePath, target.id, metadata),
         hash,
         size: stat.size,
         modifiedAt: stat.mtime.toISOString(),
@@ -616,7 +878,7 @@ async function readPatchBackupInfo(
       name,
       kind,
       isOriginal: kind === 'original' && status.state === 'not-applied',
-      currentMetadataBackup: metadata?.backupPath ? samePath(filePath, metadata.backupPath) : false,
+      currentMetadataBackup: isCurrentMetadataBackup(filePath, target.id, metadata),
       hash,
       size: stat.size,
       modifiedAt: stat.mtime.toISOString(),
@@ -636,6 +898,14 @@ function shouldYieldPatchProgress(current: number, total: number, progress?: Pro
 }
 
 function getBackupInferredHash(filePath: string, metadata: PatchMetadata | undefined): string {
+  if (metadata?.targets) {
+    for (const target of metadata.targets) {
+      if (samePath(filePath, target.backupPath)) {
+        return target.originalHash;
+      }
+    }
+  }
+
   if (metadata?.backupPath && samePath(filePath, metadata.backupPath)) {
     return metadata.originalHash;
   }
@@ -648,6 +918,18 @@ function inferBackupPatchStatus(
   kind: PatchBackupKind,
   metadata: PatchMetadata | undefined
 ): PatchBackupStatus | undefined {
+  if (metadata?.targets) {
+    for (const target of metadata.targets) {
+      if (target.originalHash && hash === target.originalHash) {
+        return { state: 'not-applied', sourceHits: 0, targetHits: 0, matchedRules: 0 };
+      }
+
+      if (target.patchedHash && hash === target.patchedHash) {
+        return { state: 'applied', sourceHits: 0, targetHits: 0, matchedRules: 0 };
+      }
+    }
+  }
+
   if (metadata?.originalHash && hash === metadata.originalHash) {
     return { state: 'not-applied', sourceHits: 0, targetHits: 0, matchedRules: 0 };
   }
@@ -664,19 +946,30 @@ function inferBackupPatchStatus(
 }
 
 function getPatchBackupKind(name: string): PatchBackupKind {
-  if (name.startsWith(`${backupFilePrefix}bak.`)) {
-    return 'original';
-  }
+  for (const prefix of backupFilePrefixes) {
+    if (name.startsWith(`${prefix}bak.`)) {
+      return 'original';
+    }
 
-  if (name.startsWith(`${backupFilePrefix}before-restore.`)) {
-    return 'before-restore';
-  }
+    if (name.startsWith(`${prefix}before-restore.`)) {
+      return 'before-restore';
+    }
 
-  if (name.startsWith(`${backupFilePrefix}before-uninstall.`)) {
-    return 'before-uninstall';
+    if (name.startsWith(`${prefix}before-uninstall.`)) {
+      return 'before-uninstall';
+    }
   }
 
   return 'unknown';
+}
+
+function isCurrentMetadataBackup(filePath: string, targetId: WorkbenchPatchTargetId, metadata: PatchMetadata | undefined): boolean {
+  const targetRecord = getMetadataTargetRecord(metadata, targetId);
+  if (targetRecord?.backupPath) {
+    return samePath(filePath, targetRecord.backupPath);
+  }
+
+  return targetId === 'desktop' ? Boolean(metadata?.backupPath && samePath(filePath, metadata.backupPath)) : false;
 }
 
 async function getPatchContentStatus(content: string, rules: readonly WorkbenchPatchRule[]): Promise<PatchBackupStatus> {
@@ -748,21 +1041,29 @@ function getPatchStatusFromRules(rules: readonly PatchRuleStatus[]): PatchBackup
   };
 }
 
-async function ensureBackup(install: CursorInstall, content: string, context: vscode.ExtensionContext): Promise<string> {
+async function ensureBackup(
+  target: WorkbenchPatchTarget,
+  install: CursorInstall,
+  content: string,
+  context: vscode.ExtensionContext
+): Promise<string> {
   const metadata = getPatchMetadata(context);
-  if (metadata?.backupPath && await fileExists(metadata.backupPath)) {
-    return metadata.backupPath;
+  const existingBackupPath = getMetadataTargetRecord(metadata, target.id)?.backupPath
+    ?? (target.id === 'desktop' ? metadata?.backupPath : undefined);
+
+  if (existingBackupPath && await fileExists(existingBackupPath)) {
+    return existingBackupPath;
   }
 
-  const backupPath = backupPathFor(install, 'bak');
+  const backupPath = backupPathFor(target, install, 'bak');
   await fs.writeFile(backupPath, content, 'utf8');
   return backupPath;
 }
 
-function backupPathFor(install: CursorInstall, kind: 'bak' | 'before-restore' | 'before-uninstall'): string {
+function backupPathFor(target: WorkbenchPatchTarget, install: CursorInstall, kind: 'bak' | 'before-restore' | 'before-uninstall'): string {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const version = install.version ?? 'unknown';
-  return path.join(path.dirname(install.workbenchPath), `${backupFilePrefix}${kind}.${version}.${timestamp}`);
+  return path.join(path.dirname(target.filePath), `${target.backupFilePrefix}${kind}.${version}.${timestamp}`);
 }
 
 function samePath(left: string, right: string): boolean {

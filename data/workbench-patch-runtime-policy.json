@@ -531,7 +531,17 @@
     "title:\"Docs\",description:\"爬取并索引自定义资源和开发者文档\"",
     "u5C=Re(",
     "z8C=Re(",
-    "e?.dontShowPrompt&&e.commit===this.productService.commit"
+    "e?.dontShowPrompt&&e.commit===this.productService.commit",
+    "p2h=\"Agents Window\"",
+    "{menuId:Nt.Menubar",
+    "ka({id:",
+    "menu:{column:Nt.Menubar",
+    "order:10,title:\"Status Bar\"",
+    "automations:{id:\"automations\"",
+    "settings:{id:\"settings\",iconName:\"settings-gear\",label:\"Settings\",placeholderContent:\"Cursor Settings\"",
+    "original:\"Open Customize\"",
+    "Ie(li.Section,{title:\"Workspaces\"",
+    "B(\"glass.terminal"
   ],
   "guardedRuntimeNeedles": [
     "globalStorage",

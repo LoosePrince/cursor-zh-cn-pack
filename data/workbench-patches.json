@@ -4330,5 +4330,175 @@
     "source": "e?.dontShowPrompt&&e.commit===this.productService.commit||this._showNotification()}async _isExplainedByPendingUpdate()",
     "target": "e?.dontShowPrompt&&e.commit===this.productService.commit||void 0}async _isExplainedByPendingUpdate()",
     "note": "汉化补丁会触发完整性校验失败；跳过 corrupt 安装提示，避免误导用户重装"
+  },
+  {
+    "id": "workbench.glass.window-title",
+    "source": "p2h=\"Agents Window\"",
+    "target": "p2h=\"智能体窗口\""
+  },
+  {
+    "id": "workbench.glass.menubar.file",
+    "source": "{menuId:Nt.MenubarFileMenu,label:\"File\",trigger:\"text\"}",
+    "target": "{menuId:Nt.MenubarFileMenu,label:\"文件\",trigger:\"text\"}"
+  },
+  {
+    "id": "workbench.glass.menubar.edit",
+    "source": "{menuId:Nt.MenubarEditMenu,label:\"Edit\",trigger:\"text\"}",
+    "target": "{menuId:Nt.MenubarEditMenu,label:\"编辑\",trigger:\"text\"}"
+  },
+  {
+    "id": "workbench.glass.menubar.view",
+    "source": "{menuId:Nt.MenubarViewMenu,label:\"View\",trigger:\"text\"}",
+    "target": "{menuId:Nt.MenubarViewMenu,label:\"视图\",trigger:\"text\"}"
+  },
+  {
+    "id": "workbench.glass.menubar.help",
+    "source": "{menuId:Nt.MenubarHelpMenu,label:\"Help\",trigger:\"text\"}",
+    "target": "{menuId:Nt.MenubarHelpMenu,label:\"帮助\",trigger:\"text\"}"
+  },
+  {
+    "id": "workbench.glass.file.new-agent",
+    "source": "ka({id:wJg,title:\"New Agent\",icon:\"agent\",f1:!1,keybindingCategory:Qu.GENERAL,keybinding:{weight:bx,primary:2092},menu:{column:Nt.MenubarFileMenu,group:\"1_new\",order:0,title:\"New Agent\"}",
+    "target": "ka({id:wJg,title:\"新建智能体\",icon:\"agent\",f1:!1,keybindingCategory:Qu.GENERAL,keybinding:{weight:bx,primary:2092},menu:{column:Nt.MenubarFileMenu,group:\"1_new\",order:0,title:\"新建智能体\"}"
+  },
+  {
+    "id": "workbench.glass.file.open-folder",
+    "source": "ka({id:_Jg,title:\"Open Folder\",icon:\"folder-open\"",
+    "target": "ka({id:_Jg,title:\"打开文件夹\",icon:\"folder-open\""
+  },
+  {
+    "id": "workbench.glass.file.new-terminal",
+    "source": "ka({id:\"newTerminal\",title:\"New Terminal\",icon:\"terminal\"",
+    "target": "ka({id:\"newTerminal\",title:\"新建终端\",icon:\"terminal\""
+  },
+  {
+    "id": "workbench.glass.file.new-browser",
+    "source": "ka({id:kcv,title:\"New Browser\",icon:\"globe\"",
+    "target": "ka({id:kcv,title:\"新建浏览器\",icon:\"globe\""
+  },
+  {
+    "id": "workbench.glass.file.open-editor-window",
+    "source": "ka({id:\"openIde\",title:\"Open Editor Window\",icon:\"window\"",
+    "target": "ka({id:\"openIde\",title:\"打开编辑器窗口\",icon:\"window\""
+  },
+  {
+    "id": "workbench.glass.file.exit",
+    "source": "menu:{column:Nt.MenubarFileMenu,group:\"9_exit\",order:0,title:\"Exit\"}",
+    "target": "menu:{column:Nt.MenubarFileMenu,group:\"9_exit\",order:0,title:\"退出\"}"
+  },
+  {
+    "id": "workbench.glass.edit.undo",
+    "source": "ka({id:qBk,title:\"Undo\",icon:\"file\"",
+    "target": "ka({id:qBk,title:\"撤销\",icon:\"file\""
+  },
+  {
+    "id": "workbench.glass.edit.redo",
+    "source": "ka({id:UBk,title:\"Redo\",icon:\"file\"",
+    "target": "ka({id:UBk,title:\"重做\",icon:\"file\""
+  },
+  {
+    "id": "workbench.glass.edit.cut",
+    "source": "ka({id:$Bk,title:\"Cut\",icon:\"file\"",
+    "target": "ka({id:$Bk,title:\"剪切\",icon:\"file\""
+  },
+  {
+    "id": "workbench.glass.edit.copy",
+    "source": "ka({id:JBk,title:\"Copy\",icon:\"file\"",
+    "target": "ka({id:JBk,title:\"复制\",icon:\"file\""
+  },
+  {
+    "id": "workbench.glass.edit.paste",
+    "source": "ka({id:GBk,title:\"Paste\",icon:\"file\"",
+    "target": "ka({id:GBk,title:\"粘贴\",icon:\"file\""
+  },
+  {
+    "id": "workbench.glass.edit.select-all",
+    "source": "ka({id:WBk,title:\"Select All\",icon:\"file\"",
+    "target": "ka({id:WBk,title:\"全选\",icon:\"file\""
+  },
+  {
+    "id": "workbench.glass.view.changes",
+    "source": "menu:{column:Nt.MenubarViewMenu,group:\"1_open\",order:1,title:\"Changes\"}",
+    "target": "menu:{column:Nt.MenubarViewMenu,group:\"1_open\",order:1,title:\"更改\"}"
+  },
+  {
+    "id": "workbench.glass.view.browser",
+    "source": "menu:{column:Nt.MenubarViewMenu,group:\"1_open\",order:2,title:\"Browser\"}",
+    "target": "menu:{column:Nt.MenubarViewMenu,group:\"1_open\",order:2,title:\"浏览器\"}"
+  },
+  {
+    "id": "workbench.glass.view.files",
+    "source": "menu:{column:Nt.MenubarViewMenu,group:\"1_open\",order:3,title:\"Files\"}",
+    "target": "menu:{column:Nt.MenubarViewMenu,group:\"1_open\",order:3,title:\"文件\"}"
+  },
+  {
+    "id": "workbench.glass.view.terminal",
+    "source": "menu:{column:Nt.MenubarViewMenu,group:\"1_open\",order:4,title:\"Terminal\"}",
+    "target": "menu:{column:Nt.MenubarViewMenu,group:\"1_open\",order:4,title:\"终端\"}"
+  },
+  {
+    "id": "workbench.glass.view.status-bar",
+    "source": "order:10,title:\"Status Bar\",toggled",
+    "target": "order:10,title:\"状态栏\",toggled"
+  },
+  {
+    "id": "workbench.glass.view.zoom-in",
+    "source": "ka({id:\"zoomIn\",title:\"Zoom In\",icon:\"zoom-in\"",
+    "target": "ka({id:\"zoomIn\",title:\"放大\",icon:\"zoom-in\""
+  },
+  {
+    "id": "workbench.glass.view.zoom-out",
+    "source": "ka({id:\"zoomOut\",title:\"Zoom Out\",icon:\"zoom-out\"",
+    "target": "ka({id:\"zoomOut\",title:\"缩小\",icon:\"zoom-out\""
+  },
+  {
+    "id": "workbench.glass.view.zoom-reset",
+    "source": "ka({id:\"zoomReset\",title:\"Reset Zoom\",icon:\"search\"",
+    "target": "ka({id:\"zoomReset\",title:\"重置缩放\",icon:\"search\""
+  },
+  {
+    "id": "workbench.glass.view.settings",
+    "source": "ka({id:puv,title:\"Settings\",icon:\"settings-gear\"",
+    "target": "ka({id:puv,title:\"设置\",icon:\"settings-gear\""
+  },
+  {
+    "id": "workbench.glass.help.command-palette",
+    "source": "ka({id:Qlv,title:\"Command Palette\",icon:\"search\",menu:{column:Nt.MenubarHelpMenu,group:\"1_welcome\",order:2,title:\"Command Palette\"}",
+    "target": "ka({id:Qlv,title:\"命令面板\",icon:\"search\",menu:{column:Nt.MenubarHelpMenu,group:\"1_welcome\",order:2,title:\"命令面板\"}"
+  },
+  {
+    "id": "workbench.glass.help.keyboard-shortcuts",
+    "source": "ka({id:guv,title:\"Keyboard Shortcuts\",icon:\"keyboard\"",
+    "target": "ka({id:guv,title:\"键盘快捷键\",icon:\"keyboard\""
+  },
+  {
+    "id": "workbench.glass.help.view-license",
+    "source": "ka({id:Ldv,title:\"View License\",icon:\"globe\",f1:!1,hidden:!0,menu:{column:Nt.MenubarHelpMenu,group:\"4_legal\",order:1,title:\"View License\"}",
+    "target": "ka({id:Ldv,title:\"查看许可证\",icon:\"globe\",f1:!1,hidden:!0,menu:{column:Nt.MenubarHelpMenu,group:\"4_legal\",order:1,title:\"查看许可证\"}"
+  },
+  {
+    "id": "workbench.glass.sidebar.automations",
+    "source": "automations:{id:\"automations\",iconName:\"robot\",label:\"Automations\"",
+    "target": "automations:{id:\"automations\",iconName:\"robot\",label:\"自动化\""
+  },
+  {
+    "id": "workbench.glass.sidebar.settings",
+    "source": "settings:{id:\"settings\",iconName:\"settings-gear\",label:\"Settings\",placeholderContent:\"Cursor Settings\"",
+    "target": "settings:{id:\"settings\",iconName:\"settings-gear\",label:\"设置\",placeholderContent:\"Cursor 设置\""
+  },
+  {
+    "id": "workbench.glass.title.open-customize-v2",
+    "source": "original:\"Open Customize\"",
+    "target": "original:\"打开自定义\""
+  },
+  {
+    "id": "workbench.glass.workspaces.section-title",
+    "source": "Ie(li.Section,{title:\"Workspaces\"",
+    "target": "Ie(li.Section,{title:\"工作区\""
+  },
+  {
+    "id": "workbench.glass.terminal.new-terminal-title-v2",
+    "source": "B(\"glass.terminal.treeNewTerminal\",\"New Terminal\")",
+    "target": "B(\"glass.terminal.treeNewTerminal\",\"新建终端\")"
   }
 ]
