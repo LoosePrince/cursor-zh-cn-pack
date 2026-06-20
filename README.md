@@ -1,70 +1,166 @@
 # Cursor 简体中文语言包
 
-这是一个面向 Windows 版本 Cursor 的补充语言包扩展：
-本插件只处理 Cursor 专用扩展和 Cursor 私有硬编码界面；
-VS Code 基础翻译请使用官方的 `MS-CEINTL.vscode-language-pack-zh-hans`。
+面向 Windows 版 Cursor 的**补充**语言包扩展：只处理 Cursor 专用扩展和 Cursor 私有硬编码界面；VS Code 基础翻译请使用官方扩展 `MS-CEINTL.vscode-language-pack-zh-hans`。
+
+当前版本：**1.2.0**（以 `package.json` 为准）。
 
 ## 覆盖范围
 
-- Cursor 专用可本地化扩展，例如 `anysphere.cursor-*`。
-- 可选补丁 `workbench.desktop.main.js` 中高置信度的 Cursor 私有硬编码设置页文案。
-- 不生成、不打包 `translations/main.i18n.json`。
-- 不生成、不打包 `vscode.*`、`ms-vscode.*` 等官方/通用内置扩展翻译。
-- Cursor 版本理论需要大于等于 `3.4.17` （截至2626/5/23可在官网下载到的最新版本）。
+| 层级 | 目标 | 说明 |
+|------|------|------|
+| 扩展 NLS | `anysphere.cursor-*` | 通过标准 Language Pack 机制加载 |
+| Workbench 硬编码 | `workbench.desktop.main.js` | 主 Cursor 界面（设置、Composer、菜单等） |
+| Agents Window | `workbench.glass.main.js` | 智能体窗口界面及其内置 Settings（与主设置同源） |
+| NLS 消息表 | `nls.messages.json` | 少量未进入扩展包、但写入全局消息表的私有文案 |
 
-标准语言包资源不会修改 Cursor 安装目录的文件。只有在命令面板中打开 `Cursor 汉化管理器` 并点击 `应用补丁` 时，才会修改 Cursor 安装目录下的 `workbench.desktop.main.js`。补丁会先生成备份，并支持从管理器恢复。
+**不会**生成或打包 `translations/main.i18n.json`，也不会复制 `vscode.*`、`ms-vscode.*` 等官方内置扩展翻译。
+
+标准 Language Pack 资源**不会**修改 Cursor 安装目录。只有在命令面板打开 **Cursor 汉化管理器** 并点击 **应用汉化补丁** 时，才会写入上述 Workbench / NLS 目标文件；写入前会自动备份，并支持从管理器恢复。
+
+建议 Cursor 版本 **≥ 3.4.17**（已在 3.8.x 上验证 Agents Window 双 bundle 补丁）。
 
 ## 基础中文语言包
 
-请使用官方扩展提供 VS Code 基础中文翻译：
+请先安装官方 VS Code 简体中文语言包：
 
 ```powershell
 cursor --install-extension MS-CEINTL.vscode-language-pack-zh-hans
 ```
 
-本插件只作为 Cursor 专用补充层，不会复制和覆盖官方完整翻译。
+本扩展只作为 Cursor 专用补充层，不会覆盖官方完整翻译。
 
-## 生成翻译
+## 安装和启用
 
-默认扫描 `D:\cursor`
+```powershell
+cursor --install-extension MS-CEINTL.vscode-language-pack-zh-hans
+cursor --install-extension .\cursor-zh-cn-pack-1.2.0.vsix
+```
+
+安装后在 Cursor 中：
+
+1. 打开命令面板，运行 `Configure Display Language`
+2. 选择 `zh-cn` / `简体中文`
+3. 重启 Cursor
+4. 打开 **Cursor 汉化管理器**，识别安装目录并 **应用汉化补丁**
+5. 使用 **一键重启并清理 Cursor**，然后重新打开 **智能体窗口**（若使用 Agents Window）
+
+## Cursor 汉化管理器
+
+命令面板运行 `Cursor 汉化管理器`，提供一站式流程：
+
+- 自动 / 手动识别 Cursor 安装目录
+- 扫描 Workbench（desktop + glass）、NLS 消息表、运行时 UI 缓存状态
+- **应用汉化补丁**（Workbench + NLS 一并处理）
+- **卸载补丁**、分别恢复 Workbench / NLS 备份
+- **清理运行时 UI 状态**（`state.vscdb` 中英文界面缓存）
+- **一键重启并清理 Cursor**（独立助手：关闭进程 → 清理缓存 → 重启）
+- 操作日志与备份列表
+
+### 补丁目标（一次应用，多文件写入）
+
+| 文件 | 路径（相对 `resources/app`） |
+|------|------------------------------|
+| 主 Workbench | `out/vs/workbench/workbench.desktop.main.js` |
+| Agents Window | `out/vs/workbench/workbench.glass.main.js`（存在则自动补丁） |
+| NLS 消息表 | `out/nls.messages.json`（依赖 `out/nls.keys.json` 索引） |
+
+若安装目录中不存在 `workbench.glass.main.js`（较旧版本），扩展会跳过 glass，仅处理 desktop。
+
+### 目录校验
+
+有效 Cursor 根目录需包含：
+
+- `resources/app/package.json`
+- `resources/app/out/nls.keys.json`
+- `resources/app/out/nls.messages.json`
+- `resources/app/out/vs/workbench/workbench.desktop.main.js`
+
+自动识别顺序：已保存配置 → 运行中的 `Cursor.exe` → `PATH` → 注册表 → 常见安装路径。
+
+### 推荐流程（5 步）
+
+1. **识别目录** — 一键识别或手动选择
+2. **重新扫描状态** — 只读，不写入
+3. **应用汉化补丁** — 写入并备份
+4. **一键重启并清理 Cursor** — 刷新已加载界面与 UI 缓存
+5. **恢复备份**（可选）— Workbench 与 NLS 备份分开恢复
+
+## 补丁说明
+
+补丁针对 Cursor 私有界面中**未走标准 NLS** 的硬编码文案，例如设置页（General、Models、Indexing、Network、Beta 等）、Composer / Agent 菜单、Agents Window 菜单栏与侧栏、完整性提示改写等。
+
+当前规则规模（随版本迭代）：
+
+- Workbench 补丁规则：约 **900** 条（`data/workbench-patches.json`）
+- NLS 消息表规则：约 **17** 条（`data/nls-message-patches.json`）
+- 运行时安全策略：`data/workbench-patch-runtime-policy.json`（安全前缀、命中上限、受保护关键字）
+
+### 策略要点
+
+- 修改前计算目标文件 SHA-256；首次应用在同目录生成带版本与时间戳的备份
+- desktop 与 glass **各自独立备份**（前缀分别为 `workbench.desktop.main.js.cursor-zh-cn-pack.*` 与 `workbench.glass.main.js.cursor-zh-cn-pack.*`）
+- 规则按**模块上下文前缀**匹配（如 `label:`、`settings.*` 块），不做裸词全局替换
+- 加载时校验每条规则 `source` / `target` **括号结构一致**，避免破坏 bundle 语法
+- 应用前校验命中数、变更行数与受保护运行时关键字
+- 汉化后会触发 Cursor 完整性校验；扩展会替换相关提示文案，并在可能时抑制误导性的 “installation corrupt” 弹窗
+
+Cursor 升级后 bundle 可能被覆盖或压缩符号变化，需重新扫描并应用补丁。若状态为 **未知** 或 **部分应用**，先确认版本与路径，勿盲目重复写入。
+
+## 维护者：生成与扫描
+
+默认扫描目录为 `D:\cursor`，可通过环境变量 `CURSOR_ROOT` 或命令行参数覆盖。
+
+### 提取 Cursor 专用扩展翻译
 
 ```powershell
 npm run extract
-```
-
-也可以指定 Cursor 根目录：
-
-```powershell
+# 或
 node .\scripts\extract-cursor-nls.mjs D:\cursor
 ```
 
-生成结果：
+产物：
 
 - `translations/extensions/anysphere.cursor-*.i18n.json`
 - `reports/untranslated-extensions.json`
 
-运行生成脚本时会清理旧的完整主包和官方/通用内置扩展翻译产物，包括 `translations/main.i18n.json` 和 `translations/extensions/vscode*.i18n.json` 等。硬编码在 Cursor 主 bundle 中的文案不会被写入语言包资源，只能通过管理器中的补丁功能处理。
+运行时会清理旧的 `translations/main.i18n.json` 及非 Cursor 专用扩展翻译，避免与官方语言包冲突。
 
-## 检索 workbench 未汉化硬编码文案
-
-默认扫描 `D:\cursor` 中的 `workbench.desktop.main.js`：
+### 扫描 Workbench 未汉化硬编码
 
 ```powershell
 npm run scan:workbench
-```
-
-也可以指定 Cursor 根目录：
-
-```powershell
+# 或
 node .\scripts\scan-workbench-untranslated.mjs D:\cursor
 ```
 
-生成结果：
+产物：
 
-- `reports/workbench-untranslated.json`：完整候选、出现次数、位置和上下文。
-- `reports/workbench-untranslated.md`：便于人工筛选的候选表。
+- `reports/workbench-untranslated.json`
+- `reports/workbench-untranslated.md`
 
-扫描脚本只负责发现疑似未汉化英文硬编码字符串，不会修改 Cursor 安装目录。候选过滤规则位于 `data/workbench-untranslated-scan-config.json`，重点观察词位于 `data/workbench-hardcoded-needles.json`，补丁替换表位于 `data/workbench-patches.json`，避免把汉化列表直接内嵌到脚本代码中。
+### 提取可写入补丁表的 source 候选
+
+```powershell
+npm run scan:patch-sources
+# 或
+node .\scripts\extract-workbench-patch-sources.mjs D:\cursor
+```
+
+产物：
+
+- `reports/workbench-patch-source-candidates.json` / `.md`
+- `data/workbench-patches.staging.json`
+
+相关配置：
+
+| 文件 | 用途 |
+|------|------|
+| `data/workbench-untranslated-scan-config.json` | 扫描范围与过滤 |
+| `data/workbench-hardcoded-needles.json` | 重点观察词 |
+| `data/workbench-patches.json` | 正式补丁替换表 |
+| `data/workbench-patch-runtime-policy.json` | 运行时安全策略 |
+| `data/nls-message-patches.json` | NLS 消息表补丁 |
+| `data/nls-exact-translations.json` | 提取脚本用的精确翻译表 |
 
 ## 开发与打包
 
@@ -75,78 +171,37 @@ npm run package
 npm run release:build
 ```
 
-产物说明：
+| 命令 | 说明 |
+|------|------|
+| `npm run compile` | 编译 TypeScript 扩展 |
+| `npm run package` | 生成当前版本 `.vsix` |
+| `npm run release:build` | 在 `artifacts/release/` 生成 GitHub Release 资产 |
+| `npm run build` | 同步版本 + 提取扩展翻译 + 编译 |
 
-- `npm run package` 会生成当前版本的 `.vsix`。
-- `npm run release:build` 会在 `artifacts/release/` 生成 GitHub 发布所需的 4 个文件。
-- 打包前会自动执行版本同步，版本以 `package.json` 为准，并同步到 `package-lock.json`。
-- 推到 `main` / `master` 时，工作流会读取最新一次提交信息；只有命中发布格式才会自动创建或更新 GitHub Release。
-- 固定文件名版本描述文件为 `cursor-zh-cn-pack-release.json`，其中包含更新日志、4 个发布资产下载地址、文件大小、哈希和规则统计。
+打包前自动执行 `version:sync`（版本以 `package.json` 为准）。推到 `main` / `master` 时，若提交信息符合发布格式，工作流会自动创建或更新 GitHub Release。
 
-提交信息格式：
+提交信息示例：
 
 ```text
-v1.0.0
-- 第一个正式版本发布
-- 第一个正式版仅覆盖了常规模式下的cursor的大部分英文UI文本
+v1.2.0
+- 支持 Agents Window（workbench.glass.main.js）双 bundle 补丁
+- 补充设置页与 NLS 消息表汉化规则
 ```
-
-## 安装和启用
-
-```powershell
-cursor --install-extension MS-CEINTL.vscode-language-pack-zh-hans
-cursor --install-extension .\cursor-zh-cn-pack-1.0.0.vsix
-```
-
-安装后在 Cursor 中执行：
-
-1. 打开命令面板。
-2. 运行 `Configure Display Language`。
-3. 选择 `zh-cn` / `简体中文`。
-4. 重启 Cursor。
-
-## Cursor 汉化管理器
-
-安装扩展后，在命令面板运行 `Cursor 汉化管理器`。
-
-管理器提供：
-
-- 自动识别 Cursor 安装目录。
-- 手动选择并保存 Cursor 安装目录。
-- 显示语言包状态、补丁状态、备份路径、当前文件哈希和操作日志。
-- 对 `workbench.desktop.main.js` 应用补丁式汉化。
-- 从备份恢复补丁前文件；恢复前会再次备份当前文件，避免覆盖手动修改。
-
-自动识别会优先使用 `cursorZhCn.cursorRoot` 配置，然后检查正在运行的 `Cursor.exe`、`PATH`、常见安装路径和注册表卸载项。有效 Cursor 根目录必须包含：
-
-- `resources\app\out\nls.keys.json`
-- `resources\app\out\nls.messages.json`
-- `resources\app\out\vs\workbench\workbench.desktop.main.js`
-
-## 补丁说明
-
-补丁目标是 Cursor 私有设置页和常用界面中没有进入 NLS 表的硬编码文案，例如 `Plan & Usage`、`Agents`、`Models`、`Tools & MCPs`、`Cursor Account`、聊天标题栏、Agent 菜单、Composer 文案和编辑应用按钮等。
-
-这些硬编码文本是本项目最主要的麻烦来源：同一个界面里有的词走标准语言包，有的词直接写死在压缩后的主 bundle 里，短词还会混在命令、状态、配置键和值里。结果就是用户看到一半中文一半英文，维护者还不能简单全局替换，只能逐个确认结构上下文后补丁处理。尤其是 `Agent`、`Apply`、`Accept`、`Reject`、`Composer` 这类高频界面词，本该走统一本地化资源，却散落在菜单、按钮、tooltip、aria-label 和运行时对象里，升级一次就可能换一批位置，维护体验很差。这种实现方式对本地化非常不友好，也让后续 Cursor 升级后的维护成本明显变高。
-
-补丁策略：
-
-- 修改前计算 `workbench.desktop.main.js` 的 SHA-256。
-- 首次应用前在同目录生成 `workbench.desktop.main.js.cursor-zh-cn-pack.bak.<version>.<timestamp>`。
-- 在扩展全局存储中记录 Cursor 路径、版本、原始哈希、补丁后哈希、备份路径和命中规则。
-- 重复点击 `应用补丁` 会先扫描当前文件，已应用时不会重复写入。
-- `General`、`Tab`、`Beta`、`Network` 等短词只在确定的对象属性上下文中替换，不做裸字符串全局替换。
-
-Cursor 升级后 `workbench.desktop.main.js` 可能被覆盖或结构变化，需要重新打开管理器扫描并重新应用补丁。若扫描结果为 `未知`，不要直接补丁，先确认 Cursor 版本和文件路径。
 
 ## 配置项
 
-- `cursorZhCn.cursorRoot`：Cursor 安装根目录，例如 `D:\cursor`。留空时由管理器自动识别。
-- `cursorZhCn.enableWorkbenchPatch`：是否允许管理器修改 `workbench.desktop.main.js`，默认启用。
+| 键 | 说明 | 默认 |
+|----|------|------|
+| `cursorZhCn.cursorRoot` | Cursor 安装根目录，如 `D:\cursor` | 空（由管理器识别） |
+| `cursorZhCn.enableWorkbenchPatch` | 是否允许管理器修改 Workbench bundle | `true` |
 
 ## 已知限制
 
-本插件不复制官方 VS Code 中文翻译，也不接管完整主界面翻译。远程 Web 内容、运行时动态返回内容或未纳入补丁规则的低置信度硬编码文案，仍可能显示英文。
+- 不复制官方 VS Code 中文包，也不接管完整主界面翻译
+- 远程 Web 内容、API 动态返回、未纳入规则的低置信度硬编码仍可能显示英文
+- desktop 与 glass 压缩符号不同，部分 UI 需分别维护规则（如菜单栏 `ka` / `B` 与 desktop 的 `Vl` / `P`）
+- 补丁依赖当前 Cursor 版本的 bundle 结构，大版本升级后可能需要更新规则
+- 修改安装目录文件可能触发 Cursor 完整性提示；按管理器流程应用补丁即可，一般可忽略或选择「不再显示」
 
 ## 汉化管理器界面展示
 
