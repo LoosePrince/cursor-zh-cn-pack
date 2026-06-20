@@ -4210,6 +4210,122 @@
     "target": "z8C=Re(\"<span>设置现已统一。你可以在侧边栏找到 VS Code 内置设置，或按 \")"
   },
   {
+    "id": "settings.context.ignore-symlinks.description-v2",
+    "source": "get description(){return`\\u26A0\\uFE0F Use with caution. Skip symlinks during .cursorignore file discovery. Only enable if your repository has many symlinks and all .cursorignore files are reachable without them${n.reactiveStorageService.applicationUserPersistentStorage.teamAdminSettings?.cursorIgnore?.ignoreSymlinks?\" (controlled by admin)\":\"\"}. Changing this setting will require a restart of Cursor.`}",
+    "target": "get description(){return`\\u26A0\\uFE0F 请谨慎使用。在发现 .cursorignore 文件时跳过符号链接。仅当你的仓库包含大量符号链接，且所有 .cursorignore 文件都无需通过它们即可访问时再启用${n.reactiveStorageService.applicationUserPersistentStorage.teamAdminSettings?.cursorIgnore?.ignoreSymlinks?\"（由管理员控制）\":\"\"}。更改此设置后需要重启 Cursor。`}"
+  },
+  {
+    "id": "settings.import.auto-import-modules-v2",
+    "source": "description:`Automatically import necessary modules for ${r}`",
+    "target": "description:`自动为 ${r} 导入必要的模块`"
+  },
+  {
+    "id": "settings.models.openai.link-text-html-v3",
+    "source": "f6C=Re(\"<span>your OpenAI key\")",
+    "target": "f6C=Re(\"<span>你的 OpenAI 密钥\")"
+  },
+  {
+    "id": "settings.models.openai.description-v2",
+    "source": "get description(){return[\"You can put in\",\" \",(()=>{var Ge=f6C();return Ge.addEventListener(\"click\",()=>{e.openerService.open(\"https://platform.openai.com/account/api-keys\")}),Ge.style.setProperty(\"display\",\"inline\"),Ge.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),Ge.style.setProperty(\"cursor\",\"pointer\"),Ge})(),\" \",\"to use OpenAI models at cost.\"]}",
+    "target": "get description(){return[\"你可以填入\",\" \",(()=>{var Ge=f6C();return Ge.addEventListener(\"click\",()=>{e.openerService.open(\"https://platform.openai.com/account/api-keys\")}),Ge.style.setProperty(\"display\",\"inline\"),Ge.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),Ge.style.setProperty(\"cursor\",\"pointer\"),Ge})(),\"，以按量付费使用 OpenAI 模型。\"]}"
+  },
+  {
+    "id": "settings.models.view-all-models.label-html-v2",
+    "source": "o6C=Re(\"<div class=settings-menu-hoverable>View All Models\")",
+    "target": "o6C=Re(\"<div class=settings-menu-hoverable>查看全部模型\")"
+  },
+  {
+    "id": "settings.models.api-keys.section-title-html-v2",
+    "source": "l6C=Re(\"<div class=settings-menu-hoverable><div></div><div>API Keys\")",
+    "target": "l6C=Re(\"<div class=settings-menu-hoverable><div></div><div>API 密钥\")"
+  },
+  {
+    "id": "settings.models.anthropic.description-v2",
+    "source": "[\"You can put in\",\" \",(()=>{var y=i6C();return y.addEventListener(\"click\",()=>{n.openerService.open(\"https://console.anthropic.com/settings/keys\")}),y.style.setProperty(\"display\",\"inline\"),y.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),y.style.setProperty(\"cursor\",\"pointer\"),y})(),\" \",'to use Claude at cost. When enabled, this key will be used for all models beginning with \"claude-\".']",
+    "target": "[\"你可以填入\",\" \",(()=>{var y=i6C();return y.addEventListener(\"click\",()=>{n.openerService.open(\"https://console.anthropic.com/settings/keys\")}),y.style.setProperty(\"display\",\"inline\"),y.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),y.style.setProperty(\"cursor\",\"pointer\"),y})(),\" \",\"以按量付费使用 Claude。启用后，此密钥将用于所有以 \\\"claude-\\\" 开头的模型。\"]"
+  },
+  {
+    "id": "settings.models.google.description-v2",
+    "source": "[\"You can put in\",\" \",(()=>{var y=t6C();return y.addEventListener(\"click\",()=>{n.openerService.open(\"https://aistudio.google.com/app/apikey\")}),y.style.setProperty(\"display\",\"inline\"),y.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),y.style.setProperty(\"cursor\",\"pointer\"),y})(),\" \",\"to use Google models at-cost.\"]",
+    "target": "[\"你可以填入\",\" \",(()=>{var y=t6C();return y.addEventListener(\"click\",()=>{n.openerService.open(\"https://aistudio.google.com/app/apikey\")}),y.style.setProperty(\"display\",\"inline\"),y.style.setProperty(\"color\",\"var(--vscode-textLink-foreground)\"),y.style.setProperty(\"cursor\",\"pointer\"),y})(),\" \",\"以按量付费使用 Google 模型。\"]"
+  },
+  {
+    "id": "settings.models.bedrock.description-v2",
+    "source": "get description(){return[\"Configure AWS Bedrock to use Anthropic Claude models through your AWS account.\",s6C(),\"Cursor Enterprise teams can configure IAM roles to access Bedrock without any Access Keys.\"]}",
+    "target": "get description(){return[\"配置 AWS Bedrock，以通过你的 AWS 账户使用 Anthropic Claude 模型。\",s6C(),\"Cursor Enterprise 团队可以配置 IAM 角色，在无需任何访问密钥的情况下访问 Bedrock。\"]}"
+  },
+  {
+    "id": "settings.indexing.main-item-v2",
+    "source": "helpTooltipLabel:\"Learn about codebase indexing\",helpLink:\"https://cursor.com/docs/context/codebase-indexing\",get description(){return[\"Embed codebase for improved contextual understanding and knowledge. Embeddings and metadata are stored in the\",\" \",(()=>{var g=w9C();return g.addEventListener(\"click\",()=>{n.openerService.open(\"https://cursor.com/security#codebase-indexing\",{openExternal:!0})}),g.style.setProperty(\"cursor\",\"pointer\"),g.style.setProperty(\"text-decoration\",\"underline\"),g.style.setProperty(\"text-underline-offset\",\"2px\"),g})(),\", but all code is stored locally.\"]}",
+    "target": "helpTooltipLabel:\"了解代码库索引\",helpLink:\"https://cursor.com/docs/context/codebase-indexing\",get description(){return[\"嵌入代码库以提升上下文理解和知识掌握。嵌入向量和元数据存储在\",\" \",(()=>{var g=w9C();return g.addEventListener(\"click\",()=>{n.openerService.open(\"https://cursor.com/security#codebase-indexing\",{openExternal:!0})}),g.style.setProperty(\"cursor\",\"pointer\"),g.style.setProperty(\"text-decoration\",\"underline\"),g.style.setProperty(\"text-underline-offset\",\"2px\"),g})(),\"，但所有代码都存储在本地。\"]}"
+  },
+  {
+    "id": "settings.indexing.cloud-link-html-v2",
+    "source": "w9C=Re(\"<span>cloud\")",
+    "target": "w9C=Re(\"<span>云端\")"
+  },
+  {
+    "id": "settings.indexing.file-count-label-v2",
+    "source": "return()=>S()&&`${d().toLocaleString()} files`",
+    "target": "return()=>S()&&`${d().toLocaleString()} 个文件`"
+  },
+  {
+    "id": "settings.indexing.sync-button-v2",
+    "source": "le(v,z(Zm,{title:\"Sync\",type:\"tertiary\",size:\"small\",get codicon(){return Ee.refresh},onClick:()=>{n.repositoryService.indexMainLocalRepository()}",
+    "target": "le(v,z(Zm,{title:\"同步\",type:\"tertiary\",size:\"small\",get codicon(){return Ee.refresh},onClick:()=>{n.repositoryService.indexMainLocalRepository()}"
+  },
+  {
+    "id": "settings.indexing.delete-index-button-v2",
+    "source": "z(Zm,{title:\"Delete Index\",type:\"tertiary\",size:\"small\",get codicon(){return Ee.trash}",
+    "target": "z(Zm,{title:\"删除索引\",type:\"tertiary\",size:\"small\",get codicon(){return Ee.trash}"
+  },
+  {
+    "id": "settings.indexing.auto-index-folders-v2",
+    "source": "get description(){return[\"Automatically index any new folders with fewer than\",\" \",Yn(()=>e.serverConfigService.cachedServerConfig?.indexingConfig?.autoIndexingMaxNumFiles.toLocaleString(\"en-US\",{useGrouping:!0})),\" \",\"files\"]}",
+    "target": "get description(){return[\"自动为少于\",\" \",Yn(()=>e.serverConfigService.cachedServerConfig?.indexingConfig?.autoIndexingMaxNumFiles.toLocaleString(\"en-US\",{useGrouping:!0})),\" \",\"个文件的新文件夹建立索引\"]}"
+  },
+  {
+    "id": "settings.indexing.cursorignore-item-v2",
+    "source": "get description(){return[\"Files to exclude from indexing in addition to .gitignore.\",\" \",(()=>{var c=k9C();return c.addEventListener(\"click\",async()=>{const d=await e.repositoryService.getEmbeddableFilesPath();d&&e.openerService.open(d,{openToSide:!0})}),c.style.setProperty(\"cursor\",\"pointer\"),c})()]},get extra(){return z(Zm,{title:\"Edit\",type:\"tertiary\",size:\"small\",codiconStyle:{color:\"var(--cursor-icon-secondary)\",\"font-size\":\"14px\"},renderCodiconOnRight:!0,onClick:()=>{n.openOrCreateFile()}})}}",
+    "target": "get description(){return[\"除了 .gitignore 之外，还会从索引中排除这些文件。\",\" \",(()=>{var c=k9C();return c.addEventListener(\"click\",async()=>{const d=await e.repositoryService.getEmbeddableFilesPath();d&&e.openerService.open(d,{openToSide:!0})}),c.style.setProperty(\"cursor\",\"pointer\"),c})()]},get extra(){return z(Zm,{title:\"编辑\",type:\"tertiary\",size:\"small\",codiconStyle:{color:\"var(--cursor-icon-secondary)\",\"font-size\":\"14px\"},renderCodiconOnRight:!0,onClick:()=>{n.openOrCreateFile()}})}}"
+  },
+  {
+    "id": "settings.indexing.cursorignore-link-html-v2",
+    "source": "k9C=Re(\"<span class=settings__item_link>View included files.\")",
+    "target": "k9C=Re(\"<span class=settings__item_link>查看已纳入的文件。\")"
+  },
+  {
+    "id": "settings.indexing.grep-index-description-v2",
+    "source": "get description(){return\"Automatically index repositories to speed up Grep searches. All data is stored locally.\"}",
+    "target": "get description(){return\"自动为仓库建立索引以加速 Grep 搜索。所有数据都存储在本地。\"}"
+  },
+  {
+    "id": "settings.docs.section-title-v2",
+    "source": "title:\"Docs\",description:\"爬取并索引自定义资源和开发者文档\"",
+    "target": "title:\"文档\",description:\"爬取并索引自定义资源和开发者文档\""
+  },
+  {
+    "id": "settings.network.copy-domains-v2",
+    "source": "get title(){return c()?\"Copied\":\"Copy Domains\"}",
+    "target": "get title(){return c()?\"已复制\":\"复制域名\"}"
+  },
+  {
+    "id": "settings.network.show-domains-v2",
+    "source": "get title(){return m()?\"Hide\":\"Show\"}",
+    "target": "get title(){return m()?\"隐藏\":\"显示\"}"
+  },
+  {
+    "id": "settings.network.run-diagnostic-v2",
+    "source": "get title(){return S()?\"Running Diagnostic\":\"Run Diagnostic\"}",
+    "target": "get title(){return S()?\"正在运行诊断\":\"运行诊断\"}"
+  },
+  {
+    "id": "settings.beta.update-access.default-label-v2",
+    "source": "jyw=[{label:\"Default\",id:\"stable\",allow:[\"enterprise\",\"self-serve\"]},{label:\"抢先体验\",id:\"prerelease\",allow:[\"self-serve\"]}",
+    "target": "jyw=[{label:\"默认\",id:\"stable\",allow:[\"enterprise\",\"self-serve\"]},{label:\"抢先体验\",id:\"prerelease\",allow:[\"self-serve\"]}",
+    "note": "与已汉化的 jyw 数组其余项对齐，仅补 Default 标签"
+  },
+  {
     "id": "workbench.integrity.suppress-corrupt-prompt",
     "source": "e?.dontShowPrompt&&e.commit===this.productService.commit||this._showNotification()}async _isExplainedByPendingUpdate()",
     "target": "e?.dontShowPrompt&&e.commit===this.productService.commit||void 0}async _isExplainedByPendingUpdate()",
