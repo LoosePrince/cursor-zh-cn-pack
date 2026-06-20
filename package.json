@@ -2,7 +2,7 @@
   "name": "cursor-zh-cn-pack",
   "displayName": "Cursor 简体中文语言包",
   "description": "为 Cursor 专用扩展和私有界面提供简体中文补充翻译；VS Code 基础翻译由官方中文语言包处理。",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "LoosePrince",
   "license": "MIT",
   "repository": {
