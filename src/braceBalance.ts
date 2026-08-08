@@ -8,36 +8,8 @@ export function measureBraceBalance(value: string): BraceBalance {
   let curly = 0;
   let round = 0;
   let square = 0;
-  let inString = false;
-  let quote = '';
-  let escaped = false;
 
-  for (let index = 0; index < value.length; index += 1) {
-    const char = value[index];
-    if (inString) {
-      if (escaped) {
-        escaped = false;
-        continue;
-      }
-
-      if (char === '\\') {
-        escaped = true;
-        continue;
-      }
-
-      if (char === quote) {
-        inString = false;
-      }
-
-      continue;
-    }
-
-    if (char === '"' || char === '\'' || char === '`') {
-      inString = true;
-      quote = char;
-      continue;
-    }
-
+  for (const char of value) {
     switch (char) {
       case '{':
         curly += 1;
