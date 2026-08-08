@@ -6,7 +6,8 @@ import { CursorInstall, validateCursorRoot } from './cursorLocator';
 import { loadWorkbenchPatchData, WorkbenchPatchRule, WorkbenchPatchRuntimePolicy } from './patchMap';
 import { createScopedProgress, ProgressCallback, reportProgress, toPercent, yieldToEventLoop } from './progress';
 import { assertBraceBalanceUnchanged, measureBraceBalance } from './braceBalance';
-import { countOccurrences, replaceAllWithCount } from './stringPatchUtils';
+import { applyOrderedStringPatches } from './orderedPatchEngine';
+import { countOccurrences, countOccurrencesForPatterns } from './stringPatchUtils';
 
 const metadataKey = 'cursorZhCn.workbenchPatchMetadata';
 const desktopBackupFilePrefix = 'workbench.desktop.main.js.cursor-zh-cn-pack.';
@@ -284,29 +285,24 @@ async function applyPatchToTarget(
 
   await reportProgress(progress, { message: `创建或复用 ${target.label} 原始备份`, percent: 15 });
   const backupPath = await ensureBackup(target, install, originalContent, context);
-  let patchedContent = originalContent;
-  let appliedOccurrences = 0;
-  const appliedRuleIds: string[] = [];
-
-  for (let index = 0; index < rules.length; index += 1) {
-    const rule = rules[index];
-    const replacement = replaceAllWithCount(patchedContent, rule.source, rule.target);
-    if (replacement.count > 0) {
-      patchedContent = replacement.value;
-      appliedOccurrences += replacement.count;
-      appliedRuleIds.push(rule.id);
-    }
-
-    if (shouldYieldPatchProgress(index + 1, rules.length, progress)) {
-      await reportProgress(progress, {
-        message: `应用 ${target.label} 规则 ${index + 1}/${rules.length}`,
-        percent: 20 + toPercent(index + 1, rules.length) * 0.55,
-        current: index + 1,
-        total: rules.length
-      });
-      await yieldToEventLoop();
-    }
-  }
+  await reportProgress(progress, {
+    message: `索引并应用 ${target.label} 补丁规则`,
+    percent: 20,
+    current: 0,
+    total: rules.length
+  });
+  const patchResult = applyOrderedStringPatches(originalContent, rules);
+  const patchedContent = patchResult.value;
+  const appliedOccurrences = patchResult.totalCount;
+  const appliedRuleIds = rules
+    .filter((_rule, index) => patchResult.ruleCounts[index] > 0)
+    .map(rule => rule.id);
+  await reportProgress(progress, {
+    message: `完成 ${target.label} 规则应用 ${appliedRuleIds.length}/${rules.length}`,
+    percent: 75,
+    current: rules.length,
+    total: rules.length
+  });
 
   if (patchedContent === originalContent) {
     return {
@@ -452,29 +448,25 @@ async function unapplyPatchFromTarget(
 ): Promise<UnapplyPatchFromTargetResult> {
   await reportProgress(progress, { message: `读取 ${target.label}`, percent: 5 });
   const currentContent = await fs.readFile(target.filePath, 'utf8');
-  let restoredContent = currentContent;
-  let unappliedOccurrences = 0;
-  const unappliedRuleIds: string[] = [];
-
-  for (let index = 0; index < rules.length; index += 1) {
-    const rule = rules[index];
-    const replacement = replaceAllWithCount(restoredContent, rule.target, rule.source);
-    if (replacement.count > 0) {
-      restoredContent = replacement.value;
-      unappliedOccurrences += replacement.count;
-      unappliedRuleIds.push(rule.id);
-    }
-
-    if (shouldYieldPatchProgress(index + 1, rules.length, progress)) {
-      await reportProgress(progress, {
-        message: `卸载 ${target.label} 规则 ${index + 1}/${rules.length}`,
-        percent: 20 + toPercent(index + 1, rules.length) * 0.55,
-        current: index + 1,
-        total: rules.length
-      });
-      await yieldToEventLoop();
-    }
-  }
+  await reportProgress(progress, {
+    message: `索引并卸载 ${target.label} 补丁规则`,
+    percent: 20,
+    current: 0,
+    total: rules.length
+  });
+  const reversedRules = rules.map(rule => ({ source: rule.target, target: rule.source }));
+  const patchResult = applyOrderedStringPatches(currentContent, reversedRules);
+  const restoredContent = patchResult.value;
+  const unappliedOccurrences = patchResult.totalCount;
+  const unappliedRuleIds = rules
+    .filter((_rule, index) => patchResult.ruleCounts[index] > 0)
+    .map(rule => rule.id);
+  await reportProgress(progress, {
+    message: `完成 ${target.label} 规则卸载 ${unappliedRuleIds.length}/${rules.length}`,
+    percent: 75,
+    current: rules.length,
+    total: rules.length
+  });
 
   if (restoredContent === currentContent) {
     return { changed: false, unappliedRuleIds };
@@ -994,27 +986,20 @@ async function getPatchRuleStatuses(
     return [...cachedRuleScan.statuses];
   }
 
-  const statuses: PatchRuleStatus[] = [];
-  await reportProgress(progress, { message: '开始扫描补丁规则', percent: 0, current: 0, total: rules.length });
+  const patterns = rules.flatMap(rule => [rule.source, rule.target]);
+  const counts = countOccurrencesForPatterns(content, patterns);
+  const statuses = rules.map((rule, index) => ({
+    id: rule.id,
+    sourceHits: counts[index * 2],
+    targetHits: counts[index * 2 + 1]
+  }));
 
-  for (let index = 0; index < rules.length; index += 1) {
-    const rule = rules[index];
-    statuses.push({
-      id: rule.id,
-      sourceHits: countOccurrences(content, rule.source),
-      targetHits: countOccurrences(content, rule.target)
-    });
-
-    if (shouldYieldPatchProgress(index + 1, rules.length, yieldProgress ?? progress)) {
-      await reportProgress(progress, {
-        message: `扫描补丁规则 ${index + 1}/${rules.length}`,
-        percent: toPercent(index + 1, rules.length),
-        current: index + 1,
-        total: rules.length
-      });
-      await yieldToEventLoop();
-    }
-  }
+  await reportProgress(progress, {
+    message: `补丁规则扫描完成 ${rules.length}/${rules.length}`,
+    percent: 100,
+    current: rules.length,
+    total: rules.length
+  });
 
   cachedRuleScan = { contentHash, ruleFingerprint, statuses };
   return statuses;
